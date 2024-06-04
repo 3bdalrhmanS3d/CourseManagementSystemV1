@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Course Management System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .login-container 
+        {
+            max-width: 400px;
+            margin: auto;
+            padding-top: 50px;
+        }
+
+            .login-container h2 {
+                margin-bottom: 40px;
+            }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+            .form-control.is-invalid:focus {
+                box-shadow: none;
+            }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container login-container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2 class="text-center">Hello, </h2>
+                <fieldset>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            @Html.Label("Email")
+                            @Html.TextBox("email", null, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Password")
+                            <div class="input-group">
+                                @Html.Password("password", null, new { @class = "form-control", id = "passwordInput" })
+                                <div class="input-group-append">
+                                    <span class="input-group-text password-toggle" onclick="togglePassword()">Show</span>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">
+                                Wrong email or password
+                            </div>
+                        </div>
+
+                        <br />
+
+
+                        <div class="text-center">
+                            @Html.ActionLink("Forgot password?", "ForgotPassword", "Account", null, new { @class = "no-underline" })
+                        </div>
+                        <br />
+
+                        <div class="form-group text-center">
+                            <input type="submit" value="Continue" class="btn btn-primary" onclick="validateForm(event)" />
+                        </div>
+                    }
+
+                    <br />
+
+                    
+                    <div class="text-center">
+                        @Html.ActionLink("Don't have an account? Sign up", "Registration", "Account", null, new { @class = "no-underline" })
+                    </div>
+                    <p class="text-center text-danger">@ViewBag.Message</p>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function togglePassword()
+        {
+            var passwordInput = document.getElementById("passwordInput");
+            var passwordToggle = passwordInput.nextElementSibling.querySelector(".password-toggle");
+            if (passwordInput.type === "password")
+            {
+                passwordInput.type = "text";
+                passwordToggle.innerText = "Hide";
+            }
+            else
+            {
+                passwordInput.type = "password";
+                passwordToggle.innerText = "Show";
+            }
+        }
+
+        function validateForm(event)
+        {
+            var emailInput = document.querySelector('input[name="email"]');
+            var passwordInput = document.querySelector('input[name="password"]');
+
+            // Clear any previous invalid states
+            emailInput.classList.remove('is-invalid');
+            passwordInput.classList.remove('is-invalid');
+            document.querySelector('.invalid-feedback').style.display = 'none';
+
+            // Dummy validation: assume invalid if password is empty
+            if (!passwordInput.value)
+            {
+                event.preventDefault(); // Prevent form submission
+                passwordInput.classList.add('is-invalid');
+                passwordInput.value = ''; // Clear the input
+                document.querySelector('.invalid-feedback').style.display = 'block';
+            }
+        }
+    </script>
+}

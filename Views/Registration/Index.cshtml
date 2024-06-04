@@ -1,0 +1,201 @@
+﻿@model courseManagementSystemV1.Controllers.RegistrationController.Input
+
+@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Registration</h1>
+<hr />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Index" method="post" enctype="multipart/form-data" onsubmit="validateForm(event)">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label asp-for="userSSN" class="control-label">National ID</label>
+                    <input asp-for="userSSN" class="form-control" />
+                    <span asp-validation-for="userSSN" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label asp-for="userFirstName" class="control-label">First name</label>
+                    <input asp-for="userFirstName" class="form-control" />
+                    <span asp-validation-for="userFirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userMiddelName" class="control-label"> Middle name</label>
+                    <input asp-for="userMiddelName" class="form-control" />
+                    <span asp-validation-for="userMiddelName" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userLastName" class="control-label">Last name</label>
+                    <input asp-for="userLastName" class="form-control" />
+                    <span asp-validation-for="userLastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label asp-for="userEmail" class="control-label">Email</label>
+                    <input asp-for="userEmail" class="form-control" />
+                    <span asp-validation-for="userEmail" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userPhoneNumber" class="control-label">Phone number</label>
+                    <input asp-for="userPhoneNumber" class="form-control" />
+                    <span asp-validation-for="userPhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label asp-for="userPassword" class="control-label">Password</label>
+                    <input asp-for="userPassword" class="form-control" type="password" id="userPassword" />
+                    <span asp-validation-for="userPassword" class="text-danger"></span>
+                    <br />
+                    <button type="button" class="btn btn-secondary" onclick="togglePassword('userPassword', this)">show</button>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userConfPassword" class="control-label">Confirm password</label>
+                    <input asp-for="userConfPassword" class="form-control" type="password" id="userConfPassword" />
+                    <span asp-validation-for="userConfPassword" class="text-danger"></span>
+                    <br />
+                    <button type="button" class="btn btn-secondary" onclick="togglePassword('userConfPassword', this)">show</button>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+
+                <div class="col-md-4">
+                    <label asp-for="userUniversity" class="control-label">University</label>
+                    <input asp-for="userUniversity" class="form-control" />
+                    <span asp-validation-for="userUniversity" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="userCollege" class="control-label">College</label>
+                    <input asp-for="userCollege" class="form-control" />
+                    <span asp-validation-for="userCollege" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userDepartment" class="control-label">Department</label>
+                    <input asp-for="userDepartment" class="form-control" />
+                    <span asp-validation-for="userDepartment" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="userEnterCollegeDateTime" class="control-label">Year of University Enrolment</label>
+                <select asp-for="userEnterCollegeDateTime" class="form-control">
+                    @{
+                        int currentYear = DateTime.Now.Year;
+                        for (int year = currentYear - 7; year <= currentYear; year++)
+                        {
+                            <option value="@year">@year</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="userEnterCollegeDateTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label asp-for="userAddressGov" class="control-label">Governorate </label>
+                    <input asp-for="userAddressGov" class="form-control" />
+                    <span asp-validation-for="userAddressGov" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userCity" class="control-label">City</label>
+                    <input asp-for="userCity" class="form-control" />
+                    <span asp-validation-for="userCity" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="userstreet" class="control-label">Street</label>
+                    <input asp-for="userstreet" class="form-control" />
+                    <span asp-validation-for="userstreet" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label asp-for="img_file" class="control-label">Photo</label>
+                    <input asp-for="img_file" type="file" class="form-control" />
+                    <span asp-validation-for="img_file" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+
+<div>
+    <a asp-action="Index" >Home</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <style>
+        .control-label {
+            font-size: 18px; /* حجم الخط */
+            color: black; /* لون الخط */
+        }
+
+            .form-control.is-invalid {
+                border-color: red;
+            }
+    </style>
+    <script>
+        function togglePassword(fieldId, button) {
+            var field = document.getElementById(fieldId);
+            if (field.type === "password") {
+                field.type = "text";
+                button.textContent = "hide";
+            } else {
+                field.type = "password";
+                button.textContent = "show";
+            }
+        }
+
+        function validateForm(event) {
+            var inputs = document.querySelectorAll('input.form-control');
+            var valid = true;
+
+            inputs.forEach(function (input) {
+                input.classList.remove('is-invalid');
+                var span = input.nextElementSibling;
+                if (span && span.classList.contains('text-danger')) {
+                    span.style.display = 'none';
+                }
+
+                if (!input.value) {
+                    valid = false;
+                    input.classList.add('is-invalid');
+                    input.value = ''; // Clear the input
+                    if (span && span.classList.contains('text-danger')) {
+                        span.style.display = 'block';
+                    }
+                }
+            });
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        }
+    </script>
+}
