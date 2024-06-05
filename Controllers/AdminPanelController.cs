@@ -198,6 +198,7 @@ namespace courseManagementSystemV1.Controllers
         #region
         public IActionResult Statistics()
         {
+
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
             {
                 return RedirectToAction("Index", "Login");
