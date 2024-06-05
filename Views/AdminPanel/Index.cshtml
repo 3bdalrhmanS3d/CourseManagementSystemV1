@@ -94,13 +94,15 @@
 <body>
    
     <div class="navbar">
-        @* // الحل الصح انك تحط كل اللي يخص الادمن ف مكان واحد وبعدين توصلهم فرادى *@
-        <label><a href="/AdminPanel/AdminManagement" class="btn btn-outline-primary" role="button" aria-pressed="true"> Make Admin</a></label>
+       
+        <label><a href="/AdminPanel/AdminManagement" class="btn btn-outline-primary" role="button" aria-pressed="true"> Admins </a></label>
+        <label><a href="/AdminPanel/UserManagement" class="btn btn-outline-primary" role="button" aria-pressed="true"> Users </a></label>
+
         @* <button class="action-button" onclick="location.href='@Url.Action("MakeAdmin", "AdminPanel")'">Make Admin</button> *@
-        <button class="action-button" onclick="location.href='@Url.Action("DeleteAdmin", "AdminPanel")'">Delete Admin</button>
+        @* <button class="action-button" onclick="location.href='@Url.Action("DeleteAdmin", "AdminPanel")'">Delete Admin</button>
         <button class="action-button" onclick="location.href='@Url.Action("UserAccepted", "AdminPanel")'">Accept User</button>
         <button class="action-button" onclick="location.href='@Url.Action("UserDeleted", "AdminPanel")'">Delete User</button>
-        <button class="action-button" onclick="location.href='@Url.Action("UserBolcked", "AdminPanel")'">Block User</button>
+        <button class="action-button" onclick="location.href='@Url.Action("UserBolcked", "AdminPanel")'">Block User</button> *@
     </div>
     <br/>
     <br/>

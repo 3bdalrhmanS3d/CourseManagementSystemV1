@@ -5,81 +5,121 @@
 <head>
     <title>User Management</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
+        /* body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    flex-direction: column;
+                } */
 
-        .user-list {
-            width: 80%;
+        .user-listt {
+            width: 100%;
             margin-top: 20px;
         }
 
-            .user-list table {
+        .user-list table {
                 width: 100%;
                 border-collapse: collapse;
             }
 
-            .user-list th, .user-list td {
-                border: 1px solid #ccc;
-                padding: 8px;
-                text-align: left;
-            }
-
-            .user-list th {
-                background-color: #17a2b8;
-                color: white;
-            }
-
-        .action-button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
+        .h1 {
+            text-align: center;
         }
 
-            .action-button:hover {
-                background-color: #0056b3;
-            }
+        .user-list th, .user-list td {
+            border: 2px solid #ccc;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .user-list th {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        /* .action-button {
+                    /* background-color: #007bff; */
+        /* color: white; */
+        padding: 10px 20px;
+        border: 3;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+        }
+
+        */
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="user-list">
-        <h1>User Management</h1>
+        <h1>Pending</h1>
         <table>
             <tr>
                 <th>User ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Accepted</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Email</th>
                 <th>Actions</th>
             </tr>
-            @foreach (var user in Model)
+            @foreach (var user in ViewBag.AllUsersNotAcceptedYet)
             {
                 <tr>
                     <td>@user.UserID</td>
-                    <td>@user.UserFirstName</td>
-                    <td>@user.UserLastName</td>
-                    <td>@user.IsAccepted</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.UserCreatedAccount</td>
+                    <td>@user.UserEmail</td>
                     <td>
-                        @if (user.IsAccepted == false )
-                        {
-                            <button class="action-button" onclick="location.href='@Url.Action("UserAccepted", "Admin", new { id = user.UserID })'">Accept User</button>
-                        }
-                        <button class="action-button" onclick="location.href='@Url.Action("UserDeleted", "Admin", new { id = user.UserID })'">Delete User</button>
-                        <button class="action-button" onclick="location.href='@Url.Action("UserBolcked", "Admin", new { id = user.UserID })'">Block User</button>
+                        <button class="btn btn-outline-success" onclick="location.href='@Url.Action("UserAccepted", "Admin", new { id = user.UserID })'">Accept User</button>
                     </td>
                 </tr>
             }
+            
+        </table>
+    </div>
+    <br />
+    <hr />
+    <br />
+    <div class="user-list">
+        <h1>Accepted</h1>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Accepted Date</th>
+                <th>Accepted By</th>
+                <th>Email</th>
+                <th>Actions</th>
+                <th>View</th>
+            </tr>
+            @foreach (var user in ViewBag.AllUsersNotAccepted)
+            {
+                <tr>
+                    <td>@user.UserID</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.userAcceptedDate</td>
+                    <td>@user.whoAcceptedUser</td>
+                    <td>@user.UserEmail</td>
+
+                    <td>
+                        <button class="btn btn-outline-warning" onclick="location.href='@Url.Action("UserBolcked", "Admin", new { id = user.UserID })'">Block</button>
+                        <button class="btn btn-outline-danger" onclick="location.href='@Url.Action("UserDeleted", "Admin", new { id = user.UserID })'">Delete User</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "Admin", new { id = user.UserID })'">View</button>
+                    </td>
+
+                   @*   *@
+                </tr>
+            }
+
         </table>
     </div>
 </body>

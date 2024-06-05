@@ -107,6 +107,35 @@ namespace courseManagementSystemV1.Controllers
 
         // Delet , Bolck and Accept users
         #region
+
+        public IActionResult UserManagement()
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            // لم يقبل بعد
+            var AllUsersNotAcceptedYet = _context.Users.Where(p => p.IsAccepted == false).AsQueryable();
+            if(AllUsersNotAcceptedYet == null)
+            {
+                ViewBag.AllUsersNotAcceptedYet = "NO data";
+            }
+            else
+            {
+                ViewBag.AllUsersNotAcceptedYet = AllUsersNotAcceptedYet.OrderByDescending(x => x.UserCreatedAccount).ToList();
+            }
+
+            // accepted
+            var AllUsersNotAccepted = _context.Users.Where(p => p.IsAccepted == true).AsQueryable();
+            ViewBag.AllUsersNotAccepted = AllUsersNotAccepted.OrderByDescending(_ => _.userAcceptedDate).ToList();
+
+            // blocked
+            var AllUsersBlocked = _context.Users.Where(p => p.IsBlocked == true).AsQueryable();
+            ViewBag.AllUsersBlocked = AllUsersBlocked.OrderByDescending(_ => _.userBlockedDate).ToList();
+
+            return View();
+
+        }
         public IActionResult UserAccepted(int id)
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
