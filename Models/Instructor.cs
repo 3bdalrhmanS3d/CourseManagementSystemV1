@@ -45,6 +45,6 @@ namespace courseManagementSystemV1.Models
         public bool? ISDeleted { get; set; } = false;
 
 
-        public ICollection<CourseManagement> courseManagements { get; set; }
+        public ICollection<CourseManagement>? courseManagements { get; set; }
     }
 }

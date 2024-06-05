@@ -22,6 +22,22 @@ namespace courseManagementSystemV1.Controllers
         {
             return View();
         }
+        
+
+        public IActionResult Report()
+        {
+            return View();
+        }
+
+        public IActionResult AddArea()
+        {
+            return View();
+        }
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

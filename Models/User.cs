@@ -36,8 +36,9 @@ namespace courseManagementSystemV1.Models
         [Compare("UserPassword", ErrorMessage = "The fields Password and PasswordConfirmation should be equals")]
         public string UserConfPassword { get; set; }
         [Required]
-        [DisplayFormat(DataFormatString = "{YYYY}")]
-        public DateTime UserEnterCollegeDateTime { get; set; }
+        //DisplayFormat(DataFormatString = "{0:YYYY}")]
+
+        public string UserEnterCollegeDateTime { get; set; }
         [Required]
         public string UserCollege { get; set; }
         [Required]
@@ -71,12 +72,15 @@ namespace courseManagementSystemV1.Models
 
         public bool NormalUser { get; set; } = true;
         public bool? IsUserHR { get; set; } = false;
+        public string ? whoHrThisUser { get; set; }
+
+
         public bool? IsAdmin { get; set; } = false;
         public string? whoAdminThisUser { get; set; }
 
-        public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<Bonus> Bonuses { get; set; }
-        public ICollection<HRManagement> hRManagements { get; set; }
+        public ICollection<Enrollment>? Enrollments { get; set; }
+        public ICollection<Bonus>? Bonuses { get; set; }
+        public ICollection<HRManagement>? hRManagements { get; set; }
 
     }
 }

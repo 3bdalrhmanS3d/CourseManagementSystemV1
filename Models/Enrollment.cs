@@ -20,6 +20,6 @@ namespace courseManagementSystemV1.Models
         [ForeignKey("CourseID")]
         public Course Course { get; set; }
 
-        public ICollection<Attendance> Attendances { get; set; }
+        public ICollection<Attendance>? Attendances { get; set; }
     }
 }

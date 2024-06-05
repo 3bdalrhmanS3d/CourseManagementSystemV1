@@ -57,7 +57,7 @@ namespace courseManagementSystemV1.Controllers
             public string userConfPassword { get; set; }
 
             [Required]
-            public DateTime userEnterCollegeDateTime { get; set; } = DateTime.Now;
+            public string userEnterCollegeDateTime { get; set; } 
 
             [Required]
             public string userCollege { get; set; }

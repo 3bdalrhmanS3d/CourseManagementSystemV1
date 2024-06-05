@@ -2,6 +2,7 @@
 using System.Text.Json;
 using courseManagementSystemV1.DBContext;
 using courseManagementSystemV1.Models;
+using System.Linq;
 
 namespace courseManagementSystemV1.Controllers
 {
@@ -14,19 +15,17 @@ namespace courseManagementSystemV1.Controllers
             _context = context;
         }
 
-        // GET: /Login/
         [HttpGet]
         public IActionResult Index()
         {
-            /*if (HttpContext.Session.GetString("Login") != null)
+            if (HttpContext.Session.GetString("Login") != null)
             {
                 return RedirectToAction("Index", "Home");
-            }*/
+            }
             ViewBag.Message = "";
             return View();
         }
 
-        // POST: /Login/
         [HttpPost]
         public IActionResult Index(string email, string password)
         {
@@ -34,17 +33,15 @@ namespace courseManagementSystemV1.Controllers
 
             if (user != null)
             {
-                // تحقق مما إذا كان المستخدم محظوراً
                 if (user.IsBlocked.HasValue && user.IsBlocked.Value)
                 {
                     ViewBag.Message = "Your account is blocked.";
                     return View();
                 }
 
-                // تحقق مما إذا كان المستخدم مقبولاً
                 if (!user.IsAccepted.HasValue || !user.IsAccepted.Value)
                 {
-                    return View("NotAccepted"); // Assuming you have a view called NotAccepted.cshtml
+                    return View("NotAccepted");
                 }
 
                 HttpContext.Session.SetString("Login", "true");
@@ -59,7 +56,7 @@ namespace courseManagementSystemV1.Controllers
                 }
                 else if (user.IsUserHR.HasValue && user.IsUserHR.Value)
                 {
-                    return RedirectToAction("Index", "HRPanel");
+                    return RedirectToAction("Index", "HR");
                 }
                 else
                 {
@@ -73,7 +70,6 @@ namespace courseManagementSystemV1.Controllers
             }
         }
 
-        // Logout
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
