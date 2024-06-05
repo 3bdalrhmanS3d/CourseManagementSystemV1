@@ -43,6 +43,23 @@ namespace courseManagementSystemV1.Controllers
         }
         // make and delet admin
         #region
+
+        public IActionResult AdminManagement()
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            // كل الناس 
+            var admins = _context.Users.Where(p => p.IsAccepted == true).AsQueryable();
+            ViewBag.allUsers = admins.OrderByDescending(x=>x.userAcceptedDate).ToList();
+            // كل الادمنز
+            var ISadmins = _context.Users.Where(p=>p.IsAdmin == true).AsQueryable();
+            ViewBag.admins = ISadmins.OrderByDescending(_ => _.userAcceptedDate).ToList();
+
+            return View();
+        
+        }
         public IActionResult MakeAdmin(int id)
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
@@ -84,7 +101,7 @@ namespace courseManagementSystemV1.Controllers
                 HttpContext.Session.SetString("Message", "Delete admin done !");
             }
 
-            return RedirectToAction("AdminManagement");
+            return View();
         }
         #endregion
 
