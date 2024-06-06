@@ -1,0 +1,244 @@
+﻿@model IEnumerable<courseManagementSystemV1.Models.User>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+    <style>
+        .user-list {
+            width: 100%;
+            margin: auto;
+        }
+
+            .user-list table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+        h1 {
+            text-align: center;
+        }
+
+        .user-list th, .user-list td {
+            border: 2px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .user-list th {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .btn-outline-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-outline-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-outline-warning {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-outline-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .message-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+    </style>
+    <script>
+        function hideMessage()
+        {
+            var messageDiv = document.getElementById('message');
+            if (messageDiv)
+            {
+                setTimeout(function ()
+                {
+                    messageDiv.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            }
+        }
+    </script>
+</head>
+<body onload="hideMessage()">
+
+    <div class="user-list">
+        <h1>Pending Users</h1>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Email</th>
+                <th>Actions</th>
+                <th>View</th>
+            </tr>
+            @foreach (var user in ViewBag.AllUsersNotAcceptedYet)
+            {
+                <tr>
+                    <td>@user.UserSSN</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.UserCreatedAccount</td>
+                    <td>@user.UserEmail</td>
+                    <td>
+                        <form asp-action="AcceptUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-success" type="submit">Accept </button>
+                        </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+    <hr />
+    <br />
+    <div class="user-list">
+        <h1>Accepted Users</h1>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Accepted Date</th>
+                <th>Accepted By</th>
+                <th>Email</th>
+                <th>Actions</th>
+                <th>View</th>
+            </tr>
+            @foreach (var user in ViewBag.AllUsersAccepted)
+            {
+                <tr>
+                    <td>@user.UserSSN</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.userAcceptedDate</td>
+                    <td>@user.whoAcceptedUser</td>
+                    
+                    <td>@user.UserEmail</td>
+                    <td>
+                        <form asp-action="BlockUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-warning" type="submit">Block</button>
+                        </form>
+                        <form asp-action="DeleteUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+    <hr />
+    <br />
+    <div class="user-list">
+        <h1>Blocked Users</h1>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Accepted Date</th>
+                <th>Email</th>
+                <th>Blocked by </th>
+                <th>Blocked Date</th>
+                <th>Actions</th>
+                <th>View</th>
+            </tr>
+            @foreach (var user in ViewBag.AllUsersBlocked)
+            {
+                <tr>
+                    <td>@user.UserSSN</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.UserCreatedAccount</td>
+                    <td>@user.UserEmail</td>
+                    <td>@user.whoBlockedUser</td>
+                    <td>@user.userBlockedDate</td>
+                    <td>
+                        <form asp-action="AcceptUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-warning" type="submit"> UnBlock </button>
+                        </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div> 
+    <br />
+    <hr />
+    <br />
+    <div class="user-list">
+        <h1>Deleted Users</h1>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Accepted Date</th>
+                <th>Email</th>
+                <th>Deleted by </th>
+                <th>Delete Date</th>
+                @* <th>Actions</th> *@
+                <th>View</th>
+            </tr>
+            @foreach (var user in ViewBag.AllUsersDeleted)
+            {
+                <tr>
+                    <td>@user.UserSSN</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.UserCreatedAccount</td>
+                    <td>@user.UserEmail</td>
+                    <td>@user.whoDeletedUser</td>
+                    <td>@user.userDeletedDate</td>
+                    @* <td>
+                        <form asp-action="restorationDeleteUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-warning" type="submit"> Restoration </button>
+                        </form>
+                    </td> *@
+                    <td>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div> 
+</body>
+</html>

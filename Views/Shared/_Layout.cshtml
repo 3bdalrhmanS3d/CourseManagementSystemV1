@@ -6,13 +6,23 @@
     <title>@ViewData["Title"] - courseManagementSystemV1</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @* <style>
-        .btn-primary
+    <style>
+        .nav-item
         {
-            background-color: #28a745;
-            border-color: #28a745;
+            margin-right: 20px; /* Adjust spacing between items as needed */
         }
-    </style> *@
+
+            .nav-item .nav-link.active, .nav-item .btn.active {
+                background-color: #007bff; /* Primary color for active item */
+                color: white; /* Text color for active item */
+            }
+
+            .nav-item .nav-link, .nav-item .btn
+            {
+                
+                color: white; /* Default color for non-active items */
+            }
+    </style>
 </head>
 <body>
     <header>
@@ -24,65 +34,63 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-
                     <ul class="navbar-nav flex-grow-1">
                         @if (ViewContext.HttpContext.Session.GetString("Login") == null)
                         {
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Privacy" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
                         }
                         else
                         {
-                            
                             if (ViewContext.HttpContext.Session.GetString("UserStatus") == "user")
                             {
                                 <li class="nav-item">
-                                    <a class="navbar-brand" asp-area="" asp-controller="UserHome" asp-action="Index">Home</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserHome") ? "active" : "")" asp-area="" asp-controller="UserHome" asp-action="Index">Home</a>
                                 </li>
-                                <li>
-                                    <a class="navbar-brand" asp-area="" asp-controller="UserCourses" asp-action="Index">My Courses</a>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserCourses") ? "active" : "")" asp-area="" asp-controller="UserCourses" asp-action="Index">My Courses</a>
                                 </li>
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "HR")
                             {
-                                <li>
-                                    <a class="navbar-brand" asp-area="" asp-controller="HR" asp-action="ManageCourses">Manage Courses</a>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "ManageCourses" && ViewContext.RouteData.Values["controller"].ToString() == "HR") ? "active" : "")" asp-area="" asp-controller="HR" asp-action="ManageCourses">Manage Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success" asp-area="" asp-controller="HR" asp-action="Index">HR Panel</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "HR") ? "active" : "")" asp-area="" asp-controller="HR" asp-action="Index">HR Panel</a>
                                 </li>
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "admin")
                             {
                                 <li class="nav-item">
-                                    <a class="btn btn-success" asp-area="" asp-controller="UserCourses" asp-action="Index">My Courses</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserCourses") ? "active" : "")" asp-area="" asp-controller="UserCourses" asp-action="Index">My Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "AdminPanel") ? "active" : "")" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success" asp-area="" asp-controller="Home" asp-action="Report">Students</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UsersManagement") ? "active" : "")" asp-area="" asp-controller="UsersManagement" asp-action="Index">Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success" asp-area="" asp-controller="Home" asp-action="AddArea">Courses</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "AddArea" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="AddArea">Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success" asp-area="" asp-controller="Instructor" asp-action="Index">Instructor</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Instructor") ? "active" : "")" asp-area="" asp-controller="Instructor" asp-action="Index">Instructor</a>
                                 </li>
                             }
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "AboutUs" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
                             </li>
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Privacy" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
                         }
                     </ul>
-                    <ul class="nav nav-pills nav-fill" >
+                    <ul class="nav nav-pills nav-fill">
                         @if (ViewContext.HttpContext.Session.GetString("Login") == null)
                         {
                             <li class="nav-item">
@@ -94,9 +102,8 @@
                         }
                         else
                         {
-
                             <li class="nav-item">
-                                <a class="btn btn-primary" asp-area="" asp-controller="UserAccount" asp-action="Index">@ViewContext.HttpContext.Session.GetString("FullName")</a>
+                                <a class="btn btn-outline-success btn-lg" asp-area="" asp-controller="UserAccount" asp-action="Index">@ViewContext.HttpContext.Session.GetString("FullName")</a>
                             </li>
                             <li class="nav-item">
                                 <a class="btn btn-danger" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
@@ -113,7 +120,7 @@
             @RenderBody()
         </main>
     </div>
-   
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

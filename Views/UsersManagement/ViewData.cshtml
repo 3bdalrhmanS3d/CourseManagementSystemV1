@@ -6,14 +6,13 @@
 
 <head>
     <style>
-        .table
-        {
+        .table {
             width: 100%;
             border-collapse: collapse;
         }
 
             .table th, .table td {
-                text-align :center;
+                text-align: center;
                 border: 1px solid #ddd;
                 padding: 8px;
             }
@@ -22,12 +21,10 @@
                 text-align: center;
                 padding-top: 12px;
                 padding-bottom: 12px;
-                
                 background-color: #f2f2f2;
             }
 
-        .user-details img
-        {
+        .user-details img {
             max-width: 150px;
             max-height: 150px;
         }
@@ -66,7 +63,7 @@
             <th>Department</th>
             <td>@Model.UserDepartment</td>
         </tr>
-        
+
         <tr>
             <th>Address</th>
             <td>@Model.UserAddressGov, @Model.UserCity, @Model.UserStreet</td>
@@ -79,7 +76,7 @@
             <th>Accepted By</th>
             <td>@Model.whoAcceptedUser</td>
         </tr>
-        
+
         <tr>
             <th>Account Status</th>
             <td>
@@ -96,11 +93,11 @@
                 else
                 {
                     <p>Active</p>
-                    <tr>
-                        <td>@Model.userAcceptedDate?.ToString("MMM dd, yyyy")</td>
-                    </tr>
+            <tr>
+                <td>@Model.userAcceptedDate?.ToString("MMM dd, yyyy")</td>
+            </tr>
                 }
-            </td>
+        </td>
         </tr>
     </table>
 </div>
