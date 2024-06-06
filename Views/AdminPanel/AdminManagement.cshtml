@@ -114,7 +114,7 @@
                         <button class="btn btn-outline-warning" onclick="location.href='@Url.Action("DeleteAdmin", "Admin", new { id = user.UserID })'">Delete Admin</button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "Admin", new { id = user.UserID })'">View</button>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UserView", new { id = user.UserID })'">View</button>
                     </td>
                 </tr>
             }

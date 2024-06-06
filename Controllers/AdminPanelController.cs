@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Text.Json;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace courseManagementSystemV1.Controllers
 {
@@ -51,10 +52,10 @@ namespace courseManagementSystemV1.Controllers
                 return RedirectToAction("Index", "Login");
             }
             // كل الناس 
-            var admins = _context.Users.Where(p => p.IsAccepted == true).AsQueryable();
+            var admins = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false).AsQueryable();
             ViewBag.allUsers = admins.OrderByDescending(x=>x.userAcceptedDate).ToList();
             // كل الادمنز
-            var ISadmins = _context.Users.Where(p=>p.IsAdmin == true).AsQueryable();
+            var ISadmins = _context.Users.Where(p=>p.IsAdmin == true && p.IsAccepted == true).AsQueryable();
             ViewBag.admins = ISadmins.OrderByDescending(_ => _.userAcceptedDate).ToList();
 
             return View();
@@ -108,6 +109,7 @@ namespace courseManagementSystemV1.Controllers
         // Delet , Bolck and Accept users
         #region
 
+        
         public IActionResult UserManagement()
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")

@@ -1,6 +1,5 @@
 using courseManagementSystemV1.DBContext;
 using Microsoft.EntityFrameworkCore;
-using courseManagementSystemV1.DBContext;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,0 +1,181 @@
+﻿@model courseManagementSystemV1.Models.User
+
+@{
+    ViewData["Title"] = "View User Data";
+}
+
+<head>
+    <style>
+        .table
+        {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table th, .table td {
+                text-align :center;
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .table th {
+                text-align: center;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                
+                background-color: #f2f2f2;
+            }
+
+        .user-details img
+        {
+            max-width: 150px;
+            max-height: 150px;
+        }
+    </style>
+
+</head>
+<h1>User Details</h1>
+
+<div class="user-details">
+    <table class="table table-bordered">
+        <tr>
+            <th>Full Name</th>
+            <td>@Model.UserFirstName @Model.UserMiddelName @Model.UserLastName</td>
+        </tr>
+        <tr>
+            <th>Photo</th>
+            <td><img src="@Model.UserPhoto" alt="User Photo" style="max-width: 150px; max-height: 150px;" /></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.UserEmail</td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td>@Model.UserPhoneNumber</td>
+        </tr>
+        <tr>
+            <th>University</th>
+            <td>@Model.UserUniversity</td>
+        </tr>
+        <tr>
+            <th>College</th>
+            <td>@Model.UserCollege</td>
+        </tr>
+        <tr>
+            <th>Department</th>
+            <td>@Model.UserDepartment</td>
+        </tr>
+        
+        <tr>
+            <th>Address</th>
+            <td>@Model.UserAddressGov, @Model.UserCity, @Model.UserStreet</td>
+        </tr>
+        <tr>
+            <th>Account Created</th>
+            <td>@Model.UserCreatedAccount.ToString("MMM dd, yyyy")</td>
+        </tr>
+        <tr>
+            <th>Accepted By</th>
+            <td>@Model.whoAcceptedUser</td>
+        </tr>
+        
+        <tr>
+            <th>Account Status</th>
+            <td>
+                @if (Model.IsBlocked.HasValue && Model.IsBlocked.Value)
+                {
+                    <p><strong>Blocked By:</strong> @Model.whoBlockedUser</p>
+                    <p><strong>When:</strong> @Model.userBlockedDate?.ToString("MMM dd, yyyy")</p>
+                }
+                else if (Model.IsDeleted.HasValue && Model.IsDeleted.Value)
+                {
+                    <p><strong>Deleted By:</strong> @Model.whoDeletedUser</p>
+                    <p><strong>When:</strong> @Model.userDeletedDate?.ToString("MMM dd, yyyy")</p>
+                }
+                else
+                {
+                    <p>Active</p>
+                    <tr>
+                        <td>@Model.userAcceptedDate?.ToString("MMM dd, yyyy")</td>
+                    </tr>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+
+<h2>Enrollments</h2>
+@if (Model.Enrollments != null && Model.Enrollments.Any())
+{
+    <table class="table table-bordered">
+        @foreach (var enrollment in Model.Enrollments)
+        {
+            <tr>
+                <th>Course Name</th>
+                <td>@enrollment.Course.CourseName</td>
+            </tr>
+            <tr>
+                <th>Enrollment Date</th>
+                <td>@enrollment.EnrollmentDate.ToString("MMM dd, yyyy")</td>
+            </tr>
+            <tr>
+                <th>Attendances</th>
+                <td>
+                    @if (enrollment.Attendances != null && enrollment.Attendances.Any())
+                    {
+                        <ul>
+                            @foreach (var attendance in enrollment.Attendances)
+                            {
+                                <li>
+                                    <strong>Date:</strong> @attendance.SessionDate.ToString("MMM dd, yyyy")
+                                    <strong>Check-In:</strong> @attendance.CheckInTime
+                                    <strong>Check-Out:</strong> @attendance.CheckOutTime
+                                    <strong>Total Time:</strong> @attendance.TotalTime?.ToString(@"hh\:mm")
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No attendance records available.</p>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No enrollments available.</p>
+}
+
+<h2>Bonuses</h2>
+@if (Model.Bonuses != null && Model.Bonuses.Any())
+{
+    <table class="table table-bordered">
+        @foreach (var bonus in Model.Bonuses)
+        {
+            <tr>
+                <th>Course</th>
+                <td>@bonus.Course.CourseName</td>
+            </tr>
+            <tr>
+                <th>Bonus Type</th>
+                <td>@bonus.BonusType</td>
+            </tr>
+            <tr>
+                <th>Bonus Amount</th>
+                <td>@bonus.BonusAmount</td>
+            </tr>
+            <tr>
+                <th>Date Awarded</th>
+                <td>@bonus.DateAwarded.ToString("MMM dd, yyyy")</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No bonuses available.</p>
+}

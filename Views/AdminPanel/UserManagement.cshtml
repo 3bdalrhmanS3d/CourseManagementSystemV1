@@ -107,16 +107,13 @@
                     <td>@user.userAcceptedDate</td>
                     <td>@user.whoAcceptedUser</td>
                     <td>@user.UserEmail</td>
-
                     <td>
                         <button class="btn btn-outline-warning" onclick="location.href='@Url.Action("UserBolcked", "Admin", new { id = user.UserID })'">Block</button>
                         <button class="btn btn-outline-danger" onclick="location.href='@Url.Action("UserDeleted", "Admin", new { id = user.UserID })'">Delete User</button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "Admin", new { id = user.UserID })'">View</button>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UserView", new { id = user.UserID })'">View</button>
                     </td>
-
-                   @*   *@
                 </tr>
             }
 
