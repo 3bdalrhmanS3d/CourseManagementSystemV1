@@ -9,17 +9,16 @@
     <style>
         .nav-item
         {
+            
             margin-right: 20px; /* Adjust spacing between items as needed */
         }
-
             .nav-item .nav-link.active, .nav-item .btn.active {
                 background-color: #007bff; /* Primary color for active item */
                 color: white; /* Text color for active item */
             }
-
             .nav-item .nav-link, .nav-item .btn
             {
-                
+                font-size : 20px;
                 color: white; /* Default color for non-active items */
             }
     </style>
@@ -76,7 +75,7 @@
                                     <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UsersManagement") ? "active" : "")" asp-area="" asp-controller="UsersManagement" asp-action="Index">Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "AddArea" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="AddArea">Courses</a>
+                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Instructor") ? "active" : "")" asp-area="" asp-controller="Instructor" asp-action="Index">Instructor</a>
@@ -103,12 +102,13 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="btn btn-outline-success btn-lg" asp-area="" asp-controller="UserAccount" asp-action="Index">@ViewContext.HttpContext.Session.GetString("FullName")</a>
+                                <a class="btn btn-success btn-lg" asp-area="" asp-controller="UserAccount" asp-action="Index">@ViewContext.HttpContext.Session.GetString("FullName")</a>
                             </li>
                             <li class="nav-item">
                                 <a class="btn btn-danger" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                             </li>
                         }
+
                     </ul>
                 </div>
             </div>

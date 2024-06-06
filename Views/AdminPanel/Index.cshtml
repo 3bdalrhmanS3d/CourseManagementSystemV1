@@ -22,6 +22,8 @@
 
         .header {
             margin-bottom: 20px;
+            font-size : 1em ;
+
         }
 
         .statistics-container {
@@ -82,7 +84,8 @@
             font-size: 1em;
         }
 
-            .action-button:hover {
+            .action-button:hover 
+            {
                 background-color: #0056b3;
             }
 
@@ -94,7 +97,7 @@
 
         <label><a href="/AdminPanel/AdminManagement" class="btn btn-outline-primary" role="button" aria-pressed="true"> Admins </a></label>
         <label><a href="/UsersManagement/Index" class="btn btn-outline-primary" role="button" aria-pressed="true"> Users </a></label>
-        <label><a href="/AdminPanel/CourseManagement" class="btn btn-outline-primary" role="button" aria-pressed="true"> Courses </a></label>
+        <label><a href="/CourseManagement/Index" class="btn btn-outline-primary" role="button" aria-pressed="true"> Courses </a></label>
 
         @* <button class="action-button" onclick="location.href='@Url.Action("MakeAdmin", "AdminPanel")'">Make Admin</button> *@
         @* <button class="action-button" onclick="location.href='@Url.Action("DeleteAdmin", "AdminPanel")'">Delete Admin</button>

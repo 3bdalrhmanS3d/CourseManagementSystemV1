@@ -1,0 +1,121 @@
+﻿@model courseManagementSystemV1.Models.Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h1>Course Details</h1>
+
+<div class="course-details">
+    <table class="table table-bordered">
+        <tr>
+            <th>Course Name</th>
+            <td>@Model.CourseName</td>
+        </tr>
+        <tr>
+            <th>Course Description</th>
+            <td>@Model.CourseDescription</td>
+        </tr>
+        <tr>
+            <th>Course Time</th>
+            <td>@Model.CourseTime hours</td>
+        </tr>
+        <tr>
+            <th>Course Requirements</th>
+            <td>@Model.CourseRequirements</td>
+        </tr>
+        <tr>
+            <th>Course Start Date</th>
+            <td>@Model.CourseStartDate.ToString("MMM dd, yyyy")</td>
+        </tr>
+        <tr>
+            <th>Course End Date</th>
+            <td>@Model.CourseEndDate?.ToString("MMM dd, yyyy")</td>
+        </tr>
+        <tr>
+            <th>Course Photo</th>
+            <td>
+                @if (!string.IsNullOrEmpty(Model.CoursePhoto))
+                {
+                    <img src="@Model.CoursePhoto" alt="Course Photo" style="max-width: 150px; max-height: 150px;" />
+                }
+                else
+                {
+                    <p>No photo available</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Is Available</th>
+            <td>@(Model.IsAvailable.HasValue && Model.IsAvailable.Value ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <th>Instructor(s)</th>
+            <td>
+                @if (Model.CourseManagements != null && Model.CourseManagements.Any())
+                {
+                    <ul>
+                        @foreach (var cm in Model.CourseManagements)
+                        {
+                            <li>@cm.instructor.instructorFirstName @cm.instructor.instructorMiddelName @cm.instructor.instructorLastName</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No instructors assigned</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Number of Enrolled Students</th>
+            <td>@Model.Enrollments.Count</td>
+        </tr>
+        <tr>
+            <th>Number of Sessions</th>
+            <td>
+                @if (Model.CourseManagements != null && Model.CourseManagements.Any())
+                {
+                    @Model.CourseManagements.Count
+                }
+                else
+                {
+                    <p>0</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Course Status</th>
+            <td>@(Model.CourseEndDate.HasValue && Model.CourseEndDate.Value < DateTime.Now ? "Completed" : "Ongoing")</td>
+        </tr>
+    </table>
+</div>
+
+<h2>Enrolled Students</h2>
+@if (Model.Enrollments != null && Model.Enrollments.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Enrollment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var enrollment in Model.Enrollments)
+            {
+                <tr>
+                    <td>@enrollment.User.UserFirstName @enrollment.User.UserLastName</td>
+                    <td>@enrollment.User.UserEmail</td>
+                    <td>@enrollment.EnrollmentDate.ToString("MMM dd, yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No students enrolled.</p>
+}
+

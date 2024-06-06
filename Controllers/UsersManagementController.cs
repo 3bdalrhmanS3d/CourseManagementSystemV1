@@ -17,8 +17,6 @@ namespace courseManagementSystemV1.Controllers
         {
             _context = context;
         }
-
-        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> Index(string section = "pending")
         {

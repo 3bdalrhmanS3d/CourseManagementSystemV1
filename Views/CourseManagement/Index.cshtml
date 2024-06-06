@@ -1,0 +1,164 @@
+﻿@model IEnumerable<courseManagementSystemV1.Models.Course>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Management</title>
+    <style>
+        /* body
+        {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        } */
+
+        .course-list {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .course-card
+        {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: calc(25% - 20px);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+            .course-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .course-content {
+            padding: 15px;
+            flex: 1;
+        }
+
+            .course-content h3 {
+                margin: 0 0 10px;
+                font-size: 1.2em;
+                color: #333;
+            }
+
+            .course-content p {
+                margin: 0 0 10px;
+                color: #666;
+            }
+
+            .course-content .instructor {
+                font-weight: bold;
+            }
+
+            .course-content .date {
+                font-size: 0.9em;
+                color: #999;
+            }
+
+        .course-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-top: 1px solid #f1f1f1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-outline-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-outline-warning {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-outline-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pending Courses</h1>
+    <div class="course-list">
+        @foreach (var course in ViewBag.CoursesNotAcceptedYet)
+        {
+            <div class="course-card">
+                <img src="@course.CoursePhoto" alt="Course Photo" />
+                <div class="course-content">
+                    <h3>@course.CourseName</h3>
+                    <p>@course.CourseDescription</p>
+                    <p class="date">Start Date: @course.CourseStartDate.ToString("MMM dd, yyyy")</p>
+                    @if (course.CourseEndDate != null)
+                    {
+                        <p class="date">End Date: @course.CourseEndDate?.ToString("MMM dd, yyyy")</p>
+                    }
+                </div>
+                <div class="course-actions">
+                    @* <a href="/CourseManagement/AcceptanceOfCourses/@course.CourseID"><input type="button" value="Accept" class="btn btn-outline-success" /></a> *@
+                    <form asp-action="AcceptanceOfCourses" method="post">
+                        <input type="hidden" name="id" value="@course.CourseID" />
+                        <button class="btn btn-outline-success" type="submit"> Accept </button>
+                    </form>
+                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewDataCourse", "CourseManagement", new { id = course.CourseID })'">View</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <br />
+    <hr />
+    <br />
+
+    <h1>Finished Courses</h1>
+    <div class="course-list">
+        @foreach (var course in ViewBag.CoursesNotAccepted)
+        {
+            <div class="course-card">
+                <img src="@course.CoursePhoto" alt="Course Photo" />
+                <div class="course-content">
+                    <h3>@course.CourseName</h3>
+                    <p>@course.CourseDescription</p>
+                    <p class="date">Start Date: @course.CourseStartDate.ToString("MMM dd, yyyy")</p>
+                    @if (course.CourseEndDate != null)
+                    {
+                        <p class="date">End Date: @course.CourseEndDate?.ToString("MMM dd, yyyy")</p>
+                    }
+                </div>
+                <div class="course-actions">
+                    <form asp-action="FinishTheCourse" method="post">
+                        <input type="hidden" name="id" value="@course.CourseID" />
+                        <button class="btn btn-outline-warning" type="submit"> Finish </button>
+                    </form>
+                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewDataCourse", "CourseManagement", new { id = course.CourseID })'">View</button>
+                    @* <a href="/CourseManagement/FinishTheCourse/@course.CourseID"><input type="button" value="Finish" class="btn btn-outline-warning" /></a> *@
+                    
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>
