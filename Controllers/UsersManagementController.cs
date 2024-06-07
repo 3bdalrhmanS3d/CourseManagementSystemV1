@@ -41,8 +41,6 @@ namespace courseManagementSystemV1.Controllers
 
             return View();
         }
-
-
         [HttpGet]
         public async Task<IActionResult> ViewData(int id)
         {
@@ -135,30 +133,5 @@ namespace courseManagementSystemV1.Controllers
 
             return RedirectToAction("Index", new { section = HttpContext.Session.GetString("Section") });
         }
-
-        /*[HttpPost]
-        public async Task<IActionResult> restorationDeleteUser(int id)
-        {
-            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
-            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserID == id && u.IsBlocked == true && u.IsAdmin == false && u.IsUserHR == false);
-            if (user != null)
-            {
-                user.IsDeleted = false;
-                //user.IsBlocked = false;
-                user.IsAccepted = false;
-
-                user.userDeletedDate = DateTime.Now;
-                user.whoDeletedUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
-                await _context.SaveChangesAsync();
-                HttpContext.Session.SetString("Message", "Restoration done !");
-            }
-
-            return RedirectToAction("Index", new { section = HttpContext.Session.GetString("Section") });
-        }*/
     }
 }

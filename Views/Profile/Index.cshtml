@@ -1,0 +1,141 @@
+﻿@model courseManagementSystemV1.Models.User
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .profile-container
+        {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header
+        {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo {
+            width: 250px;
+            height: 250px;
+            border-radius: 40%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+            .profile-details dt {
+                font-weight: bold;
+                font-size : 20px;
+                color: #17a2b8;
+            }
+
+            .profile-details dd {
+                margin-left: 0;
+                font-weight: bold;
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+
+        .full-name,
+        .address,
+        .education,
+        .contact
+        {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+            .full-name div,
+            .address div,
+            .education div,
+            .contact div
+            {
+                flex: 1 1 25%;
+            }
+    </style>
+</head>
+<body>
+    <div class="container profile-container">
+        <div class="profile-header">
+            <h2>User Profile</h2>
+            <img src="@Model.UserPhoto" alt="User Photo" class="profile-photo" />
+                <div>
+                    <a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
+                </div>
+        </div>
+        <dl class="profile-details">
+            <div class="full-name" >
+                <div>
+                    <dt> Name</dt>
+                    <dd>@Model.UserFirstName @Model.UserMiddelName @Model.UserLastName</dd>
+                </div>
+            </div>
+            <div class="address">
+                <div>
+                    <dt>Governorate</dt>
+                    <dd>@Model.UserAddressGov</dd>
+                </div>
+                <div>
+                    <dt>City</dt>
+                    <dd>@Model.UserCity</dd>
+                </div>
+                <div>
+                    <dt>Street</dt>
+                    <dd>@Model.UserStreet</dd>
+                </div>
+            </div>
+            <div class="education">
+                <div>
+                    <dt>College</dt>
+                    <dd>@Model.UserCollege</dd>
+                </div>
+                <div>
+                    <dt>University</dt>
+                    <dd>@Model.UserUniversity</dd>
+                </div>
+                <div>
+                    <dt>Department</dt>
+                    <dd>@Model.UserDepartment</dd>
+                </div>
+                <div>
+                    <dt>Year</dt>
+                    <dd>@Model.UserEnterCollegeDateTime</dd>
+                </div>
+            </div>
+            <div class="contact">
+                <div>
+                    <dt>Email</dt>
+                    <dd>@Model.UserEmail</dd>
+                </div>
+                <div>
+                    <dt>Phone Number</dt>
+                    <dd>@Model.UserPhoneNumber</dd>
+                </div>
+            </div>
+        </dl>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

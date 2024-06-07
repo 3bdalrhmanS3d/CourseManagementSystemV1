@@ -1,0 +1,137 @@
+﻿@model courseManagementSystemV1.Models.User
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+            .profile-details dt {
+                font-weight: bold;
+                font-size: 20px;
+                color: #17a2b8;
+            }
+
+            .profile-details dd {
+                margin-left: 0;
+                font-weight: bold;
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+        .form-group
+        {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .full-name,
+        .address,
+        .education,
+        .contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+            .full-name div,
+            .address div,
+            .education div,
+            .contact div {
+                flex: 1 1 25%;
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container profile-container">
+        <div class="profile-header">
+            <h2>Edit Profile</h2>
+            <img src="@Model.UserPhoto" alt="User Photo" class="profile-photo" id="profileImage" />
+        </div>
+        <form asp-action="EditProfile" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserID" />
+
+            <div class="form-group">
+                <label asp-for="UserEmail" class="control-label">Email</label>
+                <input asp-for="UserEmail" class="form-control" />
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserPassword" class="control-label">Password </label>
+                <input asp-for="UserPassword" class="form-control" type="password" />
+                <span asp-validation-for="UserPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserConfPassword" class="control-label">Confirm password</label>
+                <input asp-for="UserConfPassword" class="form-control" type="password" />
+                <span asp-validation-for="UserConfPassword" class="text-danger"></span>
+            </div>
+
+            
+            <br />
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+
+        <br />
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

@@ -10,15 +10,48 @@
     <title>@ViewBag.Title - Course Management System</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
-        .login-container 
-        {
-            max-width: 400px;
-            margin: auto;
-            padding-top: 50px;
+         .body
+         {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
         }
 
-            .login-container h2 {
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .login-image {
+            flex: 1;
+            background: url('/wwwroot/images/login_photo.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        .form-group
+        {
+            font-weight: bold;
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 40px;
+        }
+
+            .login-form h2 {
                 margin-bottom: 40px;
+                font-weight: bold;
             }
 
         .form-control.is-invalid {
@@ -39,66 +72,73 @@
             user-select: none;
         }
 
-        .btn-primary 
-        {
+        .btn-primary {
             background-color: #28a745;
             border-color: #28a745;
+            width: 100%;
         }
+
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .login-footer a {
+                text-decoration: none;
+                color: #007bff;
+            }
+
+                .login-footer a:hover {
+                    text-decoration: underline;
+                }
     </style>
 </head>
 <body>
-    <div class="container login-container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <h2 class="text-center">Hello, </h2>
-                <fieldset>
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="login-container">
+        <div class="login-image"></div>
+        <div class="login-form">
+            <h2 class="text-center"> Login</h2>
+            <fieldset>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <div class="form-group">
-                            @Html.Label("Email")
-                            @Html.TextBox("email", null, new { @class = "form-control" })
-                        </div>
-
-                        <div class="form-group">
-                            @Html.Label("Password")
-                            <div class="input-group">
-                                @Html.Password("password", null, new { @class = "form-control", id = "passwordInput" })
-                                <div class="input-group-append">
-                                    <span class="input-group-text password-toggle" onclick="togglePassword()">Show</span>
-                                </div>
-                            </div>
-                            <div class="invalid-feedback">
-                                Wrong email or password
-                            </div>
-                        </div>
-
-                        <br />
-
-
-                        <div class="text-center">
-                            @Html.ActionLink("Forgot password?", "ForgotPassword", "Account", null, new { @class = "no-underline" })
-                        </div>
-                        <br />
-
-                        <div class="form-group text-center">
-                            <input type="submit" value="Continue" class="btn btn-primary btn-lg btn-block" onclick="validateForm(event)" />
-                        </div>
-                    }
-
-                    <br />
-
-                    
-                    <div class="text-center">
-                        @Html.ActionLink("Don't have an account? Sign up", "Registration", "Account", null, new { @class = "no-underline" })
+                    <div class="form-group">
+                        @Html.Label("Email")
+                        @Html.TextBox("email", null, new { @class = "form-control" })
                     </div>
-                    <p class="text-center text-danger">@ViewBag.Message</p>
-                </fieldset>
-            </div>
+                    <br />
+                    <div class="form-group">
+                        @Html.Label("Password")
+                        <div class="input-group">
+                            @Html.Password("password", null, new { @class = "form-control", id = "passwordInput" })
+                            <div class="input-group-append">
+                                <span class="input-group-text password-toggle" onclick="togglePassword()">Show</span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="invalid-feedback">
+                            Wrong email or password
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="LOGIN" class="btn btn-primary btn-lg" onclick="validateForm(event)" />
+                    </div>
+                }
+
+                <div class="login-footer">
+                    @Html.ActionLink("Forgot Username / Password?", "ForgotPassword", "Account", null, new { @class = "no-underline" })
+                    <br />
+                    @Html.ActionLink("Create your Account", "Index", "Registration", null, new { @class = "no-underline" })
+                </div>
+
+                <p class="text-center text-danger">@ViewBag.Message</p>
+            </fieldset>
         </div>
     </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
@@ -107,24 +147,19 @@
 @section Scripts
 {
     <script type="text/javascript">
-        function togglePassword()
-        {
+        function togglePassword() {
             var passwordInput = document.getElementById("passwordInput");
             var passwordToggle = passwordInput.nextElementSibling.querySelector(".password-toggle");
-            if (passwordInput.type === "password")
-            {
+            if (passwordInput.type === "password") {
                 passwordInput.type = "text";
                 passwordToggle.innerText = "Hide";
-            }
-            else
-            {
+            } else {
                 passwordInput.type = "password";
                 passwordToggle.innerText = "Show";
             }
         }
 
-        function validateForm(event)
-        {
+        function validateForm(event) {
             var emailInput = document.querySelector('input[name="email"]');
             var passwordInput = document.querySelector('input[name="password"]');
 
@@ -134,8 +169,7 @@
             document.querySelector('.invalid-feedback').style.display = 'none';
 
             // Dummy validation: assume invalid if password is empty
-            if (!passwordInput.value)
-            {
+            if (!passwordInput.value) {
                 event.preventDefault(); // Prevent form submission
                 passwordInput.classList.add('is-invalid');
                 passwordInput.value = ''; // Clear the input
