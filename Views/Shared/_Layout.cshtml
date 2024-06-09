@@ -7,20 +7,45 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
-        .nav-item
+        .nav-item 
         {
-            
             margin-right: 20px; /* Adjust spacing between items as needed */
         }
+
             .nav-item .nav-link.active, .nav-item .btn.active {
-                background-color: #007bff; /* Primary color for active item */
-                color: white; /* Text color for active item */
+                background-color: transparent; /* No background color for active item */
+                color: red; /* Text color for active item */
+                text-decoration: underline; /* Underline active item */
+                text-decoration-color: red; /* Underline color for active item */
+                text-underline-offset: 10px; /* Adjust underline position */
+                text-decoration-thickness: 10px; /* Adjust underline thickness */
             }
-            .nav-item .nav-link, .nav-item .btn
-            {
-                font-size : 20px;
-                color: white; /* Default color for non-active items */
+
+            .nav-item .nav-link, .nav-item .btn {
+                
+                font-size: 22px; /* Unified font size for all items */
+                color: black; /* Default color for non-active items */
+                background-color: transparent; /* Remove background color */
+                border: none; /* Remove border */
+                padding: 10px; /* Padding to adjust spacing */
+                transition: all 0.3s ease; /* Smooth transition */
             }
+
+                .nav-item .nav-link:hover, .nav-item .btn:hover {
+                    text-decoration: underline; /* Underline on hover */
+                    text-decoration-color: red; /* Underline color on hover */
+                    text-underline-offset: 10px; /* Adjust underline position */
+                    text-decoration-thickness: 10px; /* Adjust underline thickness */
+                }
+
+            /* Add responsiveness */
+            .nav-item .nav-link, .nav-item .btn {
+                white-space: nowrap; /* Prevent text wrapping */
+            }
+
+        .navbar-nav {
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+        }
     </style>
 </head>
 <body>
@@ -60,25 +85,26 @@
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "ManageCourses" && ViewContext.RouteData.Values["controller"].ToString() == "HR") ? "active" : "")" asp-area="" asp-controller="HR" asp-action="ManageCourses">Manage Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "HR") ? "active" : "")" asp-area="" asp-controller="HR" asp-action="Index">HR Panel</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "HR") ? "active" : "")" asp-area="" asp-controller="HR" asp-action="Index">HR Panel</a>
                                 </li>
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "admin")
                             {
                                 <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserCourses") ? "active" : "")" asp-area="" asp-controller="UserCourses" asp-action="Index">My Courses</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserHome") ? "active" : "")" asp-area="" asp-controller="UserHome" asp-action="Index">Home</a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "AdminPanel") ? "active" : "")" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "AdminPanel") ? "active" : "")" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UsersManagement") ? "active" : "")" asp-area="" asp-controller="UsersManagement" asp-action="Index">Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UsersManagement") ? "active" : "")" asp-area="" asp-controller="UsersManagement" asp-action="Index">Students</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-success @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Instructor") ? "active" : "")" asp-area="" asp-controller="Instructor" asp-action="Index">Instructor</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Instructor") ? "active" : "")" asp-area="" asp-controller="Instructor" asp-action="Index">Instructor</a>
                                 </li>
                             }
                             <li class="nav-item">
@@ -88,6 +114,7 @@
                                 <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Privacy" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
                         }
+
                     </ul>
                     <ul class="nav nav-pills nav-fill">
                         @if (ViewContext.HttpContext.Session.GetString("Login") == null)
@@ -102,13 +129,12 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="btn btn-success btn-lg" asp-area="" asp-controller="Profile" asp-action="Index">@ViewContext.HttpContext.Session.GetString("FullName")</a>
+                                <a class="btn btn-primary" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="">
                                 <a class="btn btn-danger" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                             </li>
                         }
-
                     </ul>
                 </div>
             </div>
@@ -119,6 +145,7 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

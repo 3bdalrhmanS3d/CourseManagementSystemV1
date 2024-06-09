@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\UserHome\ViewDataCourse.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.31" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.31">
@@ -18,6 +22,18 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\UserHome\ViewDataCourse.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\UserHome\ViewDataCourse.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\UserHome\ViewDataCourse.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -12,13 +12,15 @@
     <style>
          .body
          {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
+             height: 100%; 
+            margin-right: 20px;
+             display: flex; 
+             justify-content: center;
             align-items: center; 
             background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
+             font-family: Arial, sans-serif; 
+            font-size : 20px;
+
         }
 
         .login-container {
@@ -50,7 +52,7 @@
         }
 
             .login-form h2 {
-                margin-bottom: 40px;
+                margin-bottom: 55px;
                 font-weight: bold;
             }
 
@@ -72,10 +74,11 @@
             user-select: none;
         }
 
-        .btn-primary {
-            background-color: #28a745;
-            border-color: #28a745;
-            width: 100%;
+         .btn-primary {
+            /* background-color: #28a745;
+            border-color: #28a745;*/
+            width: 100%; 
+            font-size : 25px ;
         }
 
         .login-footer {
@@ -129,8 +132,9 @@
                 }
 
                 <div class="login-footer">
-                    @Html.ActionLink("Forgot Username / Password?", "ForgotPassword", "Account", null, new { @class = "no-underline" })
+                    @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account", null, new { @class = "no-underline" })
                     <br />
+                    <br>
                     @Html.ActionLink("Create your Account", "Index", "Registration", null, new { @class = "no-underline" })
                 </div>
 
