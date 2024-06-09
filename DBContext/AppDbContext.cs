@@ -16,8 +16,6 @@ namespace courseManagementSystemV1.DBContext
         {
 
         }
-
-
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
@@ -26,11 +24,13 @@ namespace courseManagementSystemV1.DBContext
         public DbSet<Bonus> Bonus { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<HRManagement> HRManagements { get; set; }
+        public DbSet<VisitHistory> VisitHistories { get; set; }
+        public DbSet<CourseRating> courseRatings { get; set; }
+        public DbSet<Feedback> feedbacks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
         }
 
 

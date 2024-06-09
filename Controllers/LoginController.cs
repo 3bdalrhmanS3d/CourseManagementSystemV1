@@ -2,7 +2,9 @@
 using System.Text.Json;
 using courseManagementSystemV1.DBContext;
 using courseManagementSystemV1.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace courseManagementSystemV1.Controllers
 {
@@ -27,9 +29,9 @@ namespace courseManagementSystemV1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string email, string password)
+        public async Task<IActionResult> Index(string email, string password)
         {
-            var user = _context.Users.SingleOrDefault(x => x.UserEmail == email && x.UserPassword == password);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserEmail == email && x.UserPassword == password);
 
             if (user != null)
             {
@@ -49,6 +51,18 @@ namespace courseManagementSystemV1.Controllers
                 HttpContext.Session.SetString("UserStatus", GetAccountType(user));
                 HttpContext.Session.Set("CurrentLoginUser", JsonSerializer.SerializeToUtf8Bytes(user));
                 HttpContext.Session.SetString("Message", $"Welcome {user.UserFirstName} {user.UserLastName}");
+
+                // visit and last visit 
+                user.UserlastVisit = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                VisitHistory newVisit = new VisitHistory
+                {
+                    UserID = user.UserID,
+                    VisitHistoryDate = DateTime.Now,
+                };
+                _context.VisitHistories.Add(newVisit);
+                await _context.SaveChangesAsync();
 
                 if (user.IsAdmin.HasValue && user.IsAdmin.Value)
                 {

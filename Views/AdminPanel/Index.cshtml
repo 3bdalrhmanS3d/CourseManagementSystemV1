@@ -35,8 +35,9 @@
 
         .admin-list th, .admin-list td {
             border: 2px solid #ccc;
-            padding: 5px;
+            padding: 10px;
             text-align: center;
+            font : bold ;
         }
 
         .admin-list th {
@@ -174,7 +175,7 @@
                 <th>Accepted Date</th>
 
                 <th>User Email</th>
-
+                <th>Last visit</th>
                 <th>Actions</th>
                 <th>View</th>
             </tr>
@@ -186,6 +187,9 @@
                     <td>@user.whoAcceptedUser</td>
                     <td>@user.userAcceptedDate</td>
                     <td>@user.UserEmail</td>
+                    <td>
+                        @user.UserlastVisit 
+                    </td>
                     <td>
                         <form asp-action="MakeAdmin" method="post">
                             <input type="hidden" name="id" value="@user.UserID" />
@@ -211,6 +215,7 @@
                 <th>Accepted By</th>
                 <th>Accepted Date</th>
                 <th>User Email</th>
+                <th>Last visit</th>
                 <th>Actions</th>
                 <th>View</th>
             </tr>
@@ -222,6 +227,9 @@
                     <td>@user.whoAcceptedUser</td>
                     <td>@user.userAcceptedDate</td>
                     <td>@user.UserEmail</td>
+                    <td>
+                        @user.UserlastVisit
+                    </td>
                     <td>
                         <form asp-action="DeleteAdmin" method="post">
                             <input type="hidden" name="id" value="@user.UserID" />

@@ -41,6 +41,7 @@ namespace courseManagementSystemV1.Models
         public string UserEnterCollegeDateTime { get; set; }
         [Required]
         public string UserCollege { get; set; }
+
         [Required]
         public string UserDepartment { get; set; } = "Genral";
         [Required]
@@ -53,7 +54,7 @@ namespace courseManagementSystemV1.Models
         public string? UserStreet { get; set; }
         [DisplayFormat(DataFormatString = "{0:MMM.DD.YYYY}")]
         public DateTime UserCreatedAccount { get; set; } = DateTime.Now;
-
+        public DateTime? UserlastVisit { get; set; } = DateTime.Now;
         //Accepted
         public bool? IsAccepted { get; set; } = false;
         public DateTime? userAcceptedDate { get; set; } 
@@ -77,10 +78,12 @@ namespace courseManagementSystemV1.Models
 
         public bool? IsAdmin { get; set; } = false;
         public string? whoAdminThisUser { get; set; }
-
         public ICollection<Enrollment>? Enrollments { get; set; }
         public ICollection<Bonus>? Bonuses { get; set; }
         public ICollection<HRManagement>? hRManagements { get; set; }
+        public ICollection<VisitHistory>? visitHistories { get; set; }
+        public ICollection<CourseRating>? courseRatings { get; set; }
+        public ICollection<Feedback>? feedbacks { get; set; }
 
     }
 }

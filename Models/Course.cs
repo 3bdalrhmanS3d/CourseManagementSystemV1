@@ -27,9 +27,9 @@ namespace courseManagementSystemV1.Models
         public ICollection<CourseManagement>? CourseManagements { get; set; }
         public ICollection<Bonus>? Bonuses { get; set; }
         public ICollection<HRManagement>? hRManagements { get; set; }
+        public ICollection<CourseRating>? courseRatings { get; set; }
 
 
-        
 
     }
 }
