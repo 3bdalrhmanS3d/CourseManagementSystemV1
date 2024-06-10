@@ -48,17 +48,6 @@ namespace courseManagementSystemV1.Controllers
             return View(statistics);
         }
 
-        /*[HttpGet]
-        public IActionResult Index()
-        {
-            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            
-            return View();
-        }*/
-
         [HttpGet]
         public async Task<IActionResult> ViewData(int id)
         {
@@ -77,7 +66,78 @@ namespace courseManagementSystemV1.Controllers
             return View(user);
         }
 
-        [HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> Visiting(string section = "pending", DateTime? startDate = null, DateTime? endDate = null, string userEmail = null, string userName = null, string userPhoneNumber = null, string userSSN = null)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            HttpContext.Session.SetString("Section", section);
+
+            // جلب كل بيانات الزيارات مع بيانات المستخدمين المرتبطة
+            var allVisiting = _context.VisitHistories.Include(x => x.User).AsQueryable();
+
+            // فلترة حسب تاريخ البداية والنهاية
+            if (startDate.HasValue)
+            {
+                allVisiting = allVisiting.Where(v => v.VisitHistoryDate >= startDate.Value);
+            }
+            if (endDate.HasValue)
+            {
+                allVisiting = allVisiting.Where(v => v.VisitHistoryDate <= endDate.Value);
+            }
+
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                allVisiting = allVisiting.Where(v => v.User.UserEmail == userEmail);
+            }
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                allVisiting = allVisiting.Where(v => (v.User.UserFirstName + " " + v.User.UserMiddelName + " " + v.User.UserLastName).Contains(userName));
+            }
+
+            if (!string.IsNullOrEmpty(userPhoneNumber))
+            {
+                allVisiting = allVisiting.Where(v => v.User.UserPhoneNumber == userPhoneNumber);
+            }
+
+            if (!string.IsNullOrEmpty(userSSN))
+            {
+                allVisiting = allVisiting.Where(v => v.User.UserSSN == userSSN);
+            }
+
+            var visitList = await allVisiting.ToListAsync();
+
+            // تحديث UserLastVisit لكل مستخدم
+            foreach (var visit in visitList)
+            {
+                var user = await _context.Users.FindAsync(visit.UserID);
+                if (user != null)
+                {
+                    user.UserlastVisit = visit.VisitHistoryDate;
+                }
+            }
+            await _context.SaveChangesAsync();
+            ViewBag.Section = section;
+            ViewBag.Visits = visitList.OrderByDescending(x => x.VisitHistoryDate).ToList();
+
+            return View(visitList);
+        }
+
+        private string GetUserType(User user)
+        {
+            if (user.IsAdmin.HasValue && user.IsAdmin.Value)
+                return "Admin";
+            else if (user.IsUserHR.HasValue && user.IsUserHR.Value)
+                return "HR";
+            else
+                return "Normal User";
+        }
+
+    [HttpPost]
         public IActionResult MakeAdmin(int id)
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")

@@ -51,11 +51,7 @@ namespace courseManagementSystemV1.Controllers
                 HttpContext.Session.SetString("UserStatus", GetAccountType(user));
                 HttpContext.Session.Set("CurrentLoginUser", JsonSerializer.SerializeToUtf8Bytes(user));
                 HttpContext.Session.SetString("Message", $"Welcome {user.UserFirstName} {user.UserLastName}");
-
-                // visit and last visit 
-                user.UserlastVisit = DateTime.Now;
-                await _context.SaveChangesAsync();
-
+ 
                 VisitHistory newVisit = new VisitHistory
                 {
                     UserID = user.UserID,

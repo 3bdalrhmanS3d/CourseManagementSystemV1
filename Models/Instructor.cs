@@ -39,6 +39,9 @@ namespace courseManagementSystemV1.Models
         [Url]
         public string? GitHibAccount { get; set; }
 
+        // منتور ولا لا 
+        
+
         [DisplayFormat(DataFormatString = "{0:MMM.DD.YYYY}")]
         public DateTime instructorCreatedAccount { get; set; } = DateTime.Now;
         public bool? IsBlocked { get; set; } = false;
