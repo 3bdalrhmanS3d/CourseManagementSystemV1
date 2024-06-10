@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using courseManagementSystemV1.DBContext;
 
@@ -11,9 +12,10 @@ using courseManagementSystemV1.DBContext;
 namespace courseManagementSystemV1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240610160544_CMS10")]
+    partial class CMS10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,48 +90,6 @@ namespace courseManagementSystemV1.Migrations
                     b.ToTable("Bonus");
                 });
 
-            modelBuilder.Entity("courseManagementSystemV1.Models.Comments", b =>
-                {
-                    b.Property<int>("commentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("commentID"), 1L, 1);
-
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("commentParentID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("commentText")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime?>("commentUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("commentdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("commentphoto")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("commentID");
-
-                    b.HasIndex("CourseID");
-
-                    b.HasIndex("UserID");
-
-                    b.HasIndex("commentParentID");
-
-                    b.ToTable("comments");
-                });
-
             modelBuilder.Entity("courseManagementSystemV1.Models.Course", b =>
                 {
                     b.Property<int>("CourseID")
@@ -184,9 +144,6 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Isaccepted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("courseID")
                         .HasColumnType("int");
 
@@ -234,51 +191,6 @@ namespace courseManagementSystemV1.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("courseRatings");
-                });
-
-            modelBuilder.Entity("courseManagementSystemV1.Models.CourseSpecificQuestions", b =>
-                {
-                    b.Property<int>("CourseSpecificQuestionsID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseSpecificQuestionsID"), 1L, 1);
-
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CourseSpecificQuestionsDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CourseSpecificQuestionsParentID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("CourseSpecificQuestionsStates")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("CourseSpecificQuestionsText")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime?>("CourseSpecificQuestionsUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CourseSpecificQuestionsphoto")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseSpecificQuestionsID");
-
-                    b.HasIndex("CourseID");
-
-                    b.HasIndex("CourseSpecificQuestionsParentID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("courseSpecificQuestions");
                 });
 
             modelBuilder.Entity("courseManagementSystemV1.Models.Enrollment", b =>
@@ -378,9 +290,6 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<bool?>("ISDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsAccepted")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsBlocked")
                         .HasColumnType("bit");
 
@@ -390,15 +299,10 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<string>("LindenInAccount")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("instructorDateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("instructorID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Instructors");
                 });
@@ -424,9 +328,6 @@ namespace courseManagementSystemV1.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsMentor")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsRejected")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsUserHR")
@@ -513,9 +414,6 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<DateTime?>("userDeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("userRejectedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("userbeMentorDate")
                         .HasColumnType("datetime2");
 
@@ -535,9 +433,6 @@ namespace courseManagementSystemV1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("whoMentorUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("whoRejectedUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserID");
@@ -596,33 +491,6 @@ namespace courseManagementSystemV1.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("courseManagementSystemV1.Models.Comments", b =>
-                {
-                    b.HasOne("courseManagementSystemV1.Models.Course", "Course")
-                        .WithMany("Comments")
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("courseManagementSystemV1.Models.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("courseManagementSystemV1.Models.Comments", "comments")
-                        .WithMany()
-                        .HasForeignKey("commentParentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-
-                    b.Navigation("comments");
-                });
-
             modelBuilder.Entity("courseManagementSystemV1.Models.CourseManagement", b =>
                 {
                     b.HasOne("courseManagementSystemV1.Models.Course", "course")
@@ -659,33 +527,6 @@ namespace courseManagementSystemV1.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("courseManagementSystemV1.Models.CourseSpecificQuestions", b =>
-                {
-                    b.HasOne("courseManagementSystemV1.Models.Course", "Course")
-                        .WithMany("courseSpecificQuestions")
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("courseManagementSystemV1.Models.Comments", "comments")
-                        .WithMany()
-                        .HasForeignKey("CourseSpecificQuestionsParentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("courseManagementSystemV1.Models.User", "User")
-                        .WithMany("courseSpecificQuestions")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-
-                    b.Navigation("comments");
                 });
 
             modelBuilder.Entity("courseManagementSystemV1.Models.Enrollment", b =>
@@ -745,17 +586,6 @@ namespace courseManagementSystemV1.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("courseManagementSystemV1.Models.Instructor", b =>
-                {
-                    b.HasOne("courseManagementSystemV1.Models.User", "User")
-                        .WithMany("instructors")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("courseManagementSystemV1.Models.VisitHistory", b =>
                 {
                     b.HasOne("courseManagementSystemV1.Models.User", "User")
@@ -771,15 +601,11 @@ namespace courseManagementSystemV1.Migrations
                 {
                     b.Navigation("Bonuses");
 
-                    b.Navigation("Comments");
-
                     b.Navigation("CourseManagements");
 
                     b.Navigation("Enrollments");
 
                     b.Navigation("courseRatings");
-
-                    b.Navigation("courseSpecificQuestions");
 
                     b.Navigation("hRManagements");
                 });
@@ -798,19 +624,13 @@ namespace courseManagementSystemV1.Migrations
                 {
                     b.Navigation("Bonuses");
 
-                    b.Navigation("Comments");
-
                     b.Navigation("Enrollments");
 
                     b.Navigation("courseRatings");
 
-                    b.Navigation("courseSpecificQuestions");
-
                     b.Navigation("feedbacks");
 
                     b.Navigation("hRManagements");
-
-                    b.Navigation("instructors");
 
                     b.Navigation("visitHistories");
                 });

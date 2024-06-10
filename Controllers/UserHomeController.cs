@@ -53,13 +53,23 @@ namespace courseManagementSystemV1.Controllers
         {
             if (HttpContext.Session.GetString("Login") == null)
             {
-
                 return RedirectToAction("Index", "Login");
             }
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null) { return NotFound(); }
+
+            var course = await _context.Courses
+                                       .Include(c => c.CourseManagements)
+                                           .ThenInclude(cm => cm.instructor)
+                                       .Include(c => c.courseRatings)
+                                       .FirstOrDefaultAsync(c => c.CourseID == id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
             return View(course);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> EnrollInCourse(int courseID)

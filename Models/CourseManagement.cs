@@ -5,11 +5,11 @@ namespace courseManagementSystemV1.Models
 {
     public class CourseManagement
     {
-        // ممكن الكورس يقدمه اكتر من انستاركتور
-
+        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int courseMangID { get; set; }
+
 
 
         public int courseID { get; set; }
@@ -21,6 +21,7 @@ namespace courseManagementSystemV1.Models
         [ForeignKey("instructorID")]
         public Instructor instructor { get; set; }
 
+        public bool? Isaccepted { get; set; } = false;
 
         public DateTime DateTime { get; set; } = DateTime.UtcNow;
 

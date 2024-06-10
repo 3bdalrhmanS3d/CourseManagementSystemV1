@@ -24,10 +24,13 @@ namespace courseManagementSystemV1.Models
 
         public string? whoAcceptedCourse { get; set; }
         public ICollection<Enrollment>? Enrollments { get; set; }
+        public ICollection<Comments>? Comments { get; set; }
         public ICollection<CourseManagement>? CourseManagements { get; set; }
         public ICollection<Bonus>? Bonuses { get; set; }
         public ICollection<HRManagement>? hRManagements { get; set; }
         public ICollection<CourseRating>? courseRatings { get; set; }
+        public ICollection<CourseSpecificQuestions> courseSpecificQuestions { get; set; }
+
 
 
 

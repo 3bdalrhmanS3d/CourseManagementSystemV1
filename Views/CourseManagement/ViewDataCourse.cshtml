@@ -49,7 +49,7 @@
             <th>Is Available</th>
             <td>@(Model.IsAvailable.HasValue && Model.IsAvailable.Value ? "Yes" : "No")</td>
         </tr>
-        <tr>
+        @* <tr>
             <th>Instructor(s)</th>
             <td>
                 @if (Model.CourseManagements != null && Model.CourseManagements.Any())
@@ -66,7 +66,7 @@
                     <p>No instructors assigned</p>
                 }
             </td>
-        </tr>
+        </tr> *@
         <tr>
             <th>Number of Enrolled Students</th>
             <td>@Model.Enrollments.Count</td>

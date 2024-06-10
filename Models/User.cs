@@ -60,6 +60,10 @@ namespace courseManagementSystemV1.Models
         public DateTime? userAcceptedDate { get; set; } 
         public string ? whoAcceptedUser { get; set; }
 
+        // rejected
+        public bool? IsRejected { get; set; } = false;
+        public DateTime? userRejectedDate { get; set; }
+        public string? whoRejectedUser { get; set; }
         // Bolck
         public bool? IsBlocked { get; set; } = false;
         public DateTime? userBlockedDate { get; set; }
@@ -72,6 +76,14 @@ namespace courseManagementSystemV1.Models
 
 
         public bool NormalUser { get; set; } = true;
+        /// <summary>
+        /// mentor ---> instructor
+        /// </summary>
+        public bool? IsMentor { get; set; } = false;
+        public DateTime? userbeMentorDate { get; set; }
+        public string? whoMentorUser { get; set; }
+
+
         public bool? IsUserHR { get; set; } = false;
         public string ? whoHrThisUser { get; set; }
 
@@ -84,6 +96,10 @@ namespace courseManagementSystemV1.Models
         public ICollection<VisitHistory>? visitHistories { get; set; }
         public ICollection<CourseRating>? courseRatings { get; set; }
         public ICollection<Feedback>? feedbacks { get; set; }
+
+        public ICollection<Instructor> instructors { get; set; }
+        public ICollection<Comments>? Comments { get; set; }
+        public ICollection<CourseSpecificQuestions> courseSpecificQuestions { get; set; }
 
     }
 }

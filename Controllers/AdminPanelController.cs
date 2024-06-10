@@ -24,7 +24,7 @@ namespace courseManagementSystemV1.Controllers
 
 
             // كل الناس 
-            var admins = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false).AsQueryable();
+            var admins = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false ).AsQueryable();
             ViewBag.allUsers = admins.OrderByDescending(x => x.userAcceptedDate).ToList();
             // كل الادمنز
             var ISadmins = _context.Users.Where(p => p.IsAdmin == true && p.IsAccepted == true).AsQueryable();
@@ -137,7 +137,7 @@ namespace courseManagementSystemV1.Controllers
                 return "Normal User";
         }
 
-    [HttpPost]
+        [HttpPost]
         public IActionResult MakeAdmin(int id)
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
@@ -208,5 +208,247 @@ namespace courseManagementSystemV1.Controllers
             return View(statistics);
         }
 
+        [HttpGet]
+        public IActionResult MentorsAndInstructors()
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            // كل الناس 
+            var allUsers = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false && p.IsUserHR == false && p.IsBlocked == false && p.IsDeleted == false && p.IsMentor == false).AsQueryable();
+            ViewBag.AllUserss = allUsers.OrderByDescending(x => x.userAcceptedDate).ToList();
+
+            var mentors = _context.Users.Where(u => u.IsMentor == true && u.IsAccepted == true).ToList();
+            var instructors = _context.Instructors.Where(i => i.IsInstructor == true && i.IsAccepted == true).ToList();
+
+            var blockedMentors = _context.Users.Where(u => u.IsMentor == true && u.IsBlocked == true).ToList();
+            var blockedInstructors = _context.Instructors.Where(i => i.IsInstructor == true && i.IsAccepted == true && i.IsBlocked == true).ToList();
+
+            var deletedMentors = _context.Users.Where(u => u.IsMentor == true && u.IsDeleted == true).ToList();
+            var deletedInstructors = _context.Instructors.Where(i => i.IsInstructor == true && i.ISDeleted == true).ToList();
+
+            ViewBag.mentors = mentors;
+            ViewBag.instructors = instructors;
+            ViewBag.BlockedMentors = blockedMentors;
+            ViewBag.Blockedinstructors = blockedInstructors;
+            ViewBag.DeletedMentors = deletedMentors;
+            ViewBag.Deletedinstructors = deletedInstructors;
+
+            var notInstructors = _context.Instructors.Where(i => i.IsInstructor == false && i.IsAccepted == false).ToList();
+            ViewBag.notInstructors = notInstructors;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult MakeMentor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+
+            if (user != null)
+            {
+                user.NormalUser = false;
+                user.IsAccepted = true;
+                user.IsAdmin = false;
+                user.IsDeleted = false;
+                user.IsBlocked = false;
+                user.IsUserHR = false;
+                user.IsMentor = true;
+
+                user.userbeMentorDate = DateTime.Now;
+
+                var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
+                user.whoMentorUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
+
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Mentor assigned successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
+
+        [HttpPost]
+        public IActionResult NormalUser(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            if (user != null)
+            {
+                user.IsAccepted = true;
+                user.IsBlocked = false;
+                user.IsDeleted = false;
+                user.IsUserHR = false;
+                user.IsAdmin = false;
+                user.IsMentor = false;
+                user.NormalUser = true;
+
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "User status reverted successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptInstructor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var user = await _context.Instructors.SingleOrDefaultAsync(x => x.UserID == id);
+
+            if (user != null)
+            {
+                user.IsInstructor = true;
+                user.IsAccepted = true;
+                user.instructorDateAt = DateTime.Now;
+                
+            }
+            _context.SaveChanges();
+            HttpContext.Session.SetString("Message", "Instructor assigned successfully!");
+
+            return RedirectToAction("MentorsAndInstructors");
+
+        }
+
+        [HttpPost]
+        public IActionResult MakeInstructor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+
+            if (user != null)
+            {
+                var instructor = new Instructor
+                {
+                    UserID = user.UserID,
+                    IsInstructor = true,
+                    instructorDateAt = DateTime.Now,
+                    IsAccepted = true
+                };
+
+                _context.Instructors.Add(instructor);
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Instructor assigned successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
+
+        [HttpPost]
+        public IActionResult BlockMentor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
+
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            var courseManagement = _context.courseManagements.SingleOrDefault(x => x.instructorID == id);
+
+            if (courseManagement != null)
+            {
+                courseManagement.Isaccepted = false;
+                _context.SaveChanges();
+            }
+
+            if (user != null)
+            {
+                user.NormalUser = false;
+                user.IsAccepted = false;
+                user.IsAdmin = false;
+                user.IsDeleted = false;
+                user.IsBlocked = true;
+                user.IsUserHR = false;
+                user.IsMentor = true;
+                user.whoMentorUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
+
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Mentor blocked successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
+
+        [HttpPost]
+        public IActionResult BlockInstructor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var instructor = _context.Instructors.SingleOrDefault(x => x.instructorID == id);
+            if (instructor != null)
+            {
+                instructor.IsBlocked = true;
+                instructor.IsInstructor = false;
+
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Instructor blocked successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMentor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            if (user != null)
+            {
+                user.IsDeleted = true;
+                user.IsMentor = false;
+                user.NormalUser = true;
+
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Mentor deleted successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteInstructor(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var instructor = _context.Instructors.SingleOrDefault(x => x.instructorID == id);
+            if (instructor != null)
+            {
+                instructor.ISDeleted = true;
+                instructor.IsInstructor = false;
+
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Instructor deleted successfully!");
+            }
+
+            return RedirectToAction("MentorsAndInstructors");
+        }
     }
 }
