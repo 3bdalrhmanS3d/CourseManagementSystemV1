@@ -21,6 +21,7 @@ namespace courseManagementSystemV1.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string searchString)
         {
+
             if (HttpContext.Session.GetString("Login") == null)
             {
                 return RedirectToAction("Index", "Login");

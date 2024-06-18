@@ -54,6 +54,8 @@ namespace courseManagementSystemV1.Models
         public string? UserStreet { get; set; }
         [DisplayFormat(DataFormatString = "{0:MMM.DD.YYYY}")]
         public DateTime UserCreatedAccount { get; set; } = DateTime.Now;
+        [DisplayFormat(DataFormatString = "{0:MMM.DD.YYYY}")]
+        public DateTime? UserBirthDay { get; set; }
         public DateTime? UserlastVisit { get; set; } = DateTime.Now;
         //Accepted
         public bool? IsAccepted { get; set; } = false;
@@ -83,12 +85,19 @@ namespace courseManagementSystemV1.Models
         public DateTime? userbeMentorDate { get; set; }
         public string? whoMentorUser { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool? IsInstructor { get; set; } = false;
+        public DateTime? userbeInstructorDate { get; set; }
+        public string? whoInstructorUser { get; set; }
 
         public bool? IsUserHR { get; set; } = false;
         public string ? whoHrThisUser { get; set; }
 
 
         public bool? IsAdmin { get; set; } = false;
+        public DateTime? userAdmintedDate { get; set; }
         public string? whoAdminThisUser { get; set; }
         public ICollection<Enrollment>? Enrollments { get; set; }
         public ICollection<Bonus>? Bonuses { get; set; }
@@ -100,6 +109,7 @@ namespace courseManagementSystemV1.Models
         public ICollection<Instructor> instructors { get; set; }
         public ICollection<Comments>? Comments { get; set; }
         public ICollection<CourseSpecificQuestions> courseSpecificQuestions { get; set; }
+        public ICollection<UpdateHistory> updateHistories { get; set; }
 
     }
 }

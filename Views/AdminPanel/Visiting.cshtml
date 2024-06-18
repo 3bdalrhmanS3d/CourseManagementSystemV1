@@ -97,6 +97,14 @@
                             {
                                 userType = "HR";
                             }
+                            else if (visit.User.IsInstructor.HasValue && visit.User.IsInstructor.Value)
+                            {
+                                userType = "Instructor";
+                            }
+                            else if (visit.User.IsMentor.HasValue && visit.User.IsMentor.Value)
+                            {
+                                userType = "Mentor";
+                            }
                             else
                             {
                                 userType = "Normal User";

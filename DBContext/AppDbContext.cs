@@ -29,6 +29,7 @@ namespace courseManagementSystemV1.DBContext
         public DbSet<CourseRating> courseRatings { get; set; }
         public DbSet<Feedback> feedbacks { get; set; }
         public DbSet<Comments> comments { get; set; }
+        public DbSet<UpdateHistory> updateHistories { get; set; }
         public DbSet<CourseSpecificQuestions> courseSpecificQuestions {  get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

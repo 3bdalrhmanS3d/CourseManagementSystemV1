@@ -34,7 +34,7 @@
         }
 
         .btn {
-            padding: 15px 15px;
+            padding: 4px 8px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -124,6 +124,10 @@
                             <input type="hidden" name="id" value="@user.UserID" />
                             <button type="submit" class="btn btn-outline-success">Make Mentor</button>
                         </form>
+                        <form method="post" asp-action="MakeInstructor">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button type="submit" class="btn btn-outline-success">Make Instructor</button>
+                        </form>
                     </td>
                     <td>
                         <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
@@ -142,6 +146,7 @@
                 <th>Date Became Mentor</th>
                 <th>Accepted by</th>
                 <th>Action</th>
+                <th>View</th>
             </tr>
             @foreach (var mentor in ViewBag.mentors)
             {
@@ -155,20 +160,21 @@
                     <td>
                         <form method="post" asp-action="NormalUser">
                             <input type="hidden" name="id" value="@mentor.UserID" />
-                            <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
+                            <button type="submit" class="btn btn-outline-primary">Revert to User</button>
                         </form>
                         <form method="post" asp-action="BlockMentor">
                             <input type="hidden" name="id" value="@mentor.UserID" />
-                            <button type="submit" class="btn btn-outline-danger">Block</button>
+                            <button type="submit" class="btn btn-outline-warning">Block</button>
                         </form>
                         <form method="post" asp-action="DeleteMentor">
                             <input type="hidden" name="id" value="@mentor.UserID" />
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
+                    </td>
                     <td>
                         <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = mentor.UserID })'">View</button>
                     </td>
-                    </td>
+                    
                 </tr>
             }
         </table>
@@ -208,7 +214,7 @@
         </table>
         <br />
         <h2>Pending Instructors</h2>
-        <table>
+        @* <table>
             <tr>
                 <th>Instructor ID</th>
                 <th>Instructor Name</th>
@@ -234,7 +240,7 @@
                     </td>
                 </tr>
             }
-        </table>
+        </table> *@
         <br />
         <h2>Blocked Mentors</h2>
         <table>
@@ -269,7 +275,7 @@
             }
         </table>
         <br />
-        <h2>Blocked Instructors</h2>
+        @* <h2>Blocked Instructors</h2>
         <table>
             <tr>
                 <th>Instructor ID</th>
@@ -301,7 +307,7 @@
                     </td>
                 </tr>
             }
-        </table>
+        </table> *@
         <br />
         <h2>Deleted Mentors</h2>
         <table>
@@ -337,7 +343,7 @@
             }
         </table>
         <br />
-        <h2>Deleted Instructors</h2>
+        @* <h2>Deleted Instructors</h2>
         <table>
             <tr>
                 <th>Instructor ID</th>
@@ -369,7 +375,7 @@
                     </td>
                 </tr>
             }
-        </table>
+        </table> *@
         <br />
     </div>
 </body>

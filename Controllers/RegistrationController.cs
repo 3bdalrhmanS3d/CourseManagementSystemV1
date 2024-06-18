@@ -64,7 +64,8 @@ namespace courseManagementSystemV1.Controllers
 
             [Required]
             public string userDepartment { get; set; } = "Genral";
-
+            [DisplayFormat(DataFormatString = "{0:MMM.DD.YYYY}")]
+            public DateTime? UserBirthDay { get; set; }
             [Required]
             public string userUniversity { get; set; } = "Assiut";
 
@@ -148,6 +149,7 @@ namespace courseManagementSystemV1.Controllers
                     UserCity = input.userCity,
                     UserStreet = input.userstreet,
                     UserPhoto = input.userPhoto,
+                    UserBirthDay = input.UserBirthDay,
                     UserCreatedAccount = DateTime.Now,
                     IsBlocked = false,
                     IsDeleted = false,

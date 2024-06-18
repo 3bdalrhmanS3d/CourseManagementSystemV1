@@ -115,6 +115,11 @@
                             <input type="hidden" name="id" value="@user.UserID" />
                             <button class="btn btn-outline-success" type="submit">Accept </button>
                         </form>
+                        <form asp-action="RejectUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-warning" type="submit">Rejected </button>
+                        </form>
+
                     </td>
                     <td>
                         <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
@@ -190,7 +195,7 @@
                     <td>@user.whoBlockedUser</td>
                     <td>@user.userBlockedDate</td>
                     <td>
-                        <form asp-action="AcceptUser" method="post">
+                        <form asp-action="UnBlockUser" method="post">
                             <input type="hidden" name="id" value="@user.UserID" />
                             <button class="btn btn-outline-warning" type="submit"> UnBlock </button>
                         </form>
@@ -227,12 +232,6 @@
                     <td>@user.UserEmail</td>
                     <td>@user.whoDeletedUser</td>
                     <td>@user.userDeletedDate</td>
-                    @* <td>
-                        <form asp-action="restorationDeleteUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-warning" type="submit"> Restoration </button>
-                        </form>
-                    </td> *@
                     <td>
                         <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
                     </td>
@@ -240,5 +239,40 @@
             }
         </table>
     </div> 
+    <br />
+    <hr />
+    <br />
+    <div class="user-list">
+        <h1>Rejected Users</h1>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Email</th>
+                <th>Actions</th>
+                <th>View</th>
+            </tr>
+            @foreach (var user in ViewBag.usersRejected)
+            {
+                <tr>
+                    <td>@user.UserSSN</td>
+                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                    <td>@user.UserCreatedAccount</td>
+                    <td>@user.UserEmail</td>
+                    <td>
+                        <form asp-action="AcceptUser" method="post">
+                            <input type="hidden" name="id" value="@user.UserID" />
+                            <button class="btn btn-outline-success" type="submit">Accept </button>
+                        </form>
+                        
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
 </body>
 </html>

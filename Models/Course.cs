@@ -19,7 +19,7 @@ namespace courseManagementSystemV1.Models
         public DateTime? CourseEndDate { get; set; }
         
         public string? CoursePhoto { get; set; }
-
+        public string? CourseState { get; set; }
         public bool? IsAvailable { get; set; } = false;
 
         public string? whoAcceptedCourse { get; set; }

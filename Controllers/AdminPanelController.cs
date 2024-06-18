@@ -149,16 +149,22 @@ namespace courseManagementSystemV1.Controllers
             var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
             if (adminn != null)
             {
+                adminn.IsAccepted = true;
+                adminn.IsBlocked=false;
+                adminn.IsDeleted = false;
                 adminn.IsAdmin = true;
-                adminn.IsUserHR = false;
                 adminn.NormalUser = false;
-
+                adminn.IsMentor = false;
+                adminn.IsInstructor = false;
+                adminn.IsUserHR = false;
+                adminn.userAdmintedDate = DateTime.Now;
                 adminn.whoAdminThisUser = $"{currentUser.UserFirstName}  {currentUser.UserMiddelName} {currentUser.UserLastName}";
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Make Admin done !");
             }
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public IActionResult DeleteAdmin(int id)
         {
@@ -171,10 +177,9 @@ namespace courseManagementSystemV1.Controllers
             var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
             if (adminn != null)
             {
-                adminn.IsAdmin = false;
-                adminn.IsUserHR = false;
-                adminn.IsAccepted = false;
-                adminn.NormalUser = true;
+                adminn.IsDeleted=true;
+                adminn.IsAdmin=false;
+                adminn.NormalUser = false;//
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Delete admin done !");
             }
@@ -182,6 +187,52 @@ namespace courseManagementSystemV1.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public IActionResult BlockAdmin(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var adminn = _context.Users.SingleOrDefault(x => x.UserID == id);
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
+            if (adminn != null)
+            {
+                adminn.IsBlocked = true;
+                adminn.IsAdmin = true;
+                
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Block admin done !");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveAdmin(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var adminn = _context.Users.SingleOrDefault(x => x.UserID == id);
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
+            if (adminn != null)
+            {
+                
+                adminn.IsAdmin = false;
+                adminn.NormalUser = true;
+                adminn.IsAccepted = true;
+                adminn.IsDeleted=false;
+                adminn.IsBlocked = false;
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Delete admin done !");
+            }
+
+            return RedirectToAction("Index");
+        }
         [HttpGet]
         public IActionResult Statistics()
         {
@@ -215,31 +266,41 @@ namespace courseManagementSystemV1.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+
             // كل الناس 
-            var allUsers = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false && p.IsUserHR == false && p.IsBlocked == false && p.IsDeleted == false && p.IsMentor == false).AsQueryable();
-            ViewBag.AllUserss = allUsers.OrderByDescending(x => x.userAcceptedDate).ToList();
+            var allUsers = _context.Users
+                .Where(p => p.IsAccepted == true && p.IsAdmin == false && p.IsUserHR == false && p.IsMentor == false && p.IsBlocked == false && p.IsDeleted == false && p.NormalUser == true)
+                .OrderByDescending(x => x.userAcceptedDate)
+                .ToList();
+            ViewBag.AllUserss = allUsers;
 
-            var mentors = _context.Users.Where(u => u.IsMentor == true && u.IsAccepted == true).ToList();
-            var instructors = _context.Instructors.Where(i => i.IsInstructor == true && i.IsAccepted == true).ToList();
-
-            var blockedMentors = _context.Users.Where(u => u.IsMentor == true && u.IsBlocked == true).ToList();
-            var blockedInstructors = _context.Instructors.Where(i => i.IsInstructor == true && i.IsAccepted == true && i.IsBlocked == true).ToList();
-
+            // المنتورز الحاليين
+            var mentors = _context.Users.Where(u => u.IsMentor == true && u.IsAccepted == true && u.IsBlocked == false && u.IsDeleted == false ).ToList();
+            // المنتورز الممسوحين
             var deletedMentors = _context.Users.Where(u => u.IsMentor == true && u.IsDeleted == true).ToList();
-            var deletedInstructors = _context.Instructors.Where(i => i.IsInstructor == true && i.ISDeleted == true).ToList();
+            // المنتورز المتبلكين
+            var blockedMentors = _context.Users.Where(u => u.IsMentor == true && u.IsBlocked == true).ToList();
+
+            // الإنستراكتورز الحاليين
+            var instructors = _context.Users.Where(u => u.IsInstructor == true && u.IsAccepted == true && u.IsBlocked == false && u.IsDeleted == false).ToList();
+            // الإنستراكتورز الممسوحين
+            var deletedInstructors = _context.Instructors.Where(i => i.ISDeleted == true).ToList();
+            // الإنستراكتورز المتبلكين
+            var blockedInstructors = _context.Instructors.Where(i => i.IsBlocked == true).ToList();
 
             ViewBag.mentors = mentors;
             ViewBag.instructors = instructors;
-            ViewBag.BlockedMentors = blockedMentors;
-            ViewBag.Blockedinstructors = blockedInstructors;
             ViewBag.DeletedMentors = deletedMentors;
-            ViewBag.Deletedinstructors = deletedInstructors;
+            ViewBag.BlockedMentors = blockedMentors;
+            ViewBag.DeletedInstructors = deletedInstructors;
+            ViewBag.BlockedInstructors = blockedInstructors;
 
-            var notInstructors = _context.Instructors.Where(i => i.IsInstructor == false && i.IsAccepted == false).ToList();
+            var notInstructors = _context.Users.Where(i => i.IsInstructor == false && i.IsAccepted == true && i.IsBlocked == false && i.IsDeleted == false).ToList();
             ViewBag.notInstructors = notInstructors;
 
             return View();
         }
+
 
         [HttpPost]
         public IActionResult MakeMentor(int id)
@@ -250,31 +311,27 @@ namespace courseManagementSystemV1.Controllers
             }
 
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
 
             if (user != null)
             {
-                user.NormalUser = false;
-                user.IsAccepted = true;
-                user.IsAdmin = false;
-                user.IsDeleted = false;
-                user.IsBlocked = false;
-                user.IsUserHR = false;
                 user.IsMentor = true;
-
+                user.IsAccepted = true;
+                user.IsBlocked = false;
+                user.IsDeleted = false;
+                user.NormalUser = false;
                 user.userbeMentorDate = DateTime.Now;
 
-                var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
-                user.whoMentorUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
-
-                _context.SaveChanges();
-                HttpContext.Session.SetString("Message", "Mentor assigned successfully!");
+                user.whoMentorUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";                
             }
+            _context.SaveChanges();
+            HttpContext.Session.SetString("Message", "Mentor assigned successfully!");
 
             return RedirectToAction("MentorsAndInstructors");
         }
 
         [HttpPost]
-        public IActionResult NormalUser(int id)
+        public IActionResult NormalUser(int id) // remove
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
             {
@@ -284,12 +341,11 @@ namespace courseManagementSystemV1.Controllers
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
             if (user != null)
             {
+                user.IsMentor = false;
+                user.IsInstructor = false;
                 user.IsAccepted = true;
                 user.IsBlocked = false;
                 user.IsDeleted = false;
-                user.IsUserHR = false;
-                user.IsAdmin = false;
-                user.IsMentor = false;
                 user.NormalUser = true;
 
                 _context.SaveChanges();
@@ -300,7 +356,7 @@ namespace courseManagementSystemV1.Controllers
         }
 
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> AcceptInstructor(int id)
         {
             if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
@@ -321,7 +377,7 @@ namespace courseManagementSystemV1.Controllers
 
             return RedirectToAction("MentorsAndInstructors");
 
-        }
+        }*/
 
         [HttpPost]
         public IActionResult MakeInstructor(int id)
@@ -332,9 +388,17 @@ namespace courseManagementSystemV1.Controllers
             }
 
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
-
+            
             if (user != null)
             {
+                user.NormalUser = false;
+                user.IsInstructor = true;
+                user.IsAccepted = true;
+                user.IsBlocked = false;
+                user.IsDeleted = false;
+                user.IsMentor = false;
+
+                /*_context.SaveChanges();*/
                 var instructor = new Instructor
                 {
                     UserID = user.UserID,
@@ -371,14 +435,11 @@ namespace courseManagementSystemV1.Controllers
 
             if (user != null)
             {
-                user.NormalUser = false;
-                user.IsAccepted = false;
-                user.IsAdmin = false;
-                user.IsDeleted = false;
                 user.IsBlocked = true;
-                user.IsUserHR = false;
                 user.IsMentor = true;
-                user.whoMentorUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
+
+                user.userBlockedDate    = DateTime.Now;
+                user.whoBlockedUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Mentor blocked successfully!");
@@ -394,12 +455,17 @@ namespace courseManagementSystemV1.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
 
-            var instructor = _context.Instructors.SingleOrDefault(x => x.instructorID == id);
+            user.IsBlocked = true ;
+            user.IsInstructor = true ;
+            _context.SaveChanges();
+
+            var instructor = _context.Instructors.SingleOrDefault(x => x.UserID == id);
             if (instructor != null)
             {
                 instructor.IsBlocked = true;
-                instructor.IsInstructor = false;
+                instructor.IsInstructor = true;
 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Instructor blocked successfully!");
@@ -437,13 +503,23 @@ namespace courseManagementSystemV1.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
 
-            var instructor = _context.Instructors.SingleOrDefault(x => x.instructorID == id);
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            user.IsDeleted = true;
+            user.IsInstructor = false;
+            user.NormalUser = true;
+            user.userDeletedDate = DateTime.Now;
+            user.whoDeletedUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
+            
+
+            _context.SaveChanges();
+            var instructor = _context.Instructors.SingleOrDefault(x => x.UserID == id);
             if (instructor != null)
             {
                 instructor.ISDeleted = true;
                 instructor.IsInstructor = false;
-
+                
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Instructor deleted successfully!");
             }

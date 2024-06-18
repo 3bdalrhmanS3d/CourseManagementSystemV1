@@ -159,6 +159,9 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<DateTime>("CourseStartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CourseState")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("CourseTime")
                         .HasColumnType("real");
 
@@ -403,6 +406,42 @@ namespace courseManagementSystemV1.Migrations
                     b.ToTable("Instructors");
                 });
 
+            modelBuilder.Entity("courseManagementSystemV1.Models.UpdateHistory", b =>
+                {
+                    b.Property<int>("updateHistoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("updateHistoryID"), 1L, 1);
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("currentState")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("curruntRole")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("previouState")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("previousRloe")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("updateHistoryBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("updateHistoryTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("updateHistoryID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("updateHistories");
+                });
+
             modelBuilder.Entity("courseManagementSystemV1.Models.User", b =>
                 {
                     b.Property<int>("UserID")
@@ -423,6 +462,9 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsInstructor")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsMentor")
                         .HasColumnType("bit");
 
@@ -438,6 +480,9 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<string>("UserAddressGov")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UserBirthDay")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserCity")
                         .HasColumnType("nvarchar(max)");
@@ -507,6 +552,9 @@ namespace courseManagementSystemV1.Migrations
                     b.Property<DateTime?>("userAcceptedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("userAdmintedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("userBlockedDate")
                         .HasColumnType("datetime2");
 
@@ -514,6 +562,9 @@ namespace courseManagementSystemV1.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("userRejectedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("userbeInstructorDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("userbeMentorDate")
@@ -532,6 +583,9 @@ namespace courseManagementSystemV1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("whoHrThisUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("whoInstructorUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("whoMentorUser")
@@ -756,6 +810,17 @@ namespace courseManagementSystemV1.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("courseManagementSystemV1.Models.UpdateHistory", b =>
+                {
+                    b.HasOne("courseManagementSystemV1.Models.User", "User")
+                        .WithMany("updateHistories")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("courseManagementSystemV1.Models.VisitHistory", b =>
                 {
                     b.HasOne("courseManagementSystemV1.Models.User", "User")
@@ -811,6 +876,8 @@ namespace courseManagementSystemV1.Migrations
                     b.Navigation("hRManagements");
 
                     b.Navigation("instructors");
+
+                    b.Navigation("updateHistories");
 
                     b.Navigation("visitHistories");
                 });

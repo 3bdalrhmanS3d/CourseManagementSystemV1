@@ -47,30 +47,42 @@ namespace courseManagementSystemV1.Controllers
                 }
 
                 HttpContext.Session.SetString("Login", "true");
-                HttpContext.Session.SetString("FullName", user.UserFirstName + " " + user.UserLastName);
+                HttpContext.Session.SetString("FullName", user.UserFirstName + " " + user.UserMiddelName + " " + user.UserLastName);
                 HttpContext.Session.SetString("UserStatus", GetAccountType(user));
                 HttpContext.Session.Set("CurrentLoginUser", JsonSerializer.SerializeToUtf8Bytes(user));
                 HttpContext.Session.SetString("Message", $"Welcome {user.UserFirstName} {user.UserLastName}");
- 
+
                 VisitHistory newVisit = new VisitHistory
                 {
                     UserID = user.UserID,
                     VisitHistoryDate = DateTime.Now,
+
                 };
                 _context.VisitHistories.Add(newVisit);
                 await _context.SaveChangesAsync();
 
-                if (user.IsAdmin.HasValue && user.IsAdmin.Value)
+                string userStatus = GetAccountType(user);
+                HttpContext.Session.SetString("UserStatus", userStatus);
+
+                if (userStatus == "admin")
                 {
                     return RedirectToAction("Index", "AdminPanel");
                 }
-                else if (user.IsUserHR.HasValue && user.IsUserHR.Value)
+                else if (userStatus == "HR")
                 {
                     return RedirectToAction("Index", "HR");
                 }
+                else if (userStatus == "Instructor")
+                {
+                    return RedirectToAction("Index", "UserHome");
+                }
+                else if (userStatus == "Mentor")
+                {
+                    return RedirectToAction("Index", "UserHome");
+                }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "UserHome");
                 }
             }
             else
@@ -88,6 +100,8 @@ namespace courseManagementSystemV1.Controllers
 
         private string GetAccountType(User user)
         {
+            var instructor = _context.Instructors.FirstOrDefault(x => x.User.UserID == user.UserID);
+
             if (user.IsAdmin.HasValue && user.IsAdmin.Value)
             {
                 return "admin";
@@ -96,10 +110,21 @@ namespace courseManagementSystemV1.Controllers
             {
                 return "HR";
             }
-            else
+            else if (user.IsMentor.HasValue && user.IsMentor.Value)
             {
-                return "user";
+                return "Mentor";
             }
+            else if(user.IsInstructor.HasValue && user.IsInstructor.Value)
+            {
+                if (instructor != null) 
+                { 
+                    if(instructor.IsAccepted.HasValue && instructor.IsAccepted == true)
+                    {
+                        return "Instructor";
+                    }
+                }
+            }
+            return "user";
         }
     }
 }
