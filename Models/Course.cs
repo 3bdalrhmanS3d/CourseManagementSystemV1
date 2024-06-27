@@ -29,10 +29,13 @@ namespace courseManagementSystemV1.Models
         public ICollection<Bonus>? Bonuses { get; set; }
         public ICollection<HRManagement>? hRManagements { get; set; }
         public ICollection<CourseRating>? courseRatings { get; set; }
-        public ICollection<CourseSpecificQuestions> courseSpecificQuestions { get; set; }
+        public ICollection<CourseSpecificQuestions> ?courseSpecificQuestions { get; set; }
 
-
-
-
+        public ICollection<Grade>? grades { get; set; }
+        public ICollection<ResourceFile>? ResourceFiles { get; set; }
+        public ICollection<CourseRequirement>? courseRequirements { get; set; }
     }
+
+
 }
+

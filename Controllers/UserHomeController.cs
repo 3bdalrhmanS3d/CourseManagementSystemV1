@@ -8,9 +8,6 @@ namespace courseManagementSystemV1.Controllers
 {
     public class UserHomeController : Controller
     {
-        // for users
-        // enroll in course, search, 
-
         private readonly AppDbContext _context;
 
         public UserHomeController(AppDbContext context)
@@ -21,14 +18,13 @@ namespace courseManagementSystemV1.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string searchString)
         {
-
             if (HttpContext.Session.GetString("Login") == null)
             {
                 return RedirectToAction("Index", "Login");
             }
 
             var courses = from c in _context.Courses
-                          where c.IsAvailable == true 
+                          where c.IsAvailable == true
                           select c;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -59,8 +55,12 @@ namespace courseManagementSystemV1.Controllers
 
             var course = await _context.Courses
                                        .Include(c => c.CourseManagements)
-                                           .ThenInclude(cm => cm.instructor)
+                                        .ThenInclude(cm => cm.instructor)
+                                        .ThenInclude(i => i.User)
                                        .Include(c => c.courseRatings)
+                                       .Include(c => c.Comments)
+                                        .ThenInclude(comment => comment.User)
+                                       .Include(c => c.Enrollments)
                                        .FirstOrDefaultAsync(c => c.CourseID == id);
 
             if (course == null)
@@ -71,30 +71,48 @@ namespace courseManagementSystemV1.Controllers
             return View(course);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> EnrollInCourse(int courseID)
         {
             if (HttpContext.Session.GetString("Login") == null)
             {
-
                 return RedirectToAction("Index", "Login");
             }
-            var userId = JsonSerializer.Deserialize<User>(HttpContext.Session.Get("CurrentLoginUser"));
-            var course = await _context.Courses.FindAsync(courseID);
 
-            var Enrollments = new Enrollment
+            var jsonString = HttpContext.Session.GetString("CurrentLoginUser");
+            if (jsonString != null)
             {
-                UserID = userId.UserID,
-                CourseID = courseID,
-                EnrollmentDate = DateTime.Now,
-            };
-            _context.Enrollments.Add(Enrollments);
-            await _context.SaveChangesAsync();
-            TempData["message"] = "Successfully enrolled in the course.";
+                var userId = JsonSerializer.Deserialize<User>(jsonString, JsonOptions.DefaultOptions);
+                var course = await _context.Courses.FindAsync(courseID);
 
-            return RedirectToAction("Index");
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                var existingEnrollment = await _context.Enrollments
+                                                       .FirstOrDefaultAsync(e => e.UserID == userId.UserID && e.CourseID == courseID);
+
+                if (existingEnrollment != null)
+                {
+                    ViewBag.Message = "You are already enrolled in this course.";
+                    return RedirectToAction("Index");
+                }
+
+                var newEnrollment = new Enrollment
+                {
+                    UserID = userId.UserID,
+                    CourseID = courseID,
+                    EnrollmentDate = DateTime.Now,
+                };
+                _context.Enrollments.Add(newEnrollment);
+                await _context.SaveChangesAsync();
+
+                ViewBag.Message = "Successfully enrolled in the course.";
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index", "Login");
         }
-
     }
 }

@@ -5,378 +5,573 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Mentors and Instructors</title>
-    <style>
-        .admin-list {
-            width: 100%;
-            margin: auto;
-        }
-
-            .admin-list table {
+    <head>
+        <title>Mentors and Instructors</title>
+        <style>
+            .admin-list {
                 width: 100%;
-                border-collapse: collapse;
+                margin: auto;
             }
 
-        h1 {
-            text-align: center;
-        }
+                .admin-list table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
 
-        .admin-list th, .admin-list td {
-            border: 2px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .admin-list th {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        .btn {
-            padding: 4px 8px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        .btn-outline-success {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-outline-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-outline-warning {
-            background-color: #ffc107;
-            color: white;
-        }
-
-        .btn-outline-info {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        .message {
-            text-align: center;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid transparent;
-            border-radius: 4px;
-        }
-
-        .message-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-    </style>
-    <script>
-        function hideMessage() {
-            var messageDiv = document.getElementById('message');
-            if (messageDiv) {
-                setTimeout(function () {
-                    messageDiv.style.display = 'none';
-                }, 3000); // Hide after 3 seconds
+            h1 {
+                text-align: center;
             }
-        }
-    </script>
-</head>
-<body>
-    <div class="admin-list">
-        <h1>Mentors and Instructors</h1>
 
-        @if (ViewBag.Message != null)
-        {
-            <div class="message message-success" id="message">
-                @ViewBag.Message
+            .admin-list th, .admin-list td {
+                border: 2px solid #ccc;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .admin-list th {
+                background-color: #17a2b8;
+                color: white;
+            }
+
+            /* .btn {
+                padding: 4px 8px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 0.9em;
+            } */
+
+            .btn-outline-success {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .btn-outline-danger {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .btn-outline-warning {
+                background-color: #ffc107;
+                color: white;
+            }
+
+            .btn-outline-info {
+                background-color: #17a2b8;
+                color: white;
+            }
+
+            .btn:hover {
+                opacity: 0.9;
+            }
+
+            .message {
+                text-align: center;
+                padding: 10px;
+                margin: 10px 0;
+                border: 1px solid transparent;
+                border-radius: 4px;
+            }
+
+            .message-success {
+                color: #155724;
+                background-color: #d4edda;
+                border-color: #c3e6cb;
+            }
+
+            .btn.active {
+                background-color: #007bff;
+                color: white;
+            }
+
+            /* CSS لتحسين تصميم الشريط التنقلي */
+            .navbar {
+                display: flex;
+                justify-content: space-around;
+                background-color: #f8f9fa;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+                .navbar label {
+                    margin: 0;
+                }
+
+                .navbar a {
+                    color: #007bff;
+                    border: 2px solid #007bff;
+                    border-radius: 5px;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+
+                    .navbar a:hover,
+                    .navbar a:focus,
+                    .navbar a.active {
+                        background-color: #007bff;
+                        color: #fff;
+                        text-decoration: none;
+                    }
+
+                    .navbar a:active {
+                        background-color: #0056b3;
+                        color: #fff;
+                    }
+
+            /* CSS لتحسين تصميم الشريط التنقلي */
+            .nav-tabs {
+                display: flex;
+                justify-content: space-around;
+                background-color: #f8f9fa;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+                .nav-tabs .nav-item {
+                    margin: 0;
+                }
+
+                .nav-tabs .nav-link {
+                    color: #007bff;
+                    border: 2px solid #007bff;
+                    border-radius: 5px;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+
+                    .nav-tabs .nav-link:hover,
+                    .nav-tabs .nav-link:focus,
+                    .nav-tabs .nav-link.active {
+                        background-color: #007bff;
+                        color: #fff;
+                        text-decoration: none;
+                    }
+
+                    .nav-tabs .nav-link:active {
+                        background-color: #0056b3;
+                        color: #fff;
+                    }
+            /* CSS لتحسين تصميم الشريط التنقلي */
+            .nav-tabs {
+                display: flex;
+                justify-content: space-around;
+                background-color: #f8f9fa;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+                .nav-tabs .nav-item {
+                    margin: 0;
+                }
+
+                .nav-tabs .nav-link {
+                    color: #007bff;
+                    border: 2px solid #007bff;
+                    border-radius: 5px;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+
+                    .nav-tabs .nav-link:hover,
+                    .nav-tabs .nav-link:focus,
+                    .nav-tabs .nav-link.active {
+                        background-color: #007bff;
+                        color: #fff;
+                        text-decoration: none;
+                    }
+
+                    .nav-tabs .nav-link:active {
+                        background-color: #0056b3;
+                        color: #fff;
+                    }
+        </style>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"> </script>
+        <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"> </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"> </script>
+        <script>
+            function hideMessage() {
+                var messageDiv = document.getElementById('message');
+                if (messageDiv) {
+                    setTimeout(function () {
+                        messageDiv.style.display = 'none';
+                    }, 3000); // Hide after 3 seconds
+                }
+            }
+        </script>
+    </head>
+    <body>
+        @{
+            var currentUrl = Context.Request.Path;
+        }
+
+        <div class="navbar">
+            <label>
+                <a href="/AdminPanel/MentorsAndInstructors" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/MentorsAndInstructors" ? "active" : "")" role="button" aria-pressed="true"> Mentors And Instructors </a>
+            </label>
+            <label>
+                <a href="/AdminPanel/Visiting" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Visiting" ? "active" : "")" role="button" aria-pressed="true"> Visiting History </a>
+            </label>
+            <label>
+                <a href="/AdminPanel/Statistics" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Statistics" ? "active" : "")" role="button" aria-pressed="true"> Statistics </a>
+            </label>
+            <label>
+                <a href="/UsersManagement/Index" class="btn btn-outline-primary @(currentUrl == "/UsersManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Users </a>
+            </label>
+            <label>
+                <a href="/CourseManagement/Index" class="btn btn-outline-primary @(currentUrl == "/CourseManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Courses </a>
+            </label>
+        </div>
+
+        <br />
+
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">All Users</a>
+                <a class="nav-item nav-link" id="nav-mentors-tab" data-toggle="tab" href="#nav-mentors" role="tab" aria-controls="nav-mentors" aria-selected="false">Mentors</a>
+                <a class="nav-item nav-link" id="nav-instructors-tab" data-toggle="tab" href="#nav-instructors" role="tab" aria-controls="nav-instructors" aria-selected="false">Instructors</a>
+                @* <a class="nav-item nav-link" id="nav-pending-instructors-tab" data-toggle="tab" href="#nav-pending-instructors" role="tab" aria-controls="nav-pending-instructors" aria-selected="false">Pending Instructors</a> *@
+                <a class="nav-item nav-link" id="nav-blocked-mentors-tab" data-toggle="tab" href="#nav-blocked-mentors" role="tab" aria-controls="nav-blocked-mentors" aria-selected="false">Blocked Mentors</a>
+                <a class="nav-item nav-link" id="nav-blocked-instructors-tab" data-toggle="tab" href="#nav-blocked-instructors" role="tab" aria-controls="nav-blocked-instructors" aria-selected="false">Blocked Instructors</a>
+                <a class="nav-item nav-link" id="nav-deleted-mentors-tab" data-toggle="tab" href="#nav-deleted-mentors" role="tab" aria-controls="nav-deleted-mentors" aria-selected="false">Deleted Mentors</a>
+                <a class="nav-item nav-link" id="nav-deleted-instructors-tab" data-toggle="tab" href="#nav-deleted-instructors" role="tab" aria-controls="nav-deleted-instructors" aria-selected="false">Deleted Instructors</a>
             </div>
-            <script>hideMessage();</script>
-        }
+            <br />
+        </nav>
 
-        <h2>All Users</h2>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.AllUserss)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
-                    <td>@user.UserEmail</td>
-                    <td>@user.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>
-                        <form method="post" asp-action="MakeMentor">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button type="submit" class="btn btn-outline-success">Make Mentor</button>
-                        </form>
-                        <form method="post" asp-action="MakeInstructor">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button type="submit" class="btn btn-outline-success">Make Instructor</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-        <br />
-        <h2>Mentors</h2>
-        <table>
-            <tr>
-                <th>Mentor ID</th>
-                <th>Mentor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Date Became Mentor</th>
-                <th>Accepted by</th>
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var mentor in ViewBag.mentors)
-            {
-                <tr>
-                    <td>@mentor.UserSSN</td>
-                    <td>@mentor.UserFirstName @mentor.UserMiddelName @mentor.UserLastName</td>
-                    <td>@mentor.UserEmail</td>
-                    <td>@mentor.whoMentorUser</td>
-                    <td>@mentor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@mentor.userbeMentorDate?.ToString("yyyy-MM-dd")</td>
-                    <td>
-                        <form method="post" asp-action="NormalUser">
-                            <input type="hidden" name="id" value="@mentor.UserID" />
-                            <button type="submit" class="btn btn-outline-primary">Revert to User</button>
-                        </form>
-                        <form method="post" asp-action="BlockMentor">
-                            <input type="hidden" name="id" value="@mentor.UserID" />
-                            <button type="submit" class="btn btn-outline-warning">Block</button>
-                        </form>
-                        <form method="post" asp-action="DeleteMentor">
-                            <input type="hidden" name="id" value="@mentor.UserID" />
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = mentor.UserID })'">View</button>
-                    </td>
-                    
-                </tr>
-            }
-        </table>
-        <br />
-        <h2>Instructors</h2>
-        <table>
-            <tr>
-                <th>Instructor ID</th>
-                <th>Instructor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var instructor in ViewBag.instructors)
-            {
-                <tr>
-                    <td>@instructor.UserSSN</td>
-                    <td>@instructor.UserFirstName @instructor.UserMiddelName @instructor.UserLastName</td>
-                    <td>@instructor.UserEmail</td>
-                    <td>@instructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>
-                        <form method="post" asp-action="BlockInstructor">
-                            <input type="hidden" name="id" value="@instructor.UserID" />
-                            <button type="submit" class="btn btn-outline-warning">Block</button>
-                        </form>
-                        <form method="post" asp-action="DeleteInstructor">
-                            <input type="hidden" name="id" value="@instructor.UserID" />
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = instructor.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-        <br />
-        <h2>Pending Instructors</h2>
-        @* <table>
-            <tr>
-                <th>Instructor ID</th>
-                <th>Instructor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Action</th>
-            </tr>
-            @foreach (var notInstructor in ViewBag.notInstructors)
-            {
-                <tr>
-                    <td>@notInstructor.UserSSN</td>
-                    <td>@notInstructor.UserFirstName @notInstructor.UserMiddelName @notInstructor.UserLastName</td>
-                    <td>@notInstructor.UserEmail</td>
-                    <td>@notInstructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>
-                        <form method="post" asp-action="AcceptInstructor">
+        <div class="tab-content" id="nav-tabContent">
+                
+
+                        <h1>Mentors and Instructors</h1>
+
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="message message-success" id="message">
+                                @ViewBag.Message
+                            </div>
+                            <script>hideMessage();</script>
+                        }
+
+                        <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+                            <div class="admin-list">
+                                <h2>All Users</h2>
+                                <table>
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Action</th>
+                                        <th>View</th>
+                                    </tr>
+                                    @foreach (var user in ViewBag.AllUserss)
+                                    {
+                                        <tr>
+                                            <td>@user.UserSSN</td>
+                                            <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                                            <td>@user.UserEmail</td>
+                                            <td>@user.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>
+                                                <form method="post" asp-action="MakeMentor">
+                                                    <input type="hidden" name="id" value="@user.UserID" />
+                                                    <button type="submit" class="btn btn-outline-success">Make Mentor</button>
+                                                </form>
+                                                <form method="post" asp-action="MakeInstructor">
+                                                    <input type="hidden" name="id" value="@user.UserID" />
+                                                    <button type="submit" class="btn btn-outline-success">Make Instructor</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                                </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-mentors" role="tabpanel" aria-labelledby="nav-mentors-tab">
+
+                            <div class="admin-list">
+                                        <h2>Mentors</h2>
+                                        <table>
+                                            <tr>
+                                                <th>Mentor ID</th>
+                                                <th>Mentor Name</th>
+                                                <th>Email</th>
+                                                <th>Last Activity</th>
+                                                <th>Date Became Mentor</th>
+                                                <th>Accepted by</th>
+                                                <th>Action</th>
+                                                <th>View</th>
+                                            </tr>
+                                            @foreach (var mentor in ViewBag.mentors)
+                                            {
+                                                <tr>
+                                                    <td>@mentor.UserSSN</td>
+                                                    <td>@mentor.UserFirstName @mentor.UserMiddelName @mentor.UserLastName</td>
+                                                    <td>@mentor.UserEmail</td>
+                                                    <td>@mentor.whoMentorUser</td>
+                                                    <td>@mentor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                                    <td>@mentor.userbeMentorDate?.ToString("yyyy-MM-dd")</td>
+                                                    <td>
+                                                        <form method="post" asp-action="NormalUser">
+                                                            <input type="hidden" name="id" value="@mentor.UserID" />
+                                                            <button type="submit" class="btn btn-outline-primary">Revert to User</button>
+                                                        </form>
+                                                        <form method="post" asp-action="BlockMentor">
+                                                            <input type="hidden" name="id" value="@mentor.UserID" />
+                                                            <button type="submit" class="btn btn-outline-warning">Block</button>
+                                                        </form>
+                                                        <form method="post" asp-action="DeleteMentor">
+                                                            <input type="hidden" name="id" value="@mentor.UserID" />
+                                                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = mentor.UserID })'">View</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                            
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-instructors" role="tabpanel" aria-labelledby="nav-instructors-tab">
+                            <!-- محتوى Instructors -->
+                            <div class="admin-list" >
+                                <h2>Instructors</h2>
+                                <table>
+                                    <tr>
+                                        <th>Instructor ID</th>
+                                        <th>Instructor Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Action</th>
+                                        <th>View</th>
+                                    </tr>
+                                    @foreach (var instructor in ViewBag.instructors)
+                                    {
+                                        <tr>
+                                            <td>@instructor.UserSSN</td>
+                                            <td>@instructor.UserFirstName @instructor.UserMiddelName @instructor.UserLastName</td>
+                                            <td>@instructor.UserEmail</td>
+                                            <td>@instructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>
+                                                <form method="post" asp-action="BlockInstructor">
+                                                    <input type="hidden" name="id" value="@instructor.UserID" />
+                                                    <button type="submit" class="btn btn-outline-warning">Block</button>
+                                                </form>
+                                                <form method="post" asp-action="DeleteInstructor">
+                                                    <input type="hidden" name="id" value="@instructor.UserID" />
+                                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = instructor.UserID })'">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+        
+                        @* <div class="tab-pane fade" id="nav-pending-instructors" role="tabpanel" aria-labelledby="nav-pending-instructors-tab">
+                            <!-- محتوى Pending Instructors -->
+                            <h2>Pending Instructors</h2>
+                             <table>
+                            <tr>
+                            <th>Instructor ID</th>
+                            <th>Instructor Name</th>
+                            <th>Email</th>
+                            <th>Last Activity</th>
+                            <th>Action</th>
+                            </tr>
+                            @foreach (var notInstructor in ViewBag.notInstructors)
+                            {
+                            <tr>
+                            <td>@notInstructor.UserSSN</td>
+                            <td>@notInstructor.UserFirstName @notInstructor.UserMiddelName @notInstructor.UserLastName</td>
+                            <td>@notInstructor.UserEmail</td>
+                            <td>@notInstructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                            <form method="post" asp-action="AcceptInstructor">
                             <input type="hidden" name="id" value="@notInstructor.UserID" />
                             <button type="submit" class="btn btn-outline-success">Accept</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = notInstructor.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table> *@
-        <br />
-        <h2>Blocked Mentors</h2>
-        <table>
-            <tr>
-                <th>Mentor ID</th>
-                <th>Mentor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Blocked Date</th>
-                <th>Blocked By</th>
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var blockedMentor in ViewBag.BlockedMentors)
-            {
-                <tr>
-                    <td>@blockedMentor.UserSSN</td>
-                    <td>@blockedMentor.UserFirstName @blockedMentor.UserMiddelName @blockedMentor.UserLastName</td>
-                    <td>@blockedMentor.UserEmail</td>
-                    <td>@blockedMentor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@blockedMentor.userBlockedDate?.ToString("yyyy-MM-dd")</td>
-                    <td>
-                        <form method="post" asp-action="NormalUser">
-                            <input type="hidden" name="id" value="@blockedMentor.UserID" />
-                            <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = blockedMentor.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-        <br />
-        @* <h2>Blocked Instructors</h2>
-        <table>
-            <tr>
-                <th>Instructor ID</th>
-                <th>Instructor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Blocked Date</th>
-                
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var blockedInstructor in ViewBag.Blockedinstructors)
-            {
-                <tr>
-                    <td>@blockedInstructor.UserSSN</td>
-                    <td>@blockedInstructor.UserFirstName @blockedInstructor.UserMiddelName @blockedInstructor.UserLastName</td>
-                    <td>@blockedInstructor.UserEmail</td>
-                    <td>@blockedInstructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@blockedInstructor.userBlockedDate?.ToString("yyyy-MM-dd")</td>
+                            </form>
+                            </td>
+                            <td>
+                            <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = notInstructor.UserID })'">View</button>
+                            </td>
+                            </tr>
+                            }
+                            </table> 
+                        </div> *@
+            
+                        <div class="tab-pane fade" id="nav-blocked-mentors" role="tabpanel" aria-labelledby="nav-blocked-mentors-tab">
+                            <!-- محتوى Blocked Mentors -->
+                            <div class="admin-list">
+                                <h2>Blocked Mentors</h2>
+                                <table>
+                                    <tr>
+                                        <th>Mentor ID</th>
+                                        <th>Mentor Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Blocked Date</th>
+                                        <th>Blocked By</th>
+                                        <th>Action</th>
+                                        <th>View</th>
+                                    </tr>
+                                    @foreach (var blockedMentor in ViewBag.BlockedMentors)
+                                    {
+                                        <tr>
+                                            <td>@blockedMentor.UserSSN</td>
+                                            <td>@blockedMentor.UserFirstName @blockedMentor.UserMiddelName @blockedMentor.UserLastName</td>
+                                            <td>@blockedMentor.UserEmail</td>
+                                            <td>@blockedMentor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@blockedMentor.userBlockedDate?.ToString("yyyy-MM-dd")</td>
+                                            <td>
+                                                <form method="post" asp-action="NormalUser">
+                                                    <input type="hidden" name="id" value="@blockedMentor.UserID" />
+                                                    <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = blockedMentor.UserID })'">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+           
+                        <div class="tab-pane fade" id="nav-blocked-instructors" role="tabpanel" aria-labelledby="nav-blocked-instructors-tab">
+                           <div class="admin-list">
+                                <!-- محتوى Blocked Instructors -->
+                                <h2>Blocked Instructors</h2>
+                                <table>
+                                    <tr>
+                                        <th>Instructor ID</th>
+                                        <th>Instructor Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Blocked Date</th>
+
+                                        <th>Action</th>
+                                        <th>View</th>
+                                    </tr>
+                                    @foreach (var blockedInstructor in ViewBag.Blockedinstructors)
+                                    {
+                                        <tr>
+                                            <td>@blockedInstructor.UserSSN</td>
+                                            <td>@blockedInstructor.UserFirstName @blockedInstructor.UserMiddelName @blockedInstructor.UserLastName</td>
+                                            <td>@blockedInstructor.UserEmail</td>
+                                            <td>@blockedInstructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@blockedInstructor.userBlockedDate?.ToString("yyyy-MM-dd")</td>
+
+                                            <td>
+                                                <form method="post" asp-action="NormalUser">
+                                                    <input type="hidden" name="id" value="@blockedInstructor.UserID" />
+                                                    <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = blockedInstructor.UserID })'">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
                     
-                    <td>
-                        <form method="post" asp-action="NormalUser">
-                            <input type="hidden" name="id" value="@blockedInstructor.UserID" />
-                            <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = blockedInstructor.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table> *@
-        <br />
-        <h2>Deleted Mentors</h2>
-        <table>
-            <tr>
-                <th>Mentor ID</th>
-                <th>Mentor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Deleted Date</th>
-                <th>Deleted By</th>
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var deletedMentor in ViewBag.DeletedMentors)
-            {
-                <tr>
-                    <td>@deletedMentor.UserSSN</td>
-                    <td>@deletedMentor.UserFirstName @deletedMentor.UserMiddelName @deletedMentor.UserLastName</td>
-                    <td>@deletedMentor.UserEmail</td>
-                    <td>@deletedMentor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@deletedMentor.userDeletedDate?.ToString("yyyy-MM-dd")</td>
-                    <td>@deletedMentor.whoDeletedUser</td>
-                    <td>
-                        <form method="post" asp-action="NormalUser">
-                            <input type="hidden" name="id" value="@deletedMentor.UserID" />
-                            <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = deletedMentor.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-        <br />
-        @* <h2>Deleted Instructors</h2>
-        <table>
-            <tr>
-                <th>Instructor ID</th>
-                <th>Instructor Name</th>
-                <th>Email</th>
-                <th>Last Activity</th>
-                <th>Deleted Date</th>
+                        <div class="tab-pane fade" id="nav-deleted-mentors" role="tabpanel" aria-labelledby="nav-deleted-mentors-tab">
+                           <div class="admin-list">
+                                <!-- محتوى Deleted Mentors -->
+                                <h2>Deleted Mentors</h2>
+                                <table>
+                                    <tr>
+                                        <th>Mentor ID</th>
+                                        <th>Mentor Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Deleted Date</th>
+                                        <th>Deleted By</th>
+                                        <th>Action</th>
+                                        <th>View</th>
+                                    </tr>
+                                    @foreach (var deletedMentor in ViewBag.DeletedMentors)
+                                    {
+                                        <tr>
+                                            <td>@deletedMentor.UserSSN</td>
+                                            <td>@deletedMentor.UserFirstName @deletedMentor.UserMiddelName @deletedMentor.UserLastName</td>
+                                            <td>@deletedMentor.UserEmail</td>
+                                            <td>@deletedMentor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@deletedMentor.userDeletedDate?.ToString("yyyy-MM-dd")</td>
+                                            <td>@deletedMentor.whoDeletedUser</td>
+                                            <td>
+                                                <form method="post" asp-action="NormalUser">
+                                                    <input type="hidden" name="id" value="@deletedMentor.UserID" />
+                                                    <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = deletedMentor.UserID })'">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                           </div>
+                        </div>
+            
+                        <div class="tab-pane fade" id="nav-deleted-instructors" role="tabpanel" aria-labelledby="nav-deleted-instructors-tab">
+                            <!-- محتوى Deleted Instructors -->
+                            <div class="admin-list" >
+                                <h2>Deleted Instructors</h2>
+                                <table>
+                                    <tr>
+                                        <th>Instructor ID</th>
+                                        <th>Instructor Name</th>
+                                        <th>Email</th>
+                                        <th>Last Activity</th>
+                                        <th>Deleted Date</th>
+
+                                        <th>Action</th>
+                                        <th>View</th>
+                                    </tr>
+                                    @foreach (var deletedInstructor in ViewBag.Deletedinstructors)
+                                    {
+                                        <tr>
+                                            <td>@deletedInstructor.UserSSN</td>
+                                            <td>@deletedInstructor.UserFirstName @deletedInstructor.UserMiddelName @deletedInstructor.UserLastName</td>
+                                            <td>@deletedInstructor.UserEmail</td>
+                                            <td>@deletedInstructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@deletedInstructor.userDeletedDate?.ToString("yyyy-MM-dd")</td>
+
+                                            <td>
+                                                <form method="post" asp-action="NormalUser">
+                                                    <input type="hidden" name="id" value="@deletedInstructor.UserID" />
+                                                    <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = deletedInstructor.UserID })'">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                                
+                        </div>
+            
                 
-                <th>Action</th>
-                <th>View</th>
-            </tr>
-            @foreach (var deletedInstructor in ViewBag.Deletedinstructors)
-            {
-                <tr>
-                    <td>@deletedInstructor.UserSSN</td>
-                    <td>@deletedInstructor.UserFirstName @deletedInstructor.UserMiddelName @deletedInstructor.UserLastName</td>
-                    <td>@deletedInstructor.UserEmail</td>
-                    <td>@deletedInstructor.UserlastVisit?.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@deletedInstructor.userDeletedDate?.ToString("yyyy-MM-dd")</td>
-                    
-                    <td>
-                        <form method="post" asp-action="NormalUser">
-                            <input type="hidden" name="id" value="@deletedInstructor.UserID" />
-                            <button type="submit" class="btn btn-outline-secondary">Revert to User</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = deletedInstructor.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table> *@
-        <br />
-    </div>
-</body>
+    
+        </div>
+    
+    </body>
 </html>

@@ -16,6 +16,7 @@
             }
 
         h1 {
+            
             text-align: center;
         }
 
@@ -30,13 +31,13 @@
             color: white;
         }
 
-        .btn {
+       /* .btn {
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
-        }
+        } */
 
         .btn-outline-success {
             background-color: #28a745;
@@ -75,8 +76,87 @@
             background-color: #d4edda;
             border-color: #c3e6cb;
         }
+
+        .btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .navbar label {
+                margin: 0;
+            }
+
+            .navbar a {
+                color: #007bff;
+                border: 2px solid #007bff;
+                border-radius: 5px;
+                padding: 10px 20px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .navbar a:hover,
+                .navbar a:focus,
+                .navbar a.active {
+                    background-color: #007bff;
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                .navbar a:active {
+                    background-color: #0056b3;
+                    color: #fff;
+                }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .nav-tabs .nav-item {
+                margin: 0;
+            }
+
+            .nav-tabs .nav-link {
+                color: #007bff;
+                border: 2px solid #007bff;
+                border-radius: 5px;
+                padding: 10px 20px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .nav-tabs .nav-link:hover,
+                .nav-tabs .nav-link:focus,
+                .nav-tabs .nav-link.active {
+                    background-color: #007bff;
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                .nav-tabs .nav-link:active {
+                    background-color: #0056b3;
+                    color: #fff;
+                }
     </style>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"> </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"> </script>
     <script>
+
         function hideMessage()
         {
             var messageDiv = document.getElementById('message');
@@ -92,187 +172,234 @@
 </head>
 <body onload="hideMessage()">
 
-    <div class="user-list">
-        <h1>Pending Users</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Email</th>
-                <th>Actions</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.AllUsersNotAcceptedYet)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
-                    <td>@user.UserCreatedAccount</td>
-                    <td>@user.UserEmail</td>
-                    <td>
-                        <form asp-action="AcceptUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-success" type="submit">Accept </button>
-                        </form>
-                        <form asp-action="RejectUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-warning" type="submit">Rejected </button>
-                        </form>
+    @{
+        var currentUrl = Context.Request.Path;
+    }
 
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
+    <div class="navbar">
+        <label>
+            <a href="/AdminPanel/MentorsAndInstructors" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/MentorsAndInstructors" ? "active" : "")" role="button" aria-pressed="true"> Mentors And Instructors </a>
+        </label>
+        <label>
+            <a href="/AdminPanel/Visiting" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Visiting" ? "active" : "")" role="button" aria-pressed="true"> Visiting History </a>
+        </label>
+        <label>
+            <a href="/AdminPanel/Statistics" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Statistics" ? "active" : "")" role="button" aria-pressed="true"> Statistics </a>
+        </label>
+        <label>
+            <a href="/UsersManagement/Index" class="btn btn-outline-primary @(currentUrl == "/UsersManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Users </a>
+        </label>
+        <label>
+            <a href="/CourseManagement/Index" class="btn btn-outline-primary @(currentUrl == "/CourseManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Courses </a>
+        </label>
     </div>
+
     <br />
-    <hr />
-    <br />
-    <div class="user-list">
-        <h1>Accepted Users</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Accepted Date</th>
-                <th>Accepted By</th>
-                <th>Email</th>
-                <th>Actions</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.AllUsersAccepted)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
-                    <td>@user.userAcceptedDate</td>
-                    <td>@user.whoAcceptedUser</td>
-                    
-                    <td>@user.UserEmail</td>
-                    <td>
-                        <form asp-action="BlockUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-warning" type="submit">Block</button>
-                        </form>
-                        <form asp-action="DeleteUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-danger" type="submit">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-    <br />
-    <hr />
-    <br />
-    <div class="user-list">
-        <h1>Blocked Users</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Accepted Date</th>
-                <th>Email</th>
-                <th>Blocked by </th>
-                <th>Blocked Date</th>
-                <th>Actions</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.AllUsersBlocked)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
-                    <td>@user.UserCreatedAccount</td>
-                    <td>@user.UserEmail</td>
-                    <td>@user.whoBlockedUser</td>
-                    <td>@user.userBlockedDate</td>
-                    <td>
-                        <form asp-action="UnBlockUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-warning" type="submit"> UnBlock </button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div> 
-    <br />
-    <hr />
-    <br />
-    <div class="user-list">
-        <h1>Deleted Users</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Accepted Date</th>
-                <th>Email</th>
-                <th>Deleted by </th>
-                <th>Delete Date</th>
-                @* <th>Actions</th> *@
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.AllUsersDeleted)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
-                    <td>@user.UserCreatedAccount</td>
-                    <td>@user.UserEmail</td>
-                    <td>@user.whoDeletedUser</td>
-                    <td>@user.userDeletedDate</td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div> 
-    <br />
-    <hr />
-    <br />
-    <div class="user-list">
-        <h1>Rejected Users</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Email</th>
-                <th>Actions</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.usersRejected)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
-                    <td>@user.UserCreatedAccount</td>
-                    <td>@user.UserEmail</td>
-                    <td>
-                        <form asp-action="AcceptUser" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-success" type="submit">Accept </button>
-                        </form>
-                        
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">Pending Users</a>
+            <a class="nav-item nav-link" id="nav-accepted-tab" data-toggle="tab" href="#nav-accepted" role="tab" aria-controls="nav-accepted" aria-selected="false">Accepted Users</a>
+            <a class="nav-item nav-link" id="nav-blocked-tab" data-toggle="tab" href="#nav-blocked" role="tab" aria-controls="nav-blocked" aria-selected="false">Blocked Users</a>
+            <a class="nav-item nav-link" id="nav-deleted-tab" data-toggle="tab" href="#nav-deleted" role="tab" aria-controls="nav-deleted" aria-selected="false">Deleted Users</a>
+            <a class="nav-item nav-link" id="nav-ejected-tab" data-toggle="tab" href="#nav-ejected" role="tab" aria-controls="nav-ejected" aria-selected="false">Rejected Users</a>
+        </div>
+        <br />
+    </nav>
+
+    <div class="tab-content" id="nav-tabContent">
+
+            <div class="tab-pane fade show active" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
+               
+                <div class="user-list">
+                    <h1>Pending Users</h1>
+                    <table>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                            <th>View</th>
+                        </tr>
+                        @foreach (var user in ViewBag.AllUsersNotAcceptedYet)
+                        {
+                            <tr>
+                                <td>@user.UserSSN</td>
+                                <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                                <td>@user.UserCreatedAccount</td>
+                                <td>@user.UserEmail</td>
+                                <td>
+                                    <form asp-action="AcceptUser" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-success" type="submit">Accept </button>
+                                    </form>
+                                    <form asp-action="RejectUser" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-warning" type="submit">Rejected </button>
+                                    </form>
+
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="nav-accepted" role="tabpanel" aria-labelledby="nav-accepted-tab">
+                <div class="user-list">
+                    <h1>Accepted Users</h1>
+                    <table>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Accepted Date</th>
+                            <th>Accepted By</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                            <th>View</th>
+                        </tr>
+                        @foreach (var user in ViewBag.AllUsersAccepted)
+                        {
+                            <tr>
+                                <td>@user.UserSSN</td>
+                                <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                                <td>@user.userAcceptedDate</td>
+                                <td>@user.whoAcceptedUser</td>
+
+                                <td>@user.UserEmail</td>
+                                <td>
+                                    <form asp-action="BlockUser" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-warning" type="submit">Block</button>
+                                    </form>
+                                    <form asp-action="DeleteUser" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="nav-blocked" role="tabpanel" aria-labelledby="nav-blocked-tab">
+                <div class="user-list">
+                    <h1>Blocked Users</h1>
+                    <table>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Accepted Date</th>
+                            <th>Email</th>
+                            <th>Blocked by </th>
+                            <th>Blocked Date</th>
+                            <th>Actions</th>
+                            <th>View</th>
+                        </tr>
+                        @foreach (var user in ViewBag.AllUsersBlocked)
+                        {
+                            <tr>
+                                <td>@user.UserSSN</td>
+                                <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                                <td>@user.UserCreatedAccount</td>
+                                <td>@user.UserEmail</td>
+                                <td>@user.whoBlockedUser</td>
+                                <td>@user.userBlockedDate</td>
+                                <td>
+                                    <form asp-action="UnBlockUser" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-warning" type="submit"> UnBlock </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="nav-deleted" role="tabpanel" aria-labelledby="nav-deleted-tab">
+                <div class="user-list">
+                    <h1>Deleted Users</h1>
+                    <table>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Accepted Date</th>
+                            <th>Email</th>
+                            <th>Deleted by </th>
+                            <th>Delete Date</th>
+                            @* <th>Actions</th> *@
+                            <th>View</th>
+                        </tr>
+                        @foreach (var user in ViewBag.AllUsersDeleted)
+                        {
+                            <tr>
+                                <td>@user.UserSSN</td>
+                                <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                                <td>@user.UserCreatedAccount</td>
+                                <td>@user.UserEmail</td>
+                                <td>@user.whoDeletedUser</td>
+                                <td>@user.userDeletedDate</td>
+                                <td>
+                                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+    
+
+            <div class="tab-pane fade" id="nav-ejected" role="tabpanel" aria-labelledby="nav-ejected-tab">
+                <div class="user-list">
+                    <h1>Rejected Users</h1>
+                    <table>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                            <th>View</th>
+                        </tr>
+                        @foreach (var user in ViewBag.usersRejected)
+                        {
+                            <tr>
+                                <td>@user.UserSSN</td>
+                                <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName</td>
+                                <td>@user.UserCreatedAccount</td>
+                                <td>@user.UserEmail</td>
+                                <td>
+                                    <form asp-action="AcceptUser" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-success" type="submit">Accept </button>
+                                    </form>
+
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "UsersManagement", new { id = user.UserID })'">View</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+    
+
     </div>
 </body>
 </html>

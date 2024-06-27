@@ -27,6 +27,8 @@ namespace courseManagementSystemV1.Models
         // if false is hide
         public bool CourseSpecificQuestionsStates {  get; set; } = false;
 
+        public int ? WhopublushedQuestions { get; set; }
+
         public int UserID { get; set; }
         [ForeignKey("UserID")]
         public User User { get; set; }
@@ -37,7 +39,7 @@ namespace courseManagementSystemV1.Models
 
 
 
-        public int CourseSpecificQuestionsParentID { get; set; }
+        public int? CourseSpecificQuestionsParentID { get; set; }
         [ForeignKey("CourseSpecificQuestionsParentID")]
         public Comments comments { get; set; }
     }

@@ -57,6 +57,8 @@ namespace courseManagementSystemV1.Controllers
                             .Include(u => u.Enrollments)
                                 .ThenInclude(e => e.Attendances)
                             .Include(u => u.Bonuses)
+                            .Include(u=>u.updateHistories)
+                            .Include(u=>u.visitHistories)
                             .FirstOrDefaultAsync(u => u.UserID == id);
             if (user == null)
             {
@@ -161,7 +163,62 @@ namespace courseManagementSystemV1.Controllers
                 adminn.whoAdminThisUser = $"{currentUser.UserFirstName}  {currentUser.UserMiddelName} {currentUser.UserLastName}";
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Make Admin done !");
+
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Accepted",
+                    previouState = "Accepted",
+                    curruntRole = "Admin",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
+
             }
+
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult MakeHR(int id)
+        {
+            if (HttpContext.Session.GetString("Login") != "true" && HttpContext.Session.GetString("UserStatus") != "admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
+            if (user != null)
+            {
+                user.IsAccepted = true;
+                user.IsBlocked = false;
+                user.IsDeleted = false;
+                user.IsAdmin = false;
+                user.NormalUser = false;
+                user.IsMentor = false;
+                user.IsInstructor = false;
+                user.IsUserHR = true;
+                user.userHrDate = DateTime.UtcNow;
+                user.whoHrThisUser = $"{currentUser.UserFirstName}  {currentUser.UserMiddelName} {currentUser.UserLastName}";
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Make HR done !");
+
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Accepted",
+                    previouState = "Accepted",
+                    curruntRole = "HR",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
+
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -182,6 +239,18 @@ namespace courseManagementSystemV1.Controllers
                 adminn.NormalUser = false;//
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Delete admin done !");
+
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Deleted",
+                    previouState = "Accepted",
+                    curruntRole = "Admin",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("Index");
@@ -204,6 +273,17 @@ namespace courseManagementSystemV1.Controllers
                 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Block admin done !");
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Blocked",
+                    previouState = "Accepted",
+                    curruntRole = "Admin",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("Index");
@@ -229,6 +309,18 @@ namespace courseManagementSystemV1.Controllers
                 adminn.IsBlocked = false;
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Delete admin done !");
+
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Accepted",
+                    previouState = "Accepted",
+                    curruntRole = "Normal User",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("Index");
@@ -326,6 +418,17 @@ namespace courseManagementSystemV1.Controllers
             }
             _context.SaveChanges();
             HttpContext.Session.SetString("Message", "Mentor assigned successfully!");
+            UpdateHistory updateHistory = new UpdateHistory()
+            {
+                updateHistoryBy = currentUser.UserID,
+                updateHistoryTime = DateTime.Now,
+                currentState = "Accepted",
+                previouState = "Accepted",
+                curruntRole = "Mentor",
+                UserID = id,
+            };
+            _context.updateHistories.Add(updateHistory);
+            _context.SaveChanges();
 
             return RedirectToAction("MentorsAndInstructors");
         }
@@ -337,7 +440,7 @@ namespace courseManagementSystemV1.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
             if (user != null)
             {
@@ -350,6 +453,17 @@ namespace courseManagementSystemV1.Controllers
 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "User status reverted successfully!");
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Accepted",
+                    previouState = "Accepted",
+                    curruntRole = "Normal User",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("MentorsAndInstructors");
@@ -388,7 +502,7 @@ namespace courseManagementSystemV1.Controllers
             }
 
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
-            
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
             if (user != null)
             {
                 user.NormalUser = false;
@@ -410,6 +524,18 @@ namespace courseManagementSystemV1.Controllers
                 _context.Instructors.Add(instructor);
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Instructor assigned successfully!");
+
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Accepted",
+                    previouState = "Accepted",
+                    curruntRole = "Instructor",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("MentorsAndInstructors");
@@ -443,6 +569,17 @@ namespace courseManagementSystemV1.Controllers
 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Mentor blocked successfully!");
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Blocked",
+                    previouState = "Accepted",
+                    curruntRole = "Mentor",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("MentorsAndInstructors");
@@ -456,6 +593,7 @@ namespace courseManagementSystemV1.Controllers
                 return RedirectToAction("Index", "Login");
             }
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
 
             user.IsBlocked = true ;
             user.IsInstructor = true ;
@@ -469,6 +607,17 @@ namespace courseManagementSystemV1.Controllers
 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Instructor blocked successfully!");
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Blocked",
+                    previouState = "Accepted",
+                    curruntRole = "Instructor",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("MentorsAndInstructors");
@@ -481,8 +630,9 @@ namespace courseManagementSystemV1.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-
+            var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
             var user = _context.Users.SingleOrDefault(x => x.UserID == id);
+
             if (user != null)
             {
                 user.IsDeleted = true;
@@ -491,6 +641,17 @@ namespace courseManagementSystemV1.Controllers
 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Mentor deleted successfully!");
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Deleted",
+                    previouState = "Accepted",
+                    curruntRole = "Mentor",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("MentorsAndInstructors");
@@ -517,11 +678,22 @@ namespace courseManagementSystemV1.Controllers
             var instructor = _context.Instructors.SingleOrDefault(x => x.UserID == id);
             if (instructor != null)
             {
-                instructor.ISDeleted = true;
+                instructor.ISDeleted = true;  
                 instructor.IsInstructor = false;
                 
                 _context.SaveChanges();
                 HttpContext.Session.SetString("Message", "Instructor deleted successfully!");
+                UpdateHistory updateHistory = new UpdateHistory()
+                {
+                    updateHistoryBy = currentUser.UserID,
+                    updateHistoryTime = DateTime.Now,
+                    currentState = "Deleted",
+                    previouState = "Accepted",
+                    curruntRole = "Instructor",
+                    UserID = id,
+                };
+                _context.updateHistories.Add(updateHistory);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("MentorsAndInstructors");

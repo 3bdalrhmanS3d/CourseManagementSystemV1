@@ -1,0 +1,293 @@
+﻿@model courseManagementSystemV1.Models.Course
+<head>
+    <style>
+        .comment-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .nested-comment {
+            border-left: 3px solid #007bff;
+            padding-left: 15px;
+            background-color: #f0f0f0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .comment-photo {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .media img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        .reply a {
+            text-decoration: none;
+        }
+
+        .question {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .important-question {
+            background-color: #ffffd0;
+            border-color: #e6e600;
+        }
+
+        .question img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-overview-tab" data-toggle="tab" href="#nav-overview" role="tab" aria-controls="nav-overview" aria-selected="true">Overview</a>
+        <a class="nav-item nav-link" id="nav-quiz-tab" data-toggle="tab" href="#nav-quiz" role="tab" aria-controls="nav-quiz" aria-selected="false">Quiz</a>
+        <a class="nav-item nav-link" id="nav-resources-tab" data-toggle="tab" href="#nav-resources" role="tab" aria-controls="nav-resources" aria-selected="false">Resources</a>
+        <a class="nav-item nav-link" id="nav-grades-tab" data-toggle="tab" href="#nav-grades" role="tab" aria-controls="nav-grades" aria-selected="false">My Grades</a>
+        <a class="nav-item nav-link" id="nav-questions-tab" data-toggle="tab" href="#nav-questions" role="tab" aria-controls="nav-questions" aria-selected="false">My Questions</a>
+        <a class="nav-item nav-link" id="nav-rank-tab" data-toggle="tab" href="#nav-rank" role="tab" aria-controls="nav-rank" aria-selected="false">Rank</a>
+    </div>
+    <br />
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <!-- Display TempData message if exists -->
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
+
+    <!-- Overview Tab Content -->
+    <div class="tab-pane fade show active" id="nav-overview" role="tabpanel" aria-labelledby="nav-overview-tab">
+        <div class="row mb-4">
+            <div class="col-md-12 text-center">
+                <img src="@Model.CoursePhoto" class="img-fluid course-photo" alt="Course Photo">
+            </div>
+        </div>
+        <hr />
+        <!-- Row for Course Details and Final Evaluations -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h1>@Model.CourseName</h1>
+                <p><strong>Description:</strong> @Model.CourseDescription</p>
+                <p><strong>Time:</strong> @Model.CourseTime hours</p>
+                <p><strong>Start Date:</strong> @Model.CourseStartDate.ToShortDateString()</p>
+                <p><strong>End Date:</strong> @(Model.CourseEndDate?.ToShortDateString() ?? "Ongoing")</p>
+                @* <p><strong>Requirements:</strong> @Model.CourseRequirements</p> *@
+            </div>
+
+            <div class="col-md-12">
+                <p><strong>Instructor Name:</strong> @Model.CourseManagements?.FirstOrDefault()?.instructor.User.UserFirstName @Model.CourseManagements?.FirstOrDefault()?.instructor.User.UserLastName</p>
+            </div>
+        </div>
+        <hr />
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h3>Comments</h3>
+                <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="courseId" value="@Model.CourseID" />
+                    <div class="form-group row">
+                        <div class="col-md-8">
+                            <label for="commentText">Comment</label>
+                            <textarea class="form-control" id="commentText" name="commentText" required></textarea>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="img_file" name="img_file">
+                                <label class="custom-file-label" for="img_file">Photo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+
+                @if (Model.Comments != null && Model.Comments.Any())
+                {
+                    <div class="container mt-5">
+                        <h3 class="text-center mb-5">Comments Section</h3>
+                        @foreach (var comment in Model.Comments.Where(c => c.commentParentID == null))
+                        {
+                            <div class="comment-box mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <img class="rounded-circle mr-3" alt="Comment photo" src="@comment.User.UserPhoto" width="60" height="60" />
+                                        <h5 class="mb-0">@comment.User.UserFirstName @comment.User.UserMiddelName @comment.User.UserLastName</h5>
+                                    </div>
+                                    <span class="text-muted">@comment.commentdate</span>
+                                </div>
+                                <p>@comment.commentText</p>
+                                @if (!string.IsNullOrEmpty(comment.commentphoto))
+                                {
+                                    <img src="@comment.commentphoto" class="img-fluid comment-photo mb-2" alt="Comment photo">
+                                }
+                                <div class="text-right">
+                                    <a href="#" onclick="showReplyForm(@comment.commentID); return false;" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-reply"></i> Reply
+                                    </a>
+                                </div>
+
+                                <!-- Reply Form for main comment -->
+                                <div id="replyForm_@comment.commentID" class="mt-3" style="display: none;">
+                                    <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="courseId" value="@Model.CourseID" />
+                                        <input type="hidden" name="commentParentID" value="@comment.commentID" />
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="commentText" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control-file" name="img_file">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                                    </form>
+                                </div>
+
+                                @foreach (var reply in Model.Comments.Where(c => c.commentParentID == comment.commentID))
+                                {
+                                    <div class="nested-comment mt-3 ml-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <img class="rounded-circle mr-3" alt="userphoto" src="@reply.User.UserPhoto" width="60" height="60" />
+                                                <h6 class="mb-0">@reply.User.UserFirstName @reply.User.UserMiddelName @reply.User.UserLastName</h6>
+                                            </div>
+                                            <span class="text-muted">@reply.commentdate</span>
+                                        </div>
+                                        <p>@reply.commentText</p>
+                                        @if (!string.IsNullOrEmpty(reply.commentphoto))
+                                        {
+                                            <img src="@reply.commentphoto" class="img-fluid comment-photo mb-2" alt="replyPhoto">
+                                        }
+
+                                        <div class="text-right">
+                                            <a href="#" onclick="showReplyForm(@reply.commentID); return false;" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-reply"></i> Reply
+                                            </a>
+                                        </div>
+
+                                        <!-- Reply Form for nested comment -->
+                                        <div id="replyForm_@reply.commentID" class="mt-3" style="display: none;">
+                                            <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="courseId" value="@Model.CourseID" />
+                                                <input type="hidden" name="commentParentID" value="@comment.commentID" />
+                                                <div class="form-group">
+                                                    <textarea class="form-control" name="commentText" required></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control-file" name="img_file">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>No comments yet.</p>
+                }
+            </div>
+        </div>
+
+        <hr />
+    </div>
+
+    <!-- Quiz Tab Content -->
+    <div class="tab-pane fade" id="nav-quiz" role="tabpanel" aria-labelledby="nav-quiz-tab">
+        <p>Quiz content goes here.</p>
+    </div>
+
+    <!-- Resources Tab Content -->
+    <div class="tab-pane fade" id="nav-resources" role="tabpanel" aria-labelledby="nav-resources-tab">
+        <p>Resources content goes here.</p>
+    </div>
+
+    <!-- My Grades Tab Content -->
+    <div class="tab-pane fade" id="nav-grades" role="tabpanel" aria-labelledby="nav-grades-tab">
+        <p>My Grades content goes here.</p>
+    </div>
+
+    <!-- My Questions Tab Content -->
+    <div class="tab-pane fade" id="nav-questions" role="tabpanel" aria-labelledby="nav-questions-tab">
+        <h2>Add Question</h2>
+
+        <form asp-action="AddQuestion" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="@Model.CourseID" />
+
+            <div class="form-group">
+                <label for="questionText">Question Text</label>
+                <textarea class="form-control" id="questionText" name="questionText" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="img_file">Upload Image (optional)</label>
+                <input type="file" class="form-control-file" id="img_file" name="img_file">
+            </div>
+
+            <div class="form-group">
+                <input type="hidden" name="parentID" value="0" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <h2>Important Questions</h2>
+        @if (Model.courseSpecificQuestions != null && Model.courseSpecificQuestions.Any())
+        {
+            @foreach (var question in Model.courseSpecificQuestions.OrderByDescending(x => x.CourseSpecificQuestionsDate))
+            {
+                <div class="question @(question.CourseSpecificQuestionsStates ? "important-question" : "")">
+                    <p>@question.CourseSpecificQuestionsText</p>
+                    @if (!string.IsNullOrEmpty(question.CourseSpecificQuestionsphoto))
+                    {
+                        <img src="@question.CourseSpecificQuestionsphoto" alt="Question photo" class="img-fluid" />
+                    }
+                    <p>Date at: @question.CourseSpecificQuestionsDate?.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No questions yet.</p>
+        }
+    </div>
+
+
+    <!-- Rank Tab Content -->
+    <div class="tab-pane fade" id="nav-rank" role="tabpanel" aria-labelledby="nav-rank-tab">
+        <p>Rank content goes here.</p>
+    </div>
+</div>
+
+<script>
+    function showReplyForm(commentId) {
+        var form = document.getElementById('replyForm_' + commentId);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+</script>

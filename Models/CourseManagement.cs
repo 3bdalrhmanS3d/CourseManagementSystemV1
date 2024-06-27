@@ -16,7 +16,6 @@ namespace courseManagementSystemV1.Models
         [ForeignKey("courseID")]
         public Course course { get; set; }
 
-
         public int instructorID { get; set; }
         [ForeignKey("instructorID")]
         public Instructor instructor { get; set; }

@@ -3,11 +3,19 @@ using System.Text.Json;
 using courseManagementSystemV1.DBContext;
 using courseManagementSystemV1.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
+
+using System.Text.Json.Serialization;
 
 namespace courseManagementSystemV1.Controllers
 {
+    public static class JsonOptions
+    {
+        public static JsonSerializerOptions DefaultOptions => new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.Preserve,
+            WriteIndented = true
+        };
+    }
     public class LoginController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,12 +43,11 @@ namespace courseManagementSystemV1.Controllers
 
             if (user != null)
             {
-                if (user.IsBlocked.HasValue && user.IsBlocked.Value)
+                if (user.IsBlocked.HasValue && user.IsBlocked.Value == true )
                 {
-                    ViewBag.Message = "Your account is blocked.";
-                    return View();
+                    /*ViewBag.Message = "Your account is blocked.";*/
+                    return View("Blocked");
                 }
-
                 if (!user.IsAccepted.HasValue || !user.IsAccepted.Value)
                 {
                     return View("NotAccepted");
@@ -49,19 +56,21 @@ namespace courseManagementSystemV1.Controllers
                 HttpContext.Session.SetString("Login", "true");
                 HttpContext.Session.SetString("FullName", user.UserFirstName + " " + user.UserMiddelName + " " + user.UserLastName);
                 HttpContext.Session.SetString("UserStatus", GetAccountType(user));
-                HttpContext.Session.Set("CurrentLoginUser", JsonSerializer.SerializeToUtf8Bytes(user));
-                HttpContext.Session.SetString("Message", $"Welcome {user.UserFirstName} {user.UserLastName}");
 
+                // Use the custom JsonSerializerOptions
+                HttpContext.Session.Set("CurrentLoginUser", JsonSerializer.SerializeToUtf8Bytes(user, JsonOptions.DefaultOptions));
+
+                HttpContext.Session.SetString("Message", $"Welcome {user.UserFirstName} {user.UserLastName}");
+                string userStatus = GetAccountType(user);
                 VisitHistory newVisit = new VisitHistory
                 {
                     UserID = user.UserID,
                     VisitHistoryDate = DateTime.Now,
-
+                    CurrentVisitorStatus = userStatus
                 };
                 _context.VisitHistories.Add(newVisit);
                 await _context.SaveChangesAsync();
 
-                string userStatus = GetAccountType(user);
                 HttpContext.Session.SetString("UserStatus", userStatus);
 
                 if (userStatus == "admin")
@@ -114,11 +123,11 @@ namespace courseManagementSystemV1.Controllers
             {
                 return "Mentor";
             }
-            else if(user.IsInstructor.HasValue && user.IsInstructor.Value)
+            else if (user.IsInstructor.HasValue && user.IsInstructor.Value == true)
             {
-                if (instructor != null) 
-                { 
-                    if(instructor.IsAccepted.HasValue && instructor.IsAccepted == true)
+                if (instructor != null)
+                {
+                    if (instructor.IsAccepted.HasValue && instructor.IsAccepted == true)
                     {
                         return "Instructor";
                     }

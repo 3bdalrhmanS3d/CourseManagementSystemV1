@@ -6,173 +6,291 @@
 
 <head>
     <style>
-        .table {
-            width: 100%;
-            border-collapse: collapse;
+        .user-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 70%;
+            margin: 0 auto;
+            background-color: #f9f9f9;
         }
 
-            .table th, .table td {
-                text-align: center;
-                border: 1px solid #ddd;
+            .user-card img {
+                border-radius: 50%;
+                width: 250px;
+                height: 250px;
+                object-fit: cover;
+                margin-bottom: 20px;
+            }
+
+            .user-card table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .user-card th, .user-card td {
+                text-align: left;
                 padding: 8px;
             }
 
-            .table th {
-                text-align: center;
-                padding-top: 12px;
-                padding-bottom: 12px;
+            .user-card th {
                 background-color: #f2f2f2;
+                width: 40%;
             }
 
-        .user-details img {
-            max-width: 150px;
-            max-height: 150px;
-        }
+            .user-card td {
+                width: 60%;
+            }
     </style>
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<h1>User Details</h1>
 
-<div class="user-details">
-    <table class="table table-bordered">
-        <tr>
-            <th>Full Name</th>
-            <td>@Model.UserFirstName @Model.UserMiddelName @Model.UserLastName</td>
-        </tr>
-        <tr>
-            <th>Photo</th>
-            <td><img src="@Model.UserPhoto" alt="User Photo" style="max-width: 150px; max-height: 150px;" /></td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>@Model.UserEmail</td>
-        </tr>
-        <tr>
-            <th>Phone Number</th>
-            <td>@Model.UserPhoneNumber</td>
-        </tr>
-        <tr>
-            <th>University</th>
-            <td>@Model.UserUniversity</td>
-        </tr>
-        <tr>
-            <th>College</th>
-            <td>@Model.UserCollege</td>
-        </tr>
-        <tr>
-            <th>Department</th>
-            <td>@Model.UserDepartment</td>
-        </tr>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details" aria-selected="true">User Details</a>
+        <a class="nav-item nav-link" id="nav-update-history-tab" data-toggle="tab" href="#nav-update-history" role="tab" aria-controls="nav-update-history" aria-selected="false">Update History log</a>
+        <a class="nav-item nav-link" id="nav-enrollments-tab" data-toggle="tab" href="#nav-enrollments" role="tab" aria-controls="nav-enrollments" aria-selected="false">Enrollments</a>
+        <a class="nav-item nav-link" id="nav-visitors-log-tab" data-toggle="tab" href="#nav-visitors-log" role="tab" aria-controls="nav-visitors-log" aria-selected="false">Visitors Log</a>
+        <a class="nav-item nav-link" id="nav-bonuses-tab" data-toggle="tab" href="#nav-bonuses" role="tab" aria-controls="nav-bonuses" aria-selected="false">Bonuses</a>
+    </div>
+</nav>
 
-        <tr>
-            <th>Address</th>
-            <td>@Model.UserAddressGov, @Model.UserCity, @Model.UserStreet</td>
-        </tr>
-        <tr>
-            <th>Account Created</th>
-            <td>@Model.UserCreatedAccount.ToString("MMM dd, yyyy")</td>
-        </tr>
-        <tr>
-            <th>Accepted By</th>
-            <td>@Model.whoAcceptedUser</td>
-        </tr>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab">
+        <h2 class="text-center my-4">User Details</h2>
+        <div class="user-card">
+            <img src="@Model.UserPhoto" alt="User Photo" />
+            <table class="table table-borderless">
+                <tr>
+                    <th>Full Name</th>
+                    <td>@Model.UserFirstName @Model.UserMiddelName @Model.UserLastName</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.UserEmail</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>@Model.UserPhoneNumber</td>
+                </tr>
+                <tr>
+                    <th>University</th>
+                    <td>@Model.UserUniversity</td>
+                </tr>
+                <tr>
+                    <th>College</th>
+                    <td>@Model.UserCollege</td>
+                </tr>
+                <tr>
+                    <th>Department</th>
+                    <td>@Model.UserDepartment</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>@Model.UserAddressGov, @Model.UserCity, @Model.UserStreet</td>
+                </tr>
+                <tr>
+                    <th>Date of birth</th>
+                    <td>@Model.UserBirthDay</td>
+                </tr>
+                
+                <tr>
+                    <th>Account Created</th>
+                    <td>@Model.UserCreatedAccount.ToString("MMM dd, yyyy")</td>
+                </tr>
+                <tr>
+                    <th>Accepted At</th>
+                    <td>@Model.userAcceptedDate</td>
+                </tr>
+                <tr>
+                    <th>Accepted By</th>
+                    <td>@Model.whoAcceptedUser</td>
+                </tr>
+                <tr>
+                    <th>Account Status</th>
+                    <td>
+                        @if (Model.IsBlocked.HasValue && Model.IsBlocked.Value)
+                        {
+                            <p><strong>Blocked By:</strong> @Model.whoBlockedUser</p>
+                            <p><strong>When:</strong> @Model.userBlockedDate?.ToString("MMM dd, yyyy")</p>
+                        }
+                        else if (Model.IsDeleted.HasValue && Model.IsDeleted.Value)
+                        {
+                            <p><strong>Deleted By:</strong> @Model.whoDeletedUser</p>
+                            <p><strong>When:</strong> @Model.userDeletedDate?.ToString("MMM dd, yyyy")</p>
+                        }
+                        else
+                        {
+                            <p>Active</p>
+                            
+                        }
+                     </td>
+                
+                </tr>
+                
+            </table>
+        </div>
+    </div>
 
-        <tr>
-            <th>Account Status</th>
-            <td>
-                @if (Model.IsBlocked.HasValue && Model.IsBlocked.Value)
+    <div class="tab-pane fade" id="nav-update-history" role="tabpanel" aria-labelledby="nav-update-history-tab">
+        <br />
+        <h2 class="text-center my-4" >Update History log</h2>
+        @if (Model.updateHistories != null && Model.updateHistories.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Current State</th>
+                        <th>Previous State</th>
+                        <th>Time</th>
+                        <th>Role</th>
+                        <th>By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.updateHistories)
+                    {
+                        <tr>
+                            <td>@item.currentState</td>
+                            <td>@item.previouState</td>
+                            <td>@item.updateHistoryTime</td>
+                            <td>@item.curruntRole</td>
+                            <td>
+                                @if (item.User != null)
+                                {
+                                    @item.User.UserFirstName @item.User.UserMiddelName @item.User.UserLastName
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No History available.</p>
+        }
+    </div>
+
+    <div class="tab-pane fade" id="nav-enrollments" role="tabpanel" aria-labelledby="nav-enrollments-tab">
+        <br />
+        <h2 class="text-center my-4">Enrollments</h2>
+        @if (Model.Enrollments != null && Model.Enrollments.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Enrollment Date</th>
+                        <th>Can Access to Course</th>
+                        <th>Attendances</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrollment in Model.Enrollments)
+                    {
+                        <tr>
+                            <td>@enrollment.Course.CourseName</td>
+                            <td>@enrollment.EnrollmentDate</td>
+                            <td>@(enrollment.canAccess == false ? "NO" : "YES")</td>
+                            <td>
+                                @if (enrollment.Attendances != null && enrollment.Attendances.Any())
+                                {
+                                    <ul>
+                                        @foreach (var attendance in enrollment.Attendances)
+                                        {
+                                            <li>
+                                                <strong>Date:</strong> @attendance.SessionDate.ToString("MMM dd, yyyy")<br />
+                                                <strong>Check-In:</strong> @attendance.CheckInTime<br />
+                                                <strong>Check-Out:</strong> @attendance.CheckOutTime<br />
+                                                <strong>Total Time:</strong> @attendance.TotalTime?.ToString(@"hh\:mm")
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>No attendance records available.</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No enrollments available.</p>
+        }
+    </div>
+
+
+    <div class="tab-pane fade" id="nav-visitors-log" role="tabpanel" aria-labelledby="nav-visitors-log-tab">
+        <br />
+        <h2 class="text-center my-4" >Visitors Log</h2>
+        @if (Model.visitHistories != null && Model.visitHistories.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Visit Date</th>
+                        <th>User Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.visitHistories.OrderByDescending(v => v.VisitHistoryDate))
+                    {
+                        <tr>
+                            <td>@item.VisitHistoryDate</td>
+                            <td>@item.CurrentVisitorStatus</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No Visits available.</p>
+        }
+    </div>
+
+
+    <div class="tab-pane fade" id="nav-bonuses" role="tabpanel" aria-labelledby="nav-bonuses-tab">
+        <br />
+        <h2 class="text-center my-4" >Bonuses</h2>
+        @if (Model.Bonuses != null && Model.Bonuses.Any())
+        {
+            <table class="table table-bordered">
+                @foreach (var bonus in Model.Bonuses)
                 {
-                    <p><strong>Blocked By:</strong> @Model.whoBlockedUser</p>
-                    <p><strong>When:</strong> @Model.userBlockedDate?.ToString("MMM dd, yyyy")</p>
+                    <tr>
+                        <th>Course</th>
+                        <td>@bonus.Course.CourseName</td>
+                    </tr>
+                    <tr>
+                        <th>Bonus Type</th>
+                        <td>@bonus.BonusType</td>
+                    </tr>
+                    <tr>
+                        <th>Bonus Amount</th>
+                        <td>@bonus.BonusAmount</td>
+                    </tr>
+                    <tr>
+                        <th>Date Awarded</th>
+                        <td>@bonus.DateAwarded.ToString("MMM dd, yyyy")</td>
+                    </tr>
                 }
-                else if (Model.IsDeleted.HasValue && Model.IsDeleted.Value)
-                {
-                    <p><strong>Deleted By:</strong> @Model.whoDeletedUser</p>
-                    <p><strong>When:</strong> @Model.userDeletedDate?.ToString("MMM dd, yyyy")</p>
-                }
-                else
-                {
-                    <p>Active</p>
-            <tr>
-                <td>@Model.userAcceptedDate?.ToString("MMM dd, yyyy")</td>
-            </tr>
-                }
-        </td>
-        </tr>
-    </table>
+            </table>
+        }
+        else
+        {
+            <p>No bonuses available.</p>
+        }
+    </div>
 </div>
-
-<h2>Enrollments</h2>
-@if (Model.Enrollments != null && Model.Enrollments.Any())
-{
-    <table class="table table-bordered">
-        @foreach (var enrollment in Model.Enrollments)
-        {
-            <tr>
-                <th>Course Name</th>
-                <td>@enrollment.Course.CourseName</td>
-            </tr>
-            <tr>
-                <th>Enrollment Date</th>
-                <td>@enrollment.EnrollmentDate.ToString("MMM dd, yyyy")</td>
-            </tr>
-            <tr>
-                <th>Attendances</th>
-                <td>
-                    @if (enrollment.Attendances != null && enrollment.Attendances.Any())
-                    {
-                        <ul>
-                            @foreach (var attendance in enrollment.Attendances)
-                            {
-                                <li>
-                                    <strong>Date:</strong> @attendance.SessionDate.ToString("MMM dd, yyyy")
-                                    <strong>Check-In:</strong> @attendance.CheckInTime
-                                    <strong>Check-Out:</strong> @attendance.CheckOutTime
-                                    <strong>Total Time:</strong> @attendance.TotalTime?.ToString(@"hh\:mm")
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p>No attendance records available.</p>
-                    }
-                </td>
-            </tr>
-        }
-    </table>
-}
-else
-{
-    <p>No enrollments available.</p>
-}
-
-<h2>Bonuses</h2>
-@if (Model.Bonuses != null && Model.Bonuses.Any())
-{
-    <table class="table table-bordered">
-        @foreach (var bonus in Model.Bonuses)
-        {
-            <tr>
-                <th>Course</th>
-                <td>@bonus.Course.CourseName</td>
-            </tr>
-            <tr>
-                <th>Bonus Type</th>
-                <td>@bonus.BonusType</td>
-            </tr>
-            <tr>
-                <th>Bonus Amount</th>
-                <td>@bonus.BonusAmount</td>
-            </tr>
-            <tr>
-                <th>Date Awarded</th>
-                <td>@bonus.DateAwarded.ToString("MMM dd, yyyy")</td>
-            </tr>
-        }
-    </table>
-}
-else
-{
-    <p>No bonuses available.</p>
-}

@@ -27,8 +27,24 @@ namespace courseManagementSystemV1.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            var person = JsonSerializer.Deserialize<User>(HttpContext.Session.Get("CurrentLoginUser"));
-            return View(person);
+            var jsonString = HttpContext.Session.GetString("CurrentLoginUser");
+            if (jsonString != null)
+            {
+                try
+                {
+                    var person = JsonSerializer.Deserialize<User>(jsonString, JsonOptions.DefaultOptions);
+                    return View(person);
+                }
+                catch (JsonException ex)
+                {
+                    // Log the exception details
+                    Console.WriteLine($"Error deserializing JSON: {ex.Message}");
+                    Console.WriteLine($"JSON content: {jsonString}");
+                    // Redirect to an error page or show an error message
+                    return RedirectToAction("Error");
+                }
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpGet]
@@ -39,8 +55,24 @@ namespace courseManagementSystemV1.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            var person = JsonSerializer.Deserialize<User>(HttpContext.Session.Get("CurrentLoginUser"));
-            return View(person);
+            var jsonString = HttpContext.Session.GetString("CurrentLoginUser");
+            if (jsonString != null)
+            {
+                try
+                {
+                    var person = JsonSerializer.Deserialize<User>(jsonString, JsonOptions.DefaultOptions);
+                    return View(person);
+                }
+                catch (JsonException ex)
+                {
+                    // Log the exception details
+                    Console.WriteLine($"Error deserializing JSON: {ex.Message}");
+                    Console.WriteLine($"JSON content: {jsonString}");
+                    // Redirect to an error page or show an error message
+                    return RedirectToAction("Error");
+                }
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
@@ -54,13 +86,13 @@ namespace courseManagementSystemV1.Controllers
             var user = await _context.Users.FindAsync(model.UserID);
             if (user != null)
             {
-               
                 user.UserEmail = model.UserEmail;
                 user.UserPassword = model.UserPassword;
                 user.UserConfPassword = model.UserConfPassword;
 
                 await _context.SaveChangesAsync();
-                HttpContext.Session.Set("CurrentLoginUser", JsonSerializer.SerializeToUtf8Bytes(user));
+
+                HttpContext.Session.SetString("CurrentLoginUser", JsonSerializer.Serialize(user, JsonOptions.DefaultOptions));
                 TempData["message"] = "Profile updated successfully.";
                 return RedirectToAction("Index");
             }

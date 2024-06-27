@@ -12,6 +12,7 @@ namespace courseManagementSystemV1.Models
 
         public DateTime EnrollmentDate { get; set; }
 
+        public bool? canAccess { get; set; } = true;
         public int UserID { get; set; }
         [ForeignKey("UserID")]
         public User User { get; set; }

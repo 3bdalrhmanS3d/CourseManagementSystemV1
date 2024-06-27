@@ -99,9 +99,71 @@
         .btn:hover {
             opacity: 0.9;
         }
+
+        .btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* CSS لتحسين تصميم الشريط التنقلي */
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .navbar label {
+                margin: 0;
+            }
+
+            .navbar a {
+                color: #007bff;
+                border: 2px solid #007bff;
+                border-radius: 5px;
+                padding: 10px 20px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .navbar a:hover,
+                .navbar a:focus,
+                .navbar a.active {
+                    background-color: none ;
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                .navbar a:active {
+                    background-color: #0056b3;
+                    color: #fff;
+                }
     </style>
 </head>
 <body>
+    @{
+        var currentUrl = Context.Request.Path;
+    }
+
+    <div class="navbar">
+        <label>
+            <a href="/AdminPanel/MentorsAndInstructors" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/MentorsAndInstructors" ? "active" : "")" role="button" aria-pressed="true"> Mentors And Instructors </a>
+        </label>
+        <label>
+            <a href="/AdminPanel/Visiting" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Visiting" ? "active" : "")" role="button" aria-pressed="true"> Visiting History </a>
+        </label>
+        <label>
+            <a href="/AdminPanel/Statistics" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Statistics" ? "active" : "")" role="button" aria-pressed="true"> Statistics </a>
+        </label>
+        <label>
+            <a href="/UsersManagement/Index" class="btn btn-outline-primary @(currentUrl == "/UsersManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Users </a>
+        </label>
+        <label>
+            <a href="/CourseManagement/Index" class="btn btn-outline-primary @(currentUrl == "/CourseManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Courses </a>
+        </label>
+    </div>
+    <br />
     <h1>Pending Courses</h1>
     <div class="course-list">
         @foreach (var course in ViewBag.CoursesNotAcceptedYet)
@@ -154,7 +216,6 @@
                         <button class="btn btn-outline-warning" type="submit"> Finish </button>
                     </form>
                     <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewDataCourse", "CourseManagement", new { id = course.CourseID })'">View</button>
-                    @* <a href="/CourseManagement/FinishTheCourse/@course.CourseID"><input type="button" value="Finish" class="btn btn-outline-warning" /></a> *@
                     
                 </div>
             </div>

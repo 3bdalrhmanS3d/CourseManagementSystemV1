@@ -14,8 +14,7 @@ namespace courseManagementSystemV1.Models
         public string? previouState { get; set; }
 
         public string? curruntRole { get; set; }
-        public string? previousRloe {  get; set; }
-
+        
         public int UserID { get; set; }
 
         [ForeignKey("UserID")]

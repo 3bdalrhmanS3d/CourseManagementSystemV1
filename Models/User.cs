@@ -26,7 +26,7 @@ namespace courseManagementSystemV1.Models
         [EmailAddress]
         public string UserEmail { get; set; }
         [Required]
-        [StringLength(14, ErrorMessage = "Please do not enter values over 14 characters")]
+        [StringLength(11, ErrorMessage = "Please do not enter values over 11 characters")]
         public string UserPhoneNumber { get; set; }
         [Required]
         [DataType(DataType.Password)]
@@ -46,8 +46,11 @@ namespace courseManagementSystemV1.Models
         public string UserDepartment { get; set; } = "Genral";
         [Required]
         public string UserUniversity { get; set; } = "Assiut";
+        // الصورة الشخصية
+        public string UserPhoto { get; set; }
+        // صورة كارنيه الكلية
+        public string? UserIDPhoto { get; set; }
 
-        public string? UserPhoto { get; set; }
         [Required]
         public string UserAddressGov { get; set; }
         public string? UserCity { get; set; }
@@ -93,6 +96,7 @@ namespace courseManagementSystemV1.Models
         public string? whoInstructorUser { get; set; }
 
         public bool? IsUserHR { get; set; } = false;
+        public DateTime? userHrDate { get; set; } 
         public string ? whoHrThisUser { get; set; }
 
 
@@ -106,10 +110,13 @@ namespace courseManagementSystemV1.Models
         public ICollection<CourseRating>? courseRatings { get; set; }
         public ICollection<Feedback>? feedbacks { get; set; }
 
-        public ICollection<Instructor> instructors { get; set; }
+        public ICollection<Instructor>? instructors { get; set; }
         public ICollection<Comments>? Comments { get; set; }
-        public ICollection<CourseSpecificQuestions> courseSpecificQuestions { get; set; }
-        public ICollection<UpdateHistory> updateHistories { get; set; }
-
+        public ICollection<CourseSpecificQuestions>? courseSpecificQuestions { get; set; }
+        public ICollection<UpdateHistory>? updateHistories { get; set; }
+        public ICollection<Quiz>? Quizzes { get; set; }
+        public ICollection<Take>? Takes { get; set; }
+        public ICollection<Grade>? grades { get; set;}
+        public ICollection<CourseManagement>? courseManagements { get; set; }
     }
 }

@@ -74,6 +74,9 @@
                             if (ViewContext.HttpContext.Session.GetString("UserStatus") == "HR")
                             {
                                 <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "MyCourses") ? "active" : "")" asp-area="" asp-controller="MyCourses" asp-action="Index">My Courses</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "ManageCourses" && ViewContext.RouteData.Values["controller"].ToString() == "HR") ? "active" : "")" asp-area="" asp-controller="HR" asp-action="ManageCourses">Manage Courses</a>
                                 </li>
                                 <li class="nav-item">
@@ -88,7 +91,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
                                 </li>
-                                
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "MyCourses") ? "active" : "")" asp-area="" asp-controller="MyCourses" asp-action="Index">My Courses</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "BeInstructor" && ViewContext.RouteData.Values["controller"].ToString() == "Management") ? "active" : "")" asp-area="" asp-controller="Management" asp-action="BeInstructor">Be Instructor</a>
                                 </li>
@@ -103,31 +108,26 @@
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserHome") ? "active" : "")" asp-area="" asp-controller="UserHome" asp-action="Index">Home</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "MyCourses") ? "active" : "")" asp-area="" asp-controller="MyCourses" asp-action="Index">My Courses</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
                                 </li>
-
-
                                 <li class="nav-item">
-                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="Management" asp-action="AddCourse">Add Course</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "InstructorManagement") ? "active" : "")" asp-area="" asp-controller="InstructorManagement" asp-action="Index"> Instructor Dashboard</a>
                                 </li>
+
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "admin")
                             {
                                 <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserHome") ? "active" : "")" asp-area="" asp-controller="UserHome" asp-action="Index">Home</a>
                                 </li>
-                                
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "MyCourses") ? "active" : "")" asp-area="" asp-controller="MyCourses" asp-action="Index">My Courses</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "AdminPanel") ? "active" : "")" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UsersManagement") ? "active" : "")" asp-area="" asp-controller="UsersManagement" asp-action="Index">Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "MentorsAndInstructors" && ViewContext.RouteData.Values["controller"].ToString() == "AdminPanel") ? "active" : "")" asp-area="" asp-controller="AdminPanel" asp-action="MentorsAndInstructors">Instructor</a>
                                 </li>
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "user")
@@ -136,8 +136,9 @@
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserHome") ? "active" : "")" asp-area="" asp-controller="UserHome" asp-action="Index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "UserCourses") ? "active" : "")" asp-area="" asp-controller="UserCourses" asp-action="Index">My Courses</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "MyCourses") ? "active" : "")" asp-area="" asp-controller="MyCourses" asp-action="Index">My Courses</a>
                                 </li>
+
                             }
                             <li class="nav-item">
                                 <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "AboutUs" && ViewContext.RouteData.Values["controller"].ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
@@ -164,7 +165,7 @@
                                 <a class="btn btn-primary" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
                             </li>
                             <li class="">
-                                <a class="btn btn-danger" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                                <a class="btn btn-danger " asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                             </li>
                         }
                     </ul>

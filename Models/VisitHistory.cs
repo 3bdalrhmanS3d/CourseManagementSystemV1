@@ -9,6 +9,7 @@ namespace courseManagementSystemV1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int VisitHistoryId { get; set; }
         public DateTime VisitHistoryDate { get; set; } = DateTime.Now;
+        public string ?CurrentVisitorStatus { get; set; }
         public int UserID { get; set; }
         [ForeignKey("UserID")]
         public User User { get; set; }

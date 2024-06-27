@@ -16,10 +16,11 @@ namespace courseManagementSystemV1.Controllers
     public class UsersManagementController : Controller
     {
         private readonly AppDbContext _context;
-
-        public UsersManagementController(AppDbContext context)
+        private readonly EmailService _emailService;
+        public UsersManagementController(AppDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -69,6 +70,12 @@ namespace courseManagementSystemV1.Controllers
             return View(user);
         }
 
+        // إرسال البريد الإلكتروني
+        /*string subject = "Your Account Has Been Accepted";
+        string body = $"Dear {user.UserFirstName},<br/><br/>Your account has been accepted. You can now login to the system.<br/><br/>Best Regards,<br/> CMS Team";
+        await _emailService.SendEmailAsync(user.UserEmail, subject, body);*/
+
+
         [HttpPost]
         public async Task<IActionResult> AcceptUser(int id)
         {
@@ -79,6 +86,7 @@ namespace courseManagementSystemV1.Controllers
 
             var currentUser = JsonSerializer.Deserialize<User>(HttpContext.Session.GetString("CurrentLoginUser"));
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserID == id && u.IsAccepted == false && u.IsAdmin == false && u.IsUserHR == false);
+
             if (user != null)
             {
                 user.IsAccepted = true;
@@ -92,8 +100,17 @@ namespace courseManagementSystemV1.Controllers
                 user.IsInstructor = false;
                 user.userAcceptedDate = DateTime.Now;
                 user.whoAcceptedUser = $"{currentUser.UserFirstName} {currentUser.UserMiddelName} {currentUser.UserLastName}";
+
                 await _context.SaveChangesAsync();
-                HttpContext.Session.SetString("Message", "User accepted!");
+
+                // Send email
+                var emailService = HttpContext.RequestServices.GetRequiredService<EmailService>();
+                var subject = "Your account has been accepted in the Course Management System";
+                var message = $"Dear {user.UserFirstName},\n\nCongratulations! Your account has been accepted in the Course Management System. You can now visit the website and log in using your email and password.\n\nThank you,\nCourse Management System Team";
+
+                await emailService.SendEmailAsync(user.UserEmail, subject, message);
+
+                HttpContext.Session.SetString("Message", "User accepted and email sent!");
             }
 
             return RedirectToAction("Index", new { section = HttpContext.Session.GetString("Section") });

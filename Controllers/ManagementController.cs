@@ -137,7 +137,7 @@ namespace courseManagementSystemV1.Controllers
                     CourseDescription = course.CourseDescription,
                     CourseStartDate = course.CourseStartDate,
                     CourseEndDate = course.CourseEndDate,
-                    CourseRequirements = course.CourseRequirements,
+                    //CourseRequirements = course.CourseRequirements,
                     CoursePhoto = course.CoursePhoto,
                     CourseName = course.CourseName,
                     CourseState = input.CourseState == "0" ? "online" : "offline"

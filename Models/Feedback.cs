@@ -10,7 +10,7 @@ namespace courseManagementSystemV1.Models
         public int FeedbackId { get; set; }
 
         [Required]
-        [StringLength(250)]
+        [StringLength(500)]
         public string FeedbackText { get; set; }
 
         [Required]

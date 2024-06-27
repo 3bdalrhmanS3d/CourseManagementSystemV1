@@ -1,1 +1,79 @@
-﻿
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course System - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        nav {
+            background: #444;
+            color: #fff;
+            padding: 0.5rem;
+        }
+
+            nav ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                nav ul li {
+                    display: inline;
+                    margin-right: 10px;
+                }
+
+                    nav ul li a {
+                        color: #fff;
+                        text-decoration: none;
+                    }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Course System</h1>
+    </header>
+    
+    <main>
+        <h2>Welcome to the Course System</h2>
+        <p>Explore our available courses or continue your ongoing studies.</p>
+        
+    </main>
+   
+</body>
+</html>

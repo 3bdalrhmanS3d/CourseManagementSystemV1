@@ -25,7 +25,68 @@
         
         color: black;
     }
+
+    .btn.active {
+        background-color: #007bff;
+        color: white;
+    }
+    /* CSS لتحسين تصميم الشريط التنقلي */
+    .navbar {
+        display: flex;
+        justify-content: space-around;
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .navbar label {
+            margin: 0;
+        }
+
+        .navbar a {
+            color: #007bff;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .navbar a:hover,
+            .navbar a:focus,
+            .navbar a.active {
+                background-color: #007bff;
+                color: #fff;
+                text-decoration: none;
+            }
+
+            .navbar a:active {
+                background-color: #0056b3;
+                color: #fff;
+            }
 </style>
+@{
+    var currentUrl = Context.Request.Path;
+}
+
+<div class="navbar">
+    <label>
+        <a href="/AdminPanel/MentorsAndInstructors" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/MentorsAndInstructors" ? "active" : "")" role="button" aria-pressed="true"> Mentors And Instructors </a>
+    </label>
+    <label>
+        <a href="/AdminPanel/Visiting" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Visiting" ? "active" : "")" role="button" aria-pressed="true"> Visiting History </a>
+    </label>
+    <label>
+        <a href="/AdminPanel/Statistics" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Statistics" ? "active" : "")" role="button" aria-pressed="true"> Statistics </a>
+    </label>
+    <label>
+        <a href="/UsersManagement/Index" class="btn btn-outline-primary @(currentUrl == "/UsersManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Users </a>
+    </label>
+    <label>
+        <a href="/CourseManagement/Index" class="btn btn-outline-primary @(currentUrl == "/CourseManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Courses </a>
+    </label>
+</div>
+<br />
 <h2>Visiting History</h2>
 <br />
 <form method="get" asp-controller="AdminPanel" asp-action="Visiting">
@@ -87,30 +148,7 @@
                     <td>@visit.User.UserEmail</td>
                     <td>@visit.VisitHistoryDate</td>
                     <td>
-                        @{
-                            var userType = "";
-                            if (visit.User.IsAdmin.HasValue && visit.User.IsAdmin.Value)
-                            {
-                                userType = "Admin";
-                            }
-                            else if (visit.User.IsUserHR.HasValue && visit.User.IsUserHR.Value)
-                            {
-                                userType = "HR";
-                            }
-                            else if (visit.User.IsInstructor.HasValue && visit.User.IsInstructor.Value)
-                            {
-                                userType = "Instructor";
-                            }
-                            else if (visit.User.IsMentor.HasValue && visit.User.IsMentor.Value)
-                            {
-                                userType = "Mentor";
-                            }
-                            else
-                            {
-                                userType = "Normal User";
-                            }
-                            @userType
-                        }
+                        @visit.CurrentVisitorStatus 
                     </td>
                     <td><a asp-action="ViewData" asp-route-id="@visit.UserID" class="btn btn-info">View Details</a></td>
                 </tr>
