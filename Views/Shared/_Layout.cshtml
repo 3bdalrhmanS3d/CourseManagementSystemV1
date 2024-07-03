@@ -114,9 +114,8 @@
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "CourseManagement") ? "active" : "")" asp-area="" asp-controller="CourseManagement" asp-action="Index">Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "InstructorManagement") ? "active" : "")" asp-area="" asp-controller="InstructorManagement" asp-action="Index"> Instructor Dashboard</a>
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "InstructorManagement") ? "active" : "")" asp-area="" asp-controller="InstructorManagement" asp-action="Index">Instructor Management</a>
                                 </li>
-
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "admin")
                             {
@@ -129,6 +128,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "AdminPanel") ? "active" : "")" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "InstructorManagement") ? "active" : "")" asp-area="" asp-controller="InstructorManagement" asp-action="Index">Instructor Management</a>
+                                </li>
+
+                                
                             }
                             else if (ViewContext.HttpContext.Session.GetString("UserStatus") == "user")
                             {

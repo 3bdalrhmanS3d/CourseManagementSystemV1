@@ -159,147 +159,271 @@
                     color: #fff;
                 }
 
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .nav-tabs .nav-item {
+                margin: 0;
+            }
+
+            .nav-tabs .nav-link {
+                color: #007bff;
+                border: 2px solid #007bff;
+                border-radius: 5px;
+                padding: 10px 20px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .nav-tabs .nav-link:hover,
+                .nav-tabs .nav-link:focus,
+                .nav-tabs .nav-link.active {
+                    background-color: #007bff;
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                .nav-tabs .nav-link:active {
+                    background-color: #0056b3;
+                    color: #fff;
+                }
+
     </style>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"> </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"> </script>
+
 </head>
-<body>
+    <body>
 
-    @{
-        var currentUrl = Context.Request.Path;
-    }
+        @{
+            var currentUrl = Context.Request.Path;
+        }
 
-    <div class="navbar">
-        <label>
-            <a href="/AdminPanel/MentorsAndInstructors" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/MentorsAndInstructors" ? "active" : "")" role="button" aria-pressed="true"> Mentors And Instructors </a>
-        </label>
-        <label>
-            <a href="/AdminPanel/Visiting" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Visiting" ? "active" : "")" role="button" aria-pressed="true"> Visiting History </a>
-        </label>
-        <label>
-            <a href="/AdminPanel/Statistics" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Statistics" ? "active" : "")" role="button" aria-pressed="true"> Statistics </a>
-        </label>
-        <label>
-            <a href="/UsersManagement/Index" class="btn btn-outline-primary @(currentUrl == "/UsersManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Users </a>
-        </label>
-        <label>
-            <a href="/CourseManagement/Index" class="btn btn-outline-primary @(currentUrl == "/CourseManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Courses </a>
-        </label>
-    </div>
-
-    <br />
-    <br />
-
-    <div class="statistics-container">
-        <div class="statistic-card">
-            <div class="statistic-header">Accepted Users</div>
-            <div class="statistic-value">@Model.AcceptedUsersCount</div>
+        <div class="navbar">
+            <label>
+                <a href="/AdminPanel/MentorsAndInstructors" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/MentorsAndInstructors" ? "active" : "")" role="button" aria-pressed="true"> Mentors And Instructors </a>
+            </label>
+            <label>
+                <a href="/AdminPanel/Visiting" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Visiting" ? "active" : "")" role="button" aria-pressed="true"> Visiting History </a>
+            </label>
+            <label>
+                <a href="/AdminPanel/Statistics" class="btn btn-outline-primary @(currentUrl == "/AdminPanel/Statistics" ? "active" : "")" role="button" aria-pressed="true"> Statistics </a>
+            </label>
+            <label>
+                <a href="/UsersManagement/Index" class="btn btn-outline-primary @(currentUrl == "/UsersManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Users </a>
+            </label>
+            <label>
+                <a href="/CourseManagement/Index" class="btn btn-outline-primary @(currentUrl == "/CourseManagement/Index" ? "active" : "")" role="button" aria-pressed="true"> Courses </a>
+            </label>
         </div>
 
-        <div class="statistic-card">
-            <div class="statistic-header">Not Accepted Users</div>
-            <div class="statistic-value">@Model.NotAcceptedUsersCount</div>
+        <br />
+        <br />
+
+        <div class="statistics-container">
+            <div class="statistic-card">
+                <div class="statistic-header">Accepted Users</div>
+                <div class="statistic-value">@Model.AcceptedUsersCount</div>
+            </div>
+
+            <div class="statistic-card">
+                <div class="statistic-header">Not Accepted Users</div>
+                <div class="statistic-value">@Model.NotAcceptedUsersCount</div>
+            </div>
+
+            <div class="statistic-card">
+                <div class="statistic-header">HR Users</div>
+                <div class="statistic-value">@Model.HRCount</div>
+            </div>
+
+            <div class="statistic-card">
+                <div class="statistic-header">Instructors</div>
+                <div class="statistic-value">@Model.InstructorsCount</div>
+            </div>
+
+            <div class="statistic-card">
+                <div class="statistic-header">Accepted Courses</div>
+                <div class="statistic-value">@Model.AcceptedCoursesCount</div>
+            </div>
         </div>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">All Users</a>
+                <a class="nav-item nav-link" id="nav-alladmins-tab" data-toggle="tab" href="#nav-alladmins" role="tab" aria-controls="nav-alladmins" aria-selected="false"> Admins </a>
+    
+            </div>
+            <br />
+        </nav>
 
-        <div class="statistic-card">
-            <div class="statistic-header">HR Users</div>
-            <div class="statistic-value">@Model.HRCount</div>
-        </div>
+        <div class="tab-content" id="nav-tabContent">
 
-        <div class="statistic-card">
-            <div class="statistic-header">Instructors</div>
-            <div class="statistic-value">@Model.InstructorsCount</div>
-        </div>
+            <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+                <div class="admin-list">
+                    <h1>All users</h1>
 
-        <div class="statistic-card">
-            <div class="statistic-header">Accepted Courses</div>
-            <div class="statistic-value">@Model.AcceptedCoursesCount</div>
-        </div>
-    </div>
+                    <form method="get" asp-controller="AdminPanel" asp-action="Index">
+                        <div class="form-group row">
+                            <div class="col">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" name="startDate" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" name="endDate" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <label for="userEmail">User Email</label>
+                                <input type="email" id="userEmail" name="userEmail" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <label for="userName">User Name</label>
+                                <input type="text" id="userName" name="userName" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <label for="userPhoneNumber">Phone Number</label>
+                                <input type="text" id="userPhoneNumber" name="userPhoneNumber" class="form-control" />
+                            </div>
+                            <div class="col">
+                                <label for="userSSN">SSN</label>
+                                <input type="text" id="userSSN" name="userSSN" class="form-control" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="btnFilter">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a href="@Url.Action("Index", "AdminPanel")" class="btn btn-secondary">Clear Filter</a>
+                        </div>
+                    </form>
+                    <br />
+                    <table>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Accepted By</th>
+                            <th>Accepted Date</th>
 
-    <div class="admin-list">
-        <h1>All users</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Accepted By</th>
-                <th>Accepted Date</th>
+                            <th>User Email</th>
+                            <th>Last visit</th>
+                            <th>Actions</th>
+                            <th>View</th>
+                        </tr>
+                        @foreach (var user in ViewBag.allUsers)
+                        {
+                            <tr>
+                                <td>@user.UserSSN</td>
+                                <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName </td>
+                                <td>@user.whoAcceptedUser</td>
+                                <td>@user.userAcceptedDate</td>
+                                <td>@user.UserEmail</td>
+                                <td>
+                                    @user.UserlastVisit
+                                </td>
+                                <td>
+                                    <form asp-action="MakeAdmin" method="post">
+                                        <input type="hidden" name="id" value="@user.UserID" />
+                                        <button class="btn btn-outline-success" type="submit"> MakeAdmin </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <br />
+            <div class="tab-pane fade show active" id="nav-alladmins" role="tabpanel" aria-labelledby="nav-alladmins-tab">
+                <div class="admin-list">
+                    <h1>Admins</h1>
 
-                <th>User Email</th>
-                <th>Last visit</th>
-                <th>Actions</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.allUsers)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName </td>
-                    <td>@user.whoAcceptedUser</td>
-                    <td>@user.userAcceptedDate</td>
-                    <td>@user.UserEmail</td>
-                    <td>
-                        @user.UserlastVisit 
-                    </td>
-                    <td>
-                        <form asp-action="MakeAdmin" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-success" type="submit"> MakeAdmin </button>
+                        <form method="get" asp-controller="AdminPanel" asp-action="Index">
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" class="form-control" />
+                                </div>
+                                <div class="col">
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" id="endDate" name="endDate" class="form-control" />
+                                </div>
+                                <div class="col">
+                                    <label for="userEmail">User Email</label>
+                                    <input type="email" id="userEmail" name="userEmail" class="form-control" />
+                                </div>
+                                <div class="col">
+                                    <label for="userName">User Name</label>
+                                    <input type="text" id="userName" name="userName" class="form-control" />
+                                </div>
+                                <div class="col">
+                                    <label for="userPhoneNumber">Phone Number</label>
+                                    <input type="text" id="userPhoneNumber" name="userPhoneNumber" class="form-control" />
+                                </div>
+                                <div class="col">
+                                    <label for="userSSN">SSN</label>
+                                    <input type="text" id="userSSN" name="userSSN" class="form-control" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="btnFilter">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="@Url.Action("Index", "AdminPanel")" class="btn btn-secondary">Clear Filter</a>
+                            </div>
                         </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+                        <br />
+                        <table>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Accepted By</th>
+                                <th>Accepted Date</th>
+                                <th>User Email</th>
+                                <th>Last visit</th>
+                                <th>Actions</th>
+                                <th>View</th>
+                            </tr>
+                            @foreach (var user in ViewBag.admins)
+                            {
+                                <tr>
+                                    <td>@user.UserSSN</td>
+                                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName </td>
+                                    <td>@user.whoAcceptedUser</td>
+                                    <td>@user.userAcceptedDate</td>
+                                    <td>@user.UserEmail</td>
+                                    <td>
+                                        @user.UserlastVisit
+                                    </td>
+                                    <td>
+                                        <form asp-action="DeleteAdmin" method="post">
+                                            <input type="hidden" name="id" value="@user.UserID" />
+                                            <button class="btn btn-outline-danger" type="submit"> Delete </button>
+                                        </form>
+                                        <form asp-action="RemoveAdmin" method="post">
+                                            <input type="hidden" name="id" value="@user.UserID" />
+                                            <button class="btn btn-outline-warning" type="submit"> Normal User </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
+                                    </td>
 
-    <br />
-    <br />
-    <div class="admin-list">
-        <h1>Admins</h1>
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Accepted By</th>
-                <th>Accepted Date</th>
-                <th>User Email</th>
-                <th>Last visit</th>
-                <th>Actions</th>
-                <th>View</th>
-            </tr>
-            @foreach (var user in ViewBag.admins)
-            {
-                <tr>
-                    <td>@user.UserSSN</td>
-                    <td>@user.UserFirstName @user.UserMiddelName @user.UserLastName </td>
-                    <td>@user.whoAcceptedUser</td>
-                    <td>@user.userAcceptedDate</td>
-                    <td>@user.UserEmail</td>
-                    <td>
-                        @user.UserlastVisit
-                    </td>
-                    <td>
-                        <form asp-action="DeleteAdmin" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-danger" type="submit"> Delete </button>
-                        </form>
-                        <form asp-action="RemoveAdmin" method="post">
-                            <input type="hidden" name="id" value="@user.UserID" />
-                            <button class="btn btn-outline-warning" type="submit"> Normal User </button>
-                        </form>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info" onclick="location.href='@Url.Action("ViewData", "AdminPanel", new { id = user.UserID })'">View</button>
-                    </td>
-                    
-                </tr>
-            }
-        </table>
-    </div>
+                                </tr>
+                            }
+                        </table>
+                </div>
 
+            </div>
 
-</body>
+        </div>
+
+    </body>
 </html>
 

@@ -3,7 +3,7 @@
     <style>
         .comment-box {
             border: 1px solid #ddd;
-            padding: 15px;
+            padding: 30px;
             border-radius: 5px;
             background-color: #f9f9f9;
         }
@@ -52,6 +52,40 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .nav-tabs .nav-item {
+                margin: 0;
+            }
+
+            .nav-tabs .nav-link {
+                color: #007bff;
+                border: 2px solid #007bff;
+                border-radius: 5px;
+                padding: 10px 20px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .nav-tabs .nav-link:hover,
+                .nav-tabs .nav-link:focus,
+                .nav-tabs .nav-link.active {
+                    background-color: #007bff;
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                .nav-tabs .nav-link:active {
+                    background-color: #0056b3;
+                    color: #fff;
+                }
 
     </style>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />

@@ -3,43 +3,53 @@ using courseManagementSystemV1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Diagnostics.Metrics;
 
 namespace courseManagementSystemV1.Controllers
 {
     public class InstructorManagementController : Controller
     {
         private readonly AppDbContext _context;
+        
         private readonly IWebHostEnvironment _host;
-
         public InstructorManagementController(AppDbContext context, IWebHostEnvironment host)
         {
             _context = context;
             _host = host;
         }
-        public class Input
-        {
-            public List<CourseRequirement>? Requirements { get; set; }
-        }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string searchString)
+        public async Task <IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("Login") != null)
+            if (HttpContext.Session.GetString("Login") != null )
             {
                 return RedirectToAction("Index", "Login");
             }
 
             var jsonString = HttpContext.Session.GetString("CurrentLoginUser");
-            var currentInstructor = JsonSerializer.Deserialize<Instructor>(jsonString, JsonOptions.DefaultOptions);
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                // Handle the case where the session variable is null or empty
+                return RedirectToAction("Index", "Login");
+            }
 
-            // استعلام للحصول على الكورسات التي أنشأها المستخدم الحالي
+            // تحليل JSON للحصول على المستخدم الحالي
+            var currentUser = JsonSerializer.Deserialize<User>(jsonString, JsonOptions.DefaultOptions);
+
+            // استعلام للحصول على معرف المدرب بناءً على معرف المستخدم
+            var instructor = await _context.Instructors
+                                           .FirstOrDefaultAsync(i => i.UserID == currentUser.UserID);
+
+            if (instructor == null)
+            {
+                // إذا لم يتم العثور على المدرب، التعامل مع الحالة
+                return NotFound();
+            }
+
+
+            // استعلام للحصول على الكورسات التي أنشأها المدرب الحالي
             var myCourses = await _context.courseManagements
                                            .Include(cm => cm.course)
-                                           .Include(cm => cm.instructor)
-                                           .Where(cm => cm.instructorID == currentInstructor.instructorID)
+                                           .Where(cm => cm.instructorID == instructor.instructorID)
                                            .Select(cm => cm.course)
                                            .Distinct() // التأكد من عدم تكرار الكورسات في القائمة
                                            .ToListAsync();
@@ -53,8 +63,10 @@ namespace courseManagementSystemV1.Controllers
             ViewBag.Courses = myCourses;
             return View(myCourses);
         }
-
-
+        public class Input
+        {
+            public List<CourseRequirement>? Requirements { get; set; }
+        }
 
         [HttpGet]
         public async Task<IActionResult> CourseDetails(int id)
@@ -107,6 +119,7 @@ namespace courseManagementSystemV1.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var jsonString = HttpContext.Session.GetString("CurrentLoginUser");
                 var userId = JsonSerializer.Deserialize<User>(jsonString, JsonOptions.DefaultOptions);
 

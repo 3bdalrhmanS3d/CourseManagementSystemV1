@@ -18,6 +18,7 @@ namespace courseManagementSystemV1.Controllers
         }
 
         // إضافة بيانات الـ instructor.
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

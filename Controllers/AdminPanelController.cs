@@ -14,28 +14,79 @@ namespace courseManagementSystemV1.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(DateTime? startDate, DateTime? endDate, string userEmail, string userName, string userPhoneNumber, string userSSN)
         {
-
-            if (HttpContext.Session.GetString("Login") != "true" || HttpContext.Session.GetString("UserStatus") != "admin")
+            if (HttpContext.Session.GetString("Login") != "true" && HttpContext.Session.GetString("UserStatus") != "admin")
             {
                 return RedirectToAction("Index", "Login");
             }
 
-
             // كل الناس 
-            var admins = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false ).AsQueryable();
-            ViewBag.allUsers = admins.OrderByDescending(x => x.userAcceptedDate).ToList();
-            // كل الادمنز
+            var allUsers = _context.Users.Where(p => p.IsAccepted == true && p.IsAdmin == false).AsQueryable();
+
+            // تطبيق الفلترة
+            if (startDate.HasValue)
+            {
+                allUsers = allUsers.Where(u => u.userAcceptedDate >= startDate.Value);
+            }
+            if (endDate.HasValue)
+            {
+                allUsers = allUsers.Where(u => u.userAcceptedDate <= endDate.Value);
+            }
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                allUsers = allUsers.Where(u => u.UserEmail.Contains(userEmail));
+            }
+            if (!string.IsNullOrEmpty(userName))
+            {
+                allUsers = allUsers.Where(u => u.UserFirstName.Contains(userName) || u.UserMiddelName.Contains(userName) || u.UserLastName.Contains(userName));
+            }
+            if (!string.IsNullOrEmpty(userPhoneNumber))
+            {
+                allUsers = allUsers.Where(u => u.UserPhoneNumber.Contains(userPhoneNumber));
+            }
+            if (!string.IsNullOrEmpty(userSSN))
+            {
+                allUsers = allUsers.Where(u => u.UserSSN.Contains(userSSN));
+            }
+
+            ViewBag.allUsers = allUsers.OrderByDescending(x => x.userAcceptedDate).ToList();
+
+            // كل الادمنز (بدون تغيير)
             var ISadmins = _context.Users.Where(p => p.IsAdmin == true && p.IsAccepted == true).AsQueryable();
+            // تطبيق الفلترة
+            if (startDate.HasValue)
+            {
+                ISadmins = allUsers.Where(u => u.userAcceptedDate >= startDate.Value);
+            }
+            if (endDate.HasValue)
+            {
+                ISadmins = allUsers.Where(u => u.userAcceptedDate <= endDate.Value);
+            }
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                ISadmins = allUsers.Where(u => u.UserEmail.Contains(userEmail));
+            }
+            if (!string.IsNullOrEmpty(userName))
+            {
+                ISadmins = allUsers.Where(u => u.UserFirstName.Contains(userName) || u.UserMiddelName.Contains(userName) || u.UserLastName.Contains(userName));
+            }
+            if (!string.IsNullOrEmpty(userPhoneNumber))
+            {
+                ISadmins = allUsers.Where(u => u.UserPhoneNumber.Contains(userPhoneNumber));
+            }
+            if (!string.IsNullOrEmpty(userSSN))
+            {
+                ISadmins = allUsers.Where(u => u.UserSSN.Contains(userSSN));
+            }
             ViewBag.admins = ISadmins.OrderByDescending(_ => _.userAcceptedDate).ToList();
 
+            // الإحصائيات (بدون تغيير)
             var acceptedUsersCount = _context.Users.Count(u => u.IsAccepted == true);
             var notAcceptedUsersCount = _context.Users.Count(u => u.IsAccepted == false);
             var hrCount = _context.Users.Count(u => u.IsUserHR == true);
             var instructorsCount = _context.Instructors.Count();
             var acceptedCoursesCount = _context.Courses.Count(c => c.IsAvailable == true);
-
             var statistics = new
             {
                 AcceptedUsersCount = acceptedUsersCount,
